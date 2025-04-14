@@ -12,29 +12,29 @@ const LoginView = () => {
                 {/* Sección izquierda: Formulario */}
                 <section className="w-1/2 flex items-center justify-center">
                     <div className="bg-white p-8 rounded-xl shadow-md w-[90%] max-w-md">
-                        <h2 className="text-4xl font-Montserrat font-bold text-[#453126] mb-6">Iniciar sesión</h2>
+                        <h2 className="text-4xl font-Montserrat font-bold text-[#453126] mb-6 text-center">Iniciar sesión</h2>
                         <form className="space-y-4">
-                        <div>
-                            <label className="block text-l text-[#453126] mb-1">Email, Télefono o Usuario</label>
-                            <input
-                            type="email"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#3B2B26] bg-[#5C48481A]"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-l text-[#453126] mb-1">Contraseña</label>
-                            <input
-                            type="password"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#3B2B26] bg-[#5C48481A] mb-4"
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            className="w-full bg-[#3B2B26] font-Montserrat font-semibold text-lg text-white py-2 rounded-md hover:bg-[#555655]
-                            transform transition-transform duration-300 hover:scale-105"
-                        >
-                            Iniciar Sesión
-                        </button>
+                            <div>
+                                <label className="block text-l text-[#453126] mb-1">Email, Télefono o Usuario</label>
+                                <input
+                                type="email"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#3B2B26] bg-[#5C48481A]"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-l text-[#453126] mb-1">Contraseña</label>
+                                <input
+                                type="password"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#3B2B26] bg-[#5C48481A] mb-4"
+                                />
+                            </div>
+                            <button
+                                type="submit"
+                                className="w-full bg-[#3B2B26] font-Montserrat font-semibold text-lg text-white py-2 rounded-md hover:bg-[#555655]
+                                transform transition-transform duration-300 hover:scale-105"
+                            >
+                                Iniciar Sesión
+                            </button>
                         </form>
                     </div>
                 </section>
