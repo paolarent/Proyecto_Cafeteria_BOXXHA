@@ -4,8 +4,10 @@ import icon_user from "../assets/icon_usuario.png"
 import icon_like from "../assets/icon_like.png"
 import icon_carrito from "../assets/icon_carrito.png"
 import AboutUsModal from "../components/ModalAU";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
+    const navigate = useNavigate();
     const [showAboutModal, setShowAboutModal] = useState(false);
 
     return (
@@ -28,7 +30,7 @@ const NavBar = () => {
                     <li><button className="text-lg hover:[color:#A1C99C] transition">Shop</button></li>
                     <li><button className="text-lg hover:[color:#A1C99C] transition">Menú</button></li>
                     <li>
-                        <button>
+                        <button onClick={() => navigate("/login")}>
                         <img src={icon_user} alt="Usuario" className="h-7 hover:scale-110 transition" />
                         </button>
                     </li>

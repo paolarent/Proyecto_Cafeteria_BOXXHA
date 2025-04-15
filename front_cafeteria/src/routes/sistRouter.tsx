@@ -1,16 +1,27 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from 'framer-motion';
 import LoginView from "../views/LoginView";
 import RegistroView from "../views/RegistroView";
 
-const sistRouter = () => {
+const RouterWithAnimation = () => {
+  const location = useLocation();
+
   return (
-    <BrowserRouter>
-      <Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
         <Route path="/login" element={<LoginView />} />
         <Route path="/registro" element={<RegistroView />} />
       </Routes>
+    </AnimatePresence>
+  );
+};
+
+const SistRouter = () => {
+  return (
+    <BrowserRouter>
+      <RouterWithAnimation />
     </BrowserRouter>
   );
 };
 
-export default sistRouter;
+export default SistRouter;
