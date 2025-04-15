@@ -11,7 +11,7 @@ const NavBar = () => {
     const [showAboutModal, setShowAboutModal] = useState(false);
 
     return (
-        <div className="w-full flex flex-col">
+        <div className="w-full flex flex-col bg-white shadow-md">
             {/* Barra de navegación superior */}
             <nav className="flex justify-between items-center p-4 border-b border-gray-200">
                 <div className="flex items-center h-10 space-x-2">
