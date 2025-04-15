@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import logom from "../assets/logo_menu.png";
 import icon_user from "../assets/icon_usuario.png"
 import icon_like from "../assets/icon_like.png"
 import icon_carrito from "../assets/icon_carrito.png"
-
+import AboutUsModal from "../components/ModalAU";
 
 const NavBar = () => {
+    const [showAboutModal, setShowAboutModal] = useState(false);
+
     return (
         <div className="w-full flex flex-col">
             {/* Barra de navegación superior */}
@@ -18,7 +20,11 @@ const NavBar = () => {
                 </div>
                 <ul className="flex space-x-8 text-sm font-Montserrat font-medium text-black-700">
                     <li><button className="text-lg hover:[color:#A1C99C] transition">Inicio</button></li>
-                    <li><button className="text-lg hover:[color:#A1C99C] transition">Nosotros</button></li>
+                    <li>
+                        <button 
+                        onClick={() => setShowAboutModal(true)}
+                        className="text-lg hover:[color:#A1C99C] transition">Nosotros</button>
+                    </li>
                     <li><button className="text-lg hover:[color:#A1C99C] transition">Shop</button></li>
                     <li><button className="text-lg hover:[color:#A1C99C] transition">Menú</button></li>
                     <li>
@@ -38,8 +44,13 @@ const NavBar = () => {
                     </li>
                 </ul>
             </nav>
+
+            {/* Modal */}
+            {showAboutModal && (
+                <AboutUsModal isOpen={showAboutModal} onClose={() => setShowAboutModal(false)} />
+            )}
         </div>
-    )
+    );
 };
 
 export default NavBar;
