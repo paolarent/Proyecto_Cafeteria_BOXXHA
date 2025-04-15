@@ -15,13 +15,13 @@ const NavBar = () => {
             {/* Barra de navegación superior */}
             <nav className="flex justify-between items-center p-4 border-b border-gray-200">
                 <div className="flex items-center h-10 space-x-2">
-                    <button className="flex items-center space-x-2 hover:scale-105 transition">
+                    <button  onClick={() => navigate("/")} className="flex items-center space-x-2 hover:scale-105 transition">
                         <img src={logom} alt="Logo" className="h-14" />
                         <span className="text-xl font-extrabold font-serif">BOXXHA CAFÉ</span>
                     </button>
                 </div>
                 <ul className="flex space-x-8 text-sm font-Montserrat font-medium text-black-700">
-                    <li><button className="text-lg hover:[color:#A1C99C] transition">Inicio</button></li>
+                    <li><button onClick={() => navigate("/")} className="text-lg hover:[color:#A1C99C] transition">Inicio</button></li>
                     <li>
                         <button 
                         onClick={() => setShowAboutModal(true)}

@@ -13,9 +13,9 @@ const InicioView = () => {
             </header>
             <div className="overflow-hidden bg-[#5a3c29] text-white py-2">
                 <motion.div
-                    animate={{ x: ["100vw", "-100vw"] }}
+                    animate={{ x: ["0%", "-100vw"] }}
                     transition={{
-                    duration: 15,
+                    duration: 15,       /*Aqui se ajusta la velocidad del banner*/
                     ease: "linear",
                     repeat: Infinity,
                     }}
