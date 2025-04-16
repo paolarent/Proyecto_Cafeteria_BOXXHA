@@ -67,14 +67,48 @@ const InicioView = () => {
             </main>
 
             <section
-            className="min-h-screen bg-[#dcd1c4] bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center px-6 py-16"
+            className="min-h-screen bg-[#dcd1c4] bg-cover bg-center bg-no-repeat px-6 py-16"
             style={{ backgroundImage: `url(${fondo_in2})` }}
             >
-            <h2 className="text-4xl font-bold mb-6 font-Montserrat text-[#ffffff]">PAOLA RENTERIA :)</h2>
+                <div className="grid grid-cols-4 gap-10 justify-items-center">
+                    {/*Bebidas Calientes*/}
+                    <div className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105 shadow-md">
+                        <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
+                            group-hover:bg-[#424141] group-hover:text-white transition transform transition-transform duration-300 hover:scale-105 mb-2">
+                            Bebidas Calientes
+                        </button>
+                        <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px]" />
+                    </div>
+
+                    {/*Bebidas Frias*/}
+                    <div className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105 shadow-md">
+                        <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" />
+                        <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
+                            group-hover:bg-[#5a5959] group-hover:text-white transition transform transition-transform duration-300 hover:scale-105">
+                            Bebidas Frias
+                        </button>
+                    </div>
+
+                    {/*Postres*/}
+                    <div className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105 shadow-md">
+                        <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
+                            group-hover:bg-[#424141] group-hover:text-white transition transform transition-transform duration-300 hover:scale-105 mb-2">
+                            Postres
+                        </button>
+                        <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px]" />
+                    </div>
+
+                    {/*Nuevos*/}
+                    <div className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105 shadow-md">
+                        <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" />
+                        <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
+                            group-hover:bg-[#5a5959] group-hover:text-white transition transform transition-transform duration-300 hover:scale-105">
+                            Nuevos
+                        </button>
+                    </div>
+                </div>
+
             </section>
-
-
-
         </div>
     );
 };
