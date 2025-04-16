@@ -74,7 +74,7 @@ const InicioView = () => {
                     {/*Bebidas Calientes*/}
                     <div className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105 shadow-md">
                         <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
-                            group-hover:bg-[#424141] group-hover:text-white transition transform transition-transform duration-300 hover:scale-105 mb-2">
+                            group-hover:bg-[#424141] group-hover:text-white mb-2">
                             Bebidas Calientes
                         </button>
                         <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px]" />
@@ -84,7 +84,7 @@ const InicioView = () => {
                     <div className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105 shadow-md">
                         <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" />
                         <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
-                            group-hover:bg-[#5a5959] group-hover:text-white transition transform transition-transform duration-300 hover:scale-105">
+                            group-hover:bg-[#424141] group-hover:text-white">
                             Bebidas Frias
                         </button>
                     </div>
@@ -92,7 +92,7 @@ const InicioView = () => {
                     {/*Postres*/}
                     <div className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105 shadow-md">
                         <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
-                            group-hover:bg-[#424141] group-hover:text-white transition transform transition-transform duration-300 hover:scale-105 mb-2">
+                            group-hover:bg-[#424141] group-hover:text-white mb-2">
                             Postres
                         </button>
                         <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px]" />
@@ -102,7 +102,7 @@ const InicioView = () => {
                     <div className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105 shadow-md">
                         <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" />
                         <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
-                            group-hover:bg-[#5a5959] group-hover:text-white transition transform transition-transform duration-300 hover:scale-105">
+                            group-hover:bg-[#424141] group-hover:text-white">
                             Nuevos
                         </button>
                     </div>
