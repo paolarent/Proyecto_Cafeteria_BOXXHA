@@ -1,6 +1,7 @@
 import React from "react";
 import NavBar from "../components/NavBar";
 import { useParams } from "react-router-dom";
+import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 
 type SaboresMap = {
     [key: string]: {
@@ -56,20 +57,48 @@ const SaboresProducto: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen flex flex-col">
-            <header className="sticky top-0 z-50">
+        <div className="min-h-screen flex flex-col">    
+            <header className="sticky top-0 z-50">  {/* hace que el header quede fijo en la parte superior mientras se hace scroll */}
                 <NavBar />
             </header>
-            <main className="flex flex-1 bg-[#B0CEAC]">
-                <section className="w-full flex flex-col items-center pt-5 space-y-10 pb-10">
-                    <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d]">
-                        Sabores de {nombre} ({tipo})
-                    </h2>
+
+            <main className="flex flex-1">
+            <section className="relative w-full flex flex-col items-center space-y-10 pb-10 overflow-hidden" 
+                    style={{
+                            backgroundImage: `url(${fondoCafe})`,
+                            backgroundSize: "cover", 
+                            backgroundPosition: "bottom",
+                            backgroundRepeat: "no-repeat",
+                        }}
+                    >
+                    {/* Capa de color con algo de opacidad encima, opcional */}
+                    <div
+                        className="absolute inset-0"
+                        style={{ backgroundColor: "#f8e9df", opacity: 0.60 }}
+                    />
+
+                    {/*Titulo variable dependiendo de los props que recibe de las vistas*/}
+                    <div className="relative z-10 pt-5">
+                        <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 rounded-2xl shadow-md">
+                            Sabores de <span className="font-medium">{nombre?.toUpperCase()}</span> {/*({tipo})*/}
+                        </h2>
+                    </div>
+
                     <div className="flex flex-wrap justify-center gap-10 w-full px-8">
                         {sabores.map((sabor, idx) => (
-                            <p key={idx} className="text-xl font-semibold text-[#5C4848]">
-                            {sabor}
-                            </p>
+                            <div className="relative z-10 bg-[#ffffff] px-5 py-5 rounded-2xl">
+                                <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                                    <img className="bg-[#D9D9D9] rounded-[20px] w-[200px] h-[200px] mb-2" />
+                                    <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
+                                        group-hover:bg-[#B0CEAC] group-hover:text-[#000000] rounded-[10px]">
+                                        {sabor}
+                                    </button>
+                                </div>
+                                
+                                {/* <p key={idx} className="font-Montserrat font-regular text-xl font-semibold text-[#000000]">
+                                {sabor}
+                                </p>*/}
+                            </div>
                         ))}
                     </div>
                 </section>
