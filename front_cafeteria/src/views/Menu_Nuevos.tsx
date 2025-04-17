@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import NavBar from "../components/NavBar"
 import { useNavigate } from "react-router-dom";
+import img_frappe_lotus from "../assets/frappe_lotus2.png"
+import img_frappe_caramel from "../assets/frappe_caramelo2.png"
 
 const MenuNuevosView = () => {
     return (
@@ -10,7 +12,7 @@ const MenuNuevosView = () => {
             </header>
 
             <main className="flex flex-1 bg-[#B0CEAC]">
-            <section className="w-full flex flex-col items-center pt-5 space-y-10 pt-20">
+            <section className="w-full flex flex-col items-center space-y-10 pt-20">
                 <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d]">
                 - <span className="font-bold">Nuevos</span> en el Menú -
                 </h2>
@@ -35,7 +37,11 @@ const MenuNuevosView = () => {
 
                     {/* Lotus Frappé */}
                     <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
-                        <img className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" />
+                        <img 
+                            src={img_frappe_lotus} 
+                            alt="Lotus Frappé" 
+                            className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" 
+                        />
                         <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
                             group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]">
                             LOTUS FRAPPÉ
@@ -44,7 +50,11 @@ const MenuNuevosView = () => {
 
                     {/* Caramel Frappé */}
                     <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
-                        <img className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" />
+                        <img 
+                            src={img_frappe_caramel} 
+                            alt="Caramel Frappé" 
+                            className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" 
+                        />
                         <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
                             group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]">
                             CARAMEL FRAPPÉ

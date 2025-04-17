@@ -10,7 +10,7 @@ const MenuPostresView = () => {
             </header>
 
             <main className="flex flex-1 bg-[#B0CEAC]">
-                <section className="w-full flex flex-col items-center pt-5 space-y-10 pt-20">
+                <section className="w-full flex flex-col items-center space-y-10 pt-20">
                     <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d]">
                     - Nuestros <span className="font-bold">Postres</span> -
                     </h2>
@@ -50,8 +50,6 @@ const MenuPostresView = () => {
                                 PAYS
                             </button>
                         </div>
-
-
                     </div>
                 </section>
             </main>
