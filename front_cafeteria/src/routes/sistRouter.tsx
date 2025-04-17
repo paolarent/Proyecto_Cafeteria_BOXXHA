@@ -7,6 +7,8 @@ import MenuBebidasCalView from "../views/Menu_Caliente.tsx";
 import MenuBebidasFriasView from "../views/Menu_Frio.tsx";
 import MenuPostresView from "../views/Menu_Postres.tsx";
 import MenuNuevosView from "../views/Menu_Nuevos.tsx"
+import PedidoTamanoView from "../views/Pedido_Tamano.tsx"
+
 
 const RouterWithAnimation = () => {
   const location = useLocation();
@@ -21,7 +23,7 @@ const RouterWithAnimation = () => {
         <Route path="/bebidas_frias" element={<MenuBebidasFriasView />} />
         <Route path="/postres" element={<MenuPostresView />} />
         <Route path="/nuevos_menu" element={<MenuNuevosView />} />
-
+        <Route path="/pedido_tamano" element={<PedidoTamanoView />}/>
       </Routes>
     </AnimatePresence>
   );

@@ -1,9 +1,7 @@
-import React, { useState } from "react";
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 import fondo_in1 from "../assets/foto_inicio1.png"
 import fondo_in2 from "../assets/fondo_inicio2.jpg"
 import NavBar from "../components/NavBar"
-import { useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
 
 const InicioView = () => {
@@ -72,7 +70,7 @@ const InicioView = () => {
             >
                 <div className="grid grid-cols-4 gap-10 justify-items-center">
                     {/*Bebidas Calientes*/}
-                    <div className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105 shadow-md">
+                    <div className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
                         <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
                             group-hover:bg-[#424141] group-hover:text-white mb-2">
                             Bebidas Calientes
@@ -81,7 +79,7 @@ const InicioView = () => {
                     </div>
 
                     {/*Bebidas Frias*/}
-                    <div className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105 shadow-md">
+                    <div className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105">
                         <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" />
                         <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
                             group-hover:bg-[#424141] group-hover:text-white">
@@ -90,7 +88,7 @@ const InicioView = () => {
                     </div>
 
                     {/*Postres*/}
-                    <div className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105 shadow-md">
+                    <div className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
                         <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
                             group-hover:bg-[#424141] group-hover:text-white mb-2">
                             Postres
@@ -99,7 +97,7 @@ const InicioView = () => {
                     </div>
 
                     {/*Nuevos*/}
-                    <div className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105 shadow-md">
+                    <div className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105">
                         <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" />
                         <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
                             group-hover:bg-[#424141] group-hover:text-white">
@@ -110,7 +108,7 @@ const InicioView = () => {
 
             </section>
         </div>
-    );
+    ); 
 };
 
 export default InicioView;

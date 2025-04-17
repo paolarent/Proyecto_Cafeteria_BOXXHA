@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import logob from "../assets/logo_boxxha.png"; 
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 import NavBar from "../components/NavBar"

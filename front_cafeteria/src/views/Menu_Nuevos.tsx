@@ -10,12 +10,47 @@ const MenuNuevosView = () => {
             </header>
 
             <main className="flex flex-1 bg-[#B0CEAC]">
-            <section className="w-full flex flex-col items-center pt-5 space-y-10">
+            <section className="w-full flex flex-col items-center pt-5 space-y-10 pt-20">
                 <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d]">
                 - <span className="font-bold">Nuevos</span> en el Menú -
                 </h2>
-                <div className="grid grid-cols-4 gap-10 justify-items-center w-full px-8">
-                
+                <div className="flex flex-wrap justify-center gap-10 w-full px-8">
+                    {/* Afogato */}
+                    <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                        <img className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" />
+                        <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
+                            group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]">
+                            AFOGATO
+                        </button>
+                    </div>
+
+                    {/* Irlandes */}
+                    <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                        <img className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" />
+                        <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
+                            group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]">
+                            IRLANDES
+                        </button>
+                    </div>
+
+                    {/* Lotus Frappé */}
+                    <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                        <img className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" />
+                        <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
+                            group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]">
+                            LOTUS FRAPPÉ
+                        </button>
+                    </div>
+
+                    {/* Caramel Frappé */}
+                    <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                        <img className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" />
+                        <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
+                            group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]">
+                            CARAMEL FRAPPÉ
+                        </button>
+                    </div>
+
                 </div>
             </section>
             </main>

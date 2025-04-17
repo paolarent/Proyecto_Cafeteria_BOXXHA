@@ -6,7 +6,7 @@ interface ModalAUProps {
     isOpen: boolean;
     onClose: () => void;
 }
-
+//ESTA PENDIENTE!!!!!!! FAKIN DISEÑO RESPONSIVE
 const ModalAU: React.FC<ModalAUProps> = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
@@ -62,9 +62,8 @@ const ModalAU: React.FC<ModalAUProps> = ({ isOpen, onClose }) => {
             <div
                 className="relative bg-[#4a372a] text-white rounded-[60px] p-8 shadow-lg flex flex-col gap-6 items-start"
                 style={{
-                    width: '90%',
-                    maxWidth: '800px',
-                    height: 'auto',
+                    width: '800px',  // Tamaño por defecto para pantallas grandes
+                    height: 'auto',  // Ajusta la altura en función del contenido
                     overflow: 'hidden',
                 }}
             >
@@ -91,10 +90,7 @@ const ModalAU: React.FC<ModalAUProps> = ({ isOpen, onClose }) => {
                     alt="Logo Boxxha"
                     className="
                         absolute top-4 right-4 object-contain m-1
-                        w-[200px] h-[200px]
-                        md:w-[120px] md:h-[120px]
-                        sm:w-[80px] sm:h-[80px]
-                        max-[450px]:w-[60px] max-[450px]:h-[60px]
+                        w-[200px] h-[200px]        //Tamaño default (web)
                     "
                 />
 
@@ -102,17 +98,17 @@ const ModalAU: React.FC<ModalAUProps> = ({ isOpen, onClose }) => {
                 <div className="text-sm md:text-base space-y-3 relative">
                     <h2 className="text-5xl font-bold text-black opacity-30 leading-tight font-Montserrat text-left absolute top-1 left-1 select-none pointer-events-none">
                         Acerca de <br />
-                        <span className="block ml-[130px] sm:ml-[60px] max-[450px]:ml-[30px]">Nosotros</span>
+                        <span className="block ml-[130px]">Nosotros</span>
                     </h2>
 
                     <h2 className="text-5xl font-bold text-white leading-tight font-Montserrat text-left ml-2 relative z-10">
                         Acerca de <br />
-                        <span className="block ml-[130px] sm:ml-[60px] max-[450px]:ml-[30px]">Nosotros</span>
+                        <span className="block ml-[130px]">Nosotros</span>
                     </h2>
                 </div>
 
                 {/* Contenido (texto en el modal) */}
-                <div className="text-xl text-justify pr-[180px] sm:pr-[60px] max-[450px]:pr-[20px] z-10 space-y-4">
+                <div className="text-xl text-justify pr-[180px] z-10 space-y-4">
                     <p>
                         <strong>Boxxha</strong> (café en maya) nace de la admiración por la tierra que cultivó los primeros granos.
                         <br /> No solo servimos café, sino historias en cada taza.
@@ -136,4 +132,3 @@ const ModalAU: React.FC<ModalAUProps> = ({ isOpen, onClose }) => {
 };
 
 export default ModalAU;
-
