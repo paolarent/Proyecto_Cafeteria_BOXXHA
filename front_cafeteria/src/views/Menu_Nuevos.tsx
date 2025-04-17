@@ -6,10 +6,10 @@ import img_frappe_caramel from "../assets/frappe_caramelo2.png"
 const MenuNuevosView = () => {
     const navigate = useNavigate();
     //agregue esto aqui, pero no aplica a ninguno de los "nuevos", pero si se llega a cambiar es reutilizable, adaptable a
-    type TipoBebida = 'caliente' | 'frio' | 'postre' | 'nuevo';
+    /* type TipoBebida = 'caliente' | 'frio' | 'postre' | 'nuevo';
     const irASabores = (tipo: TipoBebida, nombre: string) => {
         navigate(`/sabores/${tipo}/${nombre}`);
-    };
+    }; */
 
     return (
         <div className="min-h-screen flex flex-col ">
@@ -24,7 +24,7 @@ const MenuNuevosView = () => {
                 </h2>
                 <div className="flex flex-wrap justify-center gap-10 w-full px-8">
                     {/* Afogato */}
-                    <div onClick={() => irASabores("nuevo", "")} className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                    <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
                         <img className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" />
                         <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
                             group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]">
@@ -33,7 +33,7 @@ const MenuNuevosView = () => {
                     </div>
 
                     {/* Irlandes */}
-                    <div onClick={() => irASabores("nuevo", "")} className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                    <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
                         <img className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" />
                         <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
                             group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]">
@@ -42,7 +42,7 @@ const MenuNuevosView = () => {
                     </div>
 
                     {/* Lotus Frappé */}
-                    <div onClick={() => irASabores("nuevo", "")} className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                    <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
                         <img 
                             src={img_frappe_lotus} 
                             alt="Lotus Frappé" 
@@ -55,7 +55,7 @@ const MenuNuevosView = () => {
                     </div>
 
                     {/* Caramel Frappé */}
-                    <div onClick={() => irASabores("nuevo", "")} className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                    <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
                         <img 
                             src={img_frappe_caramel} 
                             alt="Caramel Frappé" 
