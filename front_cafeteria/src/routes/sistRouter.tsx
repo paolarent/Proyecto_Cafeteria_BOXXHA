@@ -8,6 +8,7 @@ import MenuBebidasFriasView from "../views/Menu_Frio.tsx";
 import MenuPostresView from "../views/Menu_Postres.tsx";
 import MenuNuevosView from "../views/Menu_Nuevos.tsx"
 import PedidoTamanoView from "../views/Pedido_Tamano.tsx"
+import SaboresProducto from "../components/SaboresProds.tsx";
 
 
 const RouterWithAnimation = () => {
@@ -23,6 +24,7 @@ const RouterWithAnimation = () => {
         <Route path="/bebidas_frias" element={<MenuBebidasFriasView />} />
         <Route path="/postres" element={<MenuPostresView />} />
         <Route path="/nuevos_menu" element={<MenuNuevosView />} />
+        <Route path="/sabores/:tipo/:nombre" element={<SaboresProducto />} />
         <Route path="/pedido_tamano" element={<PedidoTamanoView />}/>
       </Routes>
     </AnimatePresence>

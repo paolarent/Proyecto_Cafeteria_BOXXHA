@@ -1,9 +1,6 @@
 import React from "react";
-
-interface SaboresProductoProps {
-    tipo: string;
-    nombre: string;
-}
+import NavBar from "../components/NavBar";
+import { useParams } from "react-router-dom";
 
 type SaboresMap = {
     [key: string]: {
@@ -48,31 +45,38 @@ const saboresPorTipoYNombreProducto: SaboresMap = {
     },
 };
 
-const SaboresProducto: React.FC<SaboresProductoProps> = ({ tipo, nombre }) => {
-    const sabores = saboresPorTipoYNombreProducto[tipo]?.[nombre.toLowerCase()] || [];
+const SaboresProducto: React.FC = () => {
+    const { tipo, nombre } = useParams(); //Usamos useParams para obtener los parámetros de la URL de la ruta
+
+    //Verificamos si los valores de tipo y nombre existen en los datos
+    const sabores = saboresPorTipoYNombreProducto[tipo as string]?.[nombre?.toLowerCase() || ""] || [];
+
+    if (sabores.length === 0) {
+        return <p>No se encontraron sabores disponibles para {nombre} en tipo {tipo}.</p>;
+    }
 
     return (
-        <div className="flex flex-wrap justify-center gap-10 w-full px-8">
-          {sabores.map((sabor, idx) => (
-            <div
-              key={idx}
-              className="group flex flex-col items-center transition-transform duration-300 hover:scale-105"
-            >
-              <img
-                className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2"
-                alt={sabor}
-              />
-              <button
-                className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
-                group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]"
-              >
-                {sabor.toUpperCase()}
-              </button>
-            </div>
-          ))}
+        <div className="min-h-screen flex flex-col">
+            <header className="sticky top-0 z-50">
+                <NavBar />
+            </header>
+            <main className="flex flex-1 bg-[#B0CEAC]">
+                <section className="w-full flex flex-col items-center pt-5 space-y-10 pb-10">
+                    <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d]">
+                        Sabores de {nombre} ({tipo})
+                    </h2>
+                    <div className="flex flex-wrap justify-center gap-10 w-full px-8">
+                        {sabores.map((sabor, idx) => (
+                            <p key={idx} className="text-xl font-semibold text-[#5C4848]">
+                            {sabor}
+                            </p>
+                        ))}
+                    </div>
+                </section>
+            </main>
         </div>
     );
 };
-    
+
 export default SaboresProducto;
 
