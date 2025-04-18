@@ -11,12 +11,12 @@ type SaboresMap = {
 
 const saboresPorTipoYNombreProducto: SaboresMap = {
     caliente: {
-        expresso: ["Regular", "Maracuya Gin Expresso"],
+        expresso: ["Regular", "Maracuya Gin"],
         americano: ["Regular", "Limon", "Gin Ale", ],
         latte: ["Regular", "Caramelo", "Vainilla", "Avellana", "Moka", "Moka Blanco", "Dulce de leche"],
         //cappuccino: no tiene sabores, solo el regular/tradicional
         chai: ["Regular", "Dirty Chai"],
-        te: ["Té verde", "Té Negro", "Maracuya Green Tea", "Strawberry Black Tea", "Tisana Berry"],
+        té: ["Té verde", "Té Negro", "Maracuya Green Tea", "Strawberry Black Tea", "Tisana Berry"],
         matcha: ["Regular", "Caramel", "Rafaelo"]
         //chocolate no tiene sabores
     },
@@ -27,7 +27,7 @@ const saboresPorTipoYNombreProducto: SaboresMap = {
         americano: ["Regular", "Limon", "Gin Ale", ],
         matcha: ["Regular", "Caramel", "Rafaelo", "Pasion Fruit", "Coconut"],
         chai: ["Regular", "Dirty Chai"],
-        te: ["Té verde", "Té Negro", "Maracuya Green Tea", "Strawberry Black Tea", "Tisana Berry"]
+        té: ["Té verde", "Té Negro", "Maracuya Green Tea", "Strawberry Black Tea", "Tisana Berry"]
         //taro: solo es el regular, no hay sabores en el menú
     },
 

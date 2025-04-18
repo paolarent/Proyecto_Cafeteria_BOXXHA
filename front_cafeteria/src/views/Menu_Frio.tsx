@@ -68,7 +68,7 @@ const MenuBebidasFriasView = () => {
                         </div>
 
                         {/* TÉ */}
-                        <div onClick={() => irASabores("frio", "te")} className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                        <div onClick={() => irASabores("frio", "té")} className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
                             <img className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" />
                             <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
                                 group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]">
