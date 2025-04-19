@@ -49,7 +49,7 @@ const Tipo_LecheView = () => {
                                     src={Light}
                                     className="relative top-2.5 w-24 h-24 object-contain m-auto "    
                                 />
-                                <span className="font-Montserrat text-xl text-[#34251d] pt-1 pb-2">Light</span>
+                                <span className="font-Montserrat text-xl text-[#34251d] pb-2">Light</span>
                             </button>
                             
                     </div>
@@ -74,7 +74,7 @@ const Tipo_LecheView = () => {
                                 src={Almond}
                                 className="w-24 h-24 object-contain m-auto "    
                             />
-                            <span className="font-Montserrat text-xl text-[#34251d] pt-1 pb-2">Almendra</span>
+                            <span className="font-Montserrat text-xl text-[#34251d] pb-2">Almendra</span>
                         </button>
                     </div>
                 </section>
