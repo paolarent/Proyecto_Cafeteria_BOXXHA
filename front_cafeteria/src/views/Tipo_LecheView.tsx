@@ -17,14 +17,14 @@ const Tipo_LecheView = () => {
                 <NavBar />
             </header>
             
-            <main className="flex-1 relative ">
+            <main className="flex-1 relative">
                 <img 
                     src={fondoCafe} 
                     className="absolute inset-0 w-full h-full object-cover opacity-80"
                     alt="Fondo de café"
                 />
                 {/*Contenedor que almacena las dos filas de botones (Tipos de leche) */}
-                <section className="relative w-full flex flex-col items-center space-y-10 pt-10">
+                <section className="relative w-full flex flex-col items-center space-y-10 pt-7">
                     <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 rounded-2xl shadow-md">
                         Seleccione un tipo de  <span className="font-medium">Leche</span>
                     </h2>

@@ -20,11 +20,11 @@ const PedidoTamañoView = () => {
                 />
                 {/*Con la propiedad relative z-10 me aseguro que sea un fondo estatico*/ }
                 {/*Con la layout flex puedo colocar los elementos en cualquier posición dentro del contenedor */}
-                <section className="relative w-full flex flex-col items-center space-y-10 pt-10">
+                <section className="relative w-full flex flex-col items-center space-y-10 pt-20">
                     <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 rounded-2xl shadow-md">
                         Seleccione el <span className="font-medium">Tamaño</span>
                     </h2>
-                    <div className="flex flex-col md:flex-row gap-8 pt-8 justify-center items-center p-4 ">
+                    <div className="flex flex-col md:flex-row gap-24 pt-8 justify-center items-center p-4 ">
                             <button className="flex flex-col justify-center hover:scale-105 transition-transform duration-300 w-40 h-40 bg-white rounded-2xl border-2 border-black">
                                 <img
                                     src={IconoCafe12OZ}
