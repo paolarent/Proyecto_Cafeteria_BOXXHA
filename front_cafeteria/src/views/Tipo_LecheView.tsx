@@ -65,7 +65,7 @@ const Tipo_LecheView = () => {
                         <button className="flex flex-col justify-center pt-6 hover:scale-105 transition-transform duration-300 w-40 h-40 bg-white rounded-2xl border-2 border-black">
                             <img
                                 src={Soya}
-                                className="relative top-2 w-24 h-24 object-contain m-auto top-20 "    
+                                className="relative top-2 w-24 h-24 object-contain m-auto"  
                             />
                             <span className="font-Montserrat text-xl text-[#34251d] pb-2">Soya</span>
                         </button>

@@ -15,18 +15,48 @@ const ExtrasView = () => {
                     alt="Fondo de café"
                 />
                 {/*Sección donde se encuentran el listado de extras y botones +/- */}
-                <section className="w-full h-full flex-col md:flex-row gap-8 pt-8 justify-center items-center">
-                    <div className= "flex flex-col relative mx-auto">
-                        <div className="flex flex-rowbg-white">
-                            <button className="w-6 h-6 rounded-2xl bg-white border-2 border-black"> + </button>
-                            <h2> Shot de expresso </h2>
-                            <button> - </button>
+                <section className="relative w-full flex flex-col items-center space-y-10 pt-10">
+                    <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 rounded-2xl shadow-md">Seleccione<span className="font-medium"> extras</span></h2>
+                    <div className= "flex flex-col relative ">
+                        <div className="flex flex-row gap-3">
+                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black
+                            hover:scale-105 transition-transform hover:bg-gray-200 duration-300"> <span className= "font-Montserrat font-regular text-2xl text-[#34251d]"> + </span> </button>
+                            <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black sha">
+                                <span className="font-Montserrat font-regular text-2xl text-[#34251d] px-6 py-3shadow-md"> Shot de expresso </span>
+                            </div>
+                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
+                            hover:scale-105 transition-transform hover:bg-gray-200 duration-300"> <span className= "font-Montserrat font-regular text-3xl text-[#34251d]"> - </span> </button>
                         </div>
-                        <div className="flex flex-rowbg-white">
-                            <button className="w-6 h-6 rounded-2xl bg-white border-2 border-black"> + </button>
-                            <h2> Shot de expresso </h2>
-                            <button> - </button>
+                        <div className="flex flex-row gap-3 pt-3">
+                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black
+                            hover:scale-105 transition-transform hover:bg-gray-200 duration-300"> <span className= "font-Montserrat font-regular text-2xl text-[#34251d]"> + </span> </button>
+                            <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black sha">
+                                <span className="font-Montserrat font-regular text-2xl text-[#34251d] px-6 py-3shadow-md"> Matcha </span>
+                            </div>
+                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
+                            hover:scale-105 transition-transform hover:bg-gray-200 duration-300"> <span className= "font-Montserrat font-regular text-3xl text-[#34251d]"> - </span> </button>
                         </div>
+                        <div className="flex flex-row gap-3 pt-3">
+                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black
+                            hover:scale-105 transition-transform hover:bg-gray-200 duration-300"> <span className= "font-Montserrat font-regular text-2xl text-[#34251d]"> + </span> </button>
+                            <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black sha">
+                                <span className="font-Montserrat font-regular text-2xl text-[#34251d] px-6 py-3shadow-md"> Perlas Explosivas </span>
+                            </div>
+                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
+                            hover:scale-105 transition-transform hover:bg-gray-200 duration-300"> <span className= "font-Montserrat font-regular text-3xl text-[#34251d]"> - </span> </button>
+                        </div>
+                        <div className="flex flex-row gap-3 pt-3">
+                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black
+                            hover:scale-105 transition-transform hover:bg-gray-200 duration-300"> <span className= "font-Montserrat font-regular text-2xl text-[#34251d]"> + </span> </button>
+                            <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black sha">
+                                <span className="font-Montserrat font-regular text-2xl text-[#34251d] px-6 py-3shadow-md"> Bola de nieve</span>
+                            </div>
+                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
+                            hover:scale-105 transition-transform hover:bg-gray-200 duration-300"> <span className= "font-Montserrat font-regular text-3xl text-[#34251d]"> - </span> </button>
+                        </div>
+                        
+                        
+                        
                     </div>
                 </section>
             </main>
