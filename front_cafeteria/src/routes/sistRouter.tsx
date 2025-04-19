@@ -9,7 +9,9 @@ import MenuPostresView from "../views/Menu_Postres.tsx";
 import MenuNuevosView from "../views/Menu_Nuevos.tsx"
 import PedidoTamanoView from "../views/Pedido_Tamano.tsx"
 import SaboresProducto from "../components/SaboresProds.tsx";
-
+import Decaf_RegularView from "../views/Decaf_RegularView.tsx";
+import Tipo_LecheView from "../views/Tipo_LecheView.tsx";
+import ExtrasView from "../views/ExtrasView.tsx";
 
 const RouterWithAnimation = () => {
   const location = useLocation();
@@ -26,6 +28,9 @@ const RouterWithAnimation = () => {
         <Route path="/nuevos_menu" element={<MenuNuevosView />} />
         <Route path="/sabores/:tipo/:nombre" element={<SaboresProducto />} />
         <Route path="/pedido_tamano" element={<PedidoTamanoView />}/>
+        <Route path="/decaf_regular" element={<Decaf_RegularView/>}/>
+        <Route path="/tipo_leche" element={<Tipo_LecheView/>}/>
+        <Route path="/extras" element={<ExtrasView/>} />
       </Routes>
     </AnimatePresence>
   );
