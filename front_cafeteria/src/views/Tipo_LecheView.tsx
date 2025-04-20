@@ -25,11 +25,11 @@ const Tipo_LecheView = () => {
                 />
                 {/*Contenedor que almacena las dos filas de botones (Tipos de leche) */}
                 <section className="relative w-full flex flex-col items-center space-y-10 pt-7">
-                    <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 rounded-2xl shadow-md">
+                    <h2 className="font-Montserrat font-regular border-black border-2 text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 rounded-2xl shadow-md">
                         Seleccione un tipo de  <span className="font-medium">Leche</span>
                     </h2>
                     {/*Segunda fila de botones*/}
-                    <div className="flex flex-col md:flex-row gap-8 pt-8 justify-center items-center">
+                    <div className="flex flex-col md:flex-row gap-8 pt-2 justify-center items-center">
                             <button className="flex flex-col justify-center pt-6 hover:scale-105 transition-transform duration-300 w-40 h-40 bg-white rounded-2xl border-2 border-black">
                                 <img
                                     src={Entera}
@@ -77,6 +77,12 @@ const Tipo_LecheView = () => {
                             <span className="font-Montserrat text-xl text-[#34251d] pb-2">Almendra</span>
                         </button>
                     </div>
+                <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
+                    <button className="w-56 h-10 bg-white rounded-2xl border-2 border-black hover:scale-105 
+                    transition-transform duration-300"> <span className="font-Montserrat text-xl text-[#34251d] pb-2"> Regresar </span></button>
+                    <button className="w-56 h-10 bg-white rounded-2xl border-2 border-black hover:scale-105 
+                    transition-transform duration-300"> <span className="font-Montserrat text-xl text-[#34251d] pb-2"> Continuar </span></button>
+                </div>
                 </section>
             </main>
         </div>

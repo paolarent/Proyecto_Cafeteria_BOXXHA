@@ -36,6 +36,12 @@ const Decaf_RegularView = () => {
                                 <span className="font-Montserrat text-xl text-[#34251d] pt-2 pb-2">Descafeinado</span>
                             </button>
                         </div>
+                    <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
+                        <button className="w-56 h-10 bg-white rounded-2xl border-2 border-black hover:scale-105 
+                        transition-transform duration-300"> <span className="font-Montserrat text-xl text-[#34251d] pb-2"> Regresar </span></button>
+                        <button className="w-56 h-10 bg-white rounded-2xl border-2 border-black hover:scale-105 
+                        transition-transform duration-300"> <span className="font-Montserrat text-xl text-[#34251d] pb-2"> Continuar </span></button>
+                    </div>
                 </section>
             </main>
         </div>

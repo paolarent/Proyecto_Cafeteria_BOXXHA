@@ -76,10 +76,12 @@ const ExtrasView = () => {
                         </div>
                     </div>
 
-                    <button className="w-50 font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-3xl opacity-90 
-                        hover:bg-[#B0CEAC] hover:text-[#000000] rounded-[10px]">        {/* FALTABA EL BOTON, queda pendiente */}
-                        Continuar
-                    </button>
+                <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
+                    <button className="w-56 h-10 bg-white rounded-2xl border-2 border-black hover:scale-105 
+                    transition-transform duration-300"> <span className="font-Montserrat text-xl text-[#34251d] pb-2"> Regresar </span></button>
+                    <button className="w-56 h-10 bg-white rounded-2xl border-2 border-black hover:scale-105 
+                    transition-transform duration-300"> <span className="font-Montserrat text-xl text-[#34251d] pb-2"> Continuar </span></button>
+                </div>
                 </section>
             </main>
         </div>
