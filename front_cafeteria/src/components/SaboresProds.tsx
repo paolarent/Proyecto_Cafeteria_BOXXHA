@@ -248,7 +248,7 @@ const SaboresProducto: React.FC = () => {
                     />
 
                     {/*Titulo variable dependiendo de los props que recibe de las vistas*/}
-                    <div className="relative z-10 pt-5">
+                    <div className="relative z-10 border border-black border-2 rounded-2xl">
                         <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 rounded-2xl shadow-md">
                             Sabores de <span className="font-medium">{nombre?.toUpperCase()}</span> {/*({tipo})*/}
                         </h2>
@@ -256,8 +256,8 @@ const SaboresProducto: React.FC = () => {
 
                     <div className="flex flex-wrap justify-center gap-10 w-full px-8">
                         {sabores.map((sabor, idx) => (
-                            <div className="relative z-10 bg-[#ffffff] px-5 py-5 rounded-2xl">
-                                <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105 w-[200px] h-[250px]">
+                            <div className="relative z-10 bg-[#ffffff] px-5 py-5 rounded-2xl border border-black border-2 transition-transform duration-300 hover:scale-105">
+                                <div className="group flex flex-col items-center w-[200px] h-[250px]">
                                     <img 
                                         src={imagenesSabores[tipo as string]?.[nombre?.toLowerCase() || ""]?.[sabor] || ""}
                                         alt={sabor}
