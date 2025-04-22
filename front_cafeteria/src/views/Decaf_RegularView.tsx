@@ -15,7 +15,7 @@ const Decaf_RegularView = () => {
             <main className="flex-1 relative ">
                 <img 
                     src={fondoCafe} 
-                    className="absolute inset-0 w-full h-full object-cover opacity-80"
+                    className="absolute inset-0 w-full h-full object-cover opacity-70"
                     alt="Fondo de café"
                 />
                 <section className="relative w-full flex flex-col items-center space-y-10 pt-10">
@@ -51,12 +51,14 @@ const Decaf_RegularView = () => {
                             </div>
 
                     </div>
+                    
                     <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
                         <button className="w-56 h-10 bg-white rounded-2xl border-2 border-black hover:scale-105 
                         transition-transform duration-300"> <span className="font-Montserrat text-xl text-[#34251d] pb-2"> Regresar </span></button>
                         <button className="w-56 h-10 bg-white rounded-2xl border-2 border-black hover:scale-105 
                         transition-transform duration-300"> <span className="font-Montserrat text-xl text-[#34251d] pb-2"> Continuar </span></button>
                     </div>
+                    
                 </section>
             </main>
         </div>
