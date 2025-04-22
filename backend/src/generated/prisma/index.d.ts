@@ -67,8 +67,10 @@ export type pago_metodo_pago = (typeof pago_metodo_pago)[keyof typeof pago_metod
 
 
 export const producto_tipo_prod: {
-  bebida: 'bebida',
-  postre: 'postre'
+  bebidac: 'bebidac',
+  bebidaf: 'bebidaf',
+  postre: 'postre',
+  nuevo: 'nuevo'
 };
 
 export type producto_tipo_prod = (typeof producto_tipo_prod)[keyof typeof producto_tipo_prod]
@@ -76,8 +78,7 @@ export type producto_tipo_prod = (typeof producto_tipo_prod)[keyof typeof produc
 
 export const producto_u_med: {
   pza: 'pza',
-  oz12: 'oz12',
-  oz16: 'oz16'
+  oz: 'oz'
 };
 
 export type producto_u_med = (typeof producto_u_med)[keyof typeof producto_u_med]
@@ -7680,6 +7681,7 @@ export namespace Prisma {
   export type ProductoMinAggregateOutputType = {
     id_producto: number | null
     nombre: string | null
+    sabor: string | null
     tipo_prod: $Enums.producto_tipo_prod | null
     u_med: $Enums.producto_u_med | null
     precio: number | null
@@ -7688,6 +7690,7 @@ export namespace Prisma {
   export type ProductoMaxAggregateOutputType = {
     id_producto: number | null
     nombre: string | null
+    sabor: string | null
     tipo_prod: $Enums.producto_tipo_prod | null
     u_med: $Enums.producto_u_med | null
     precio: number | null
@@ -7696,6 +7699,7 @@ export namespace Prisma {
   export type ProductoCountAggregateOutputType = {
     id_producto: number
     nombre: number
+    sabor: number
     tipo_prod: number
     u_med: number
     precio: number
@@ -7716,6 +7720,7 @@ export namespace Prisma {
   export type ProductoMinAggregateInputType = {
     id_producto?: true
     nombre?: true
+    sabor?: true
     tipo_prod?: true
     u_med?: true
     precio?: true
@@ -7724,6 +7729,7 @@ export namespace Prisma {
   export type ProductoMaxAggregateInputType = {
     id_producto?: true
     nombre?: true
+    sabor?: true
     tipo_prod?: true
     u_med?: true
     precio?: true
@@ -7732,6 +7738,7 @@ export namespace Prisma {
   export type ProductoCountAggregateInputType = {
     id_producto?: true
     nombre?: true
+    sabor?: true
     tipo_prod?: true
     u_med?: true
     precio?: true
@@ -7827,6 +7834,7 @@ export namespace Prisma {
   export type ProductoGroupByOutputType = {
     id_producto: number
     nombre: string
+    sabor: string
     tipo_prod: $Enums.producto_tipo_prod
     u_med: $Enums.producto_u_med
     precio: number
@@ -7854,6 +7862,7 @@ export namespace Prisma {
   export type productoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id_producto?: boolean
     nombre?: boolean
+    sabor?: boolean
     tipo_prod?: boolean
     u_med?: boolean
     precio?: boolean
@@ -7866,12 +7875,13 @@ export namespace Prisma {
   export type productoSelectScalar = {
     id_producto?: boolean
     nombre?: boolean
+    sabor?: boolean
     tipo_prod?: boolean
     u_med?: boolean
     precio?: boolean
   }
 
-  export type productoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_producto" | "nombre" | "tipo_prod" | "u_med" | "precio", ExtArgs["result"]["producto"]>
+  export type productoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_producto" | "nombre" | "sabor" | "tipo_prod" | "u_med" | "precio", ExtArgs["result"]["producto"]>
   export type productoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     detalle_pedido?: boolean | producto$detalle_pedidoArgs<ExtArgs>
     _count?: boolean | ProductoCountOutputTypeDefaultArgs<ExtArgs>
@@ -7885,6 +7895,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id_producto: number
       nombre: string
+      sabor: string
       tipo_prod: $Enums.producto_tipo_prod
       u_med: $Enums.producto_u_med
       precio: number
@@ -8260,6 +8271,7 @@ export namespace Prisma {
   interface productoFieldRefs {
     readonly id_producto: FieldRef<"producto", 'Int'>
     readonly nombre: FieldRef<"producto", 'String'>
+    readonly sabor: FieldRef<"producto", 'String'>
     readonly tipo_prod: FieldRef<"producto", 'producto_tipo_prod'>
     readonly u_med: FieldRef<"producto", 'producto_u_med'>
     readonly precio: FieldRef<"producto", 'Float'>
@@ -9764,6 +9776,7 @@ export namespace Prisma {
   export const ProductoScalarFieldEnum: {
     id_producto: 'id_producto',
     nombre: 'nombre',
+    sabor: 'sabor',
     tipo_prod: 'tipo_prod',
     u_med: 'u_med',
     precio: 'precio'
@@ -9825,7 +9838,8 @@ export namespace Prisma {
 
 
   export const productoOrderByRelevanceFieldEnum: {
-    nombre: 'nombre'
+    nombre: 'nombre',
+    sabor: 'sabor'
   };
 
   export type productoOrderByRelevanceFieldEnum = (typeof productoOrderByRelevanceFieldEnum)[keyof typeof productoOrderByRelevanceFieldEnum]
@@ -10297,6 +10311,7 @@ export namespace Prisma {
     NOT?: productoWhereInput | productoWhereInput[]
     id_producto?: IntFilter<"producto"> | number
     nombre?: StringFilter<"producto"> | string
+    sabor?: StringFilter<"producto"> | string
     tipo_prod?: Enumproducto_tipo_prodFilter<"producto"> | $Enums.producto_tipo_prod
     u_med?: Enumproducto_u_medFilter<"producto"> | $Enums.producto_u_med
     precio?: FloatFilter<"producto"> | number
@@ -10306,6 +10321,7 @@ export namespace Prisma {
   export type productoOrderByWithRelationInput = {
     id_producto?: SortOrder
     nombre?: SortOrder
+    sabor?: SortOrder
     tipo_prod?: SortOrder
     u_med?: SortOrder
     precio?: SortOrder
@@ -10319,6 +10335,7 @@ export namespace Prisma {
     OR?: productoWhereInput[]
     NOT?: productoWhereInput | productoWhereInput[]
     nombre?: StringFilter<"producto"> | string
+    sabor?: StringFilter<"producto"> | string
     tipo_prod?: Enumproducto_tipo_prodFilter<"producto"> | $Enums.producto_tipo_prod
     u_med?: Enumproducto_u_medFilter<"producto"> | $Enums.producto_u_med
     precio?: FloatFilter<"producto"> | number
@@ -10328,6 +10345,7 @@ export namespace Prisma {
   export type productoOrderByWithAggregationInput = {
     id_producto?: SortOrder
     nombre?: SortOrder
+    sabor?: SortOrder
     tipo_prod?: SortOrder
     u_med?: SortOrder
     precio?: SortOrder
@@ -10344,6 +10362,7 @@ export namespace Prisma {
     NOT?: productoScalarWhereWithAggregatesInput | productoScalarWhereWithAggregatesInput[]
     id_producto?: IntWithAggregatesFilter<"producto"> | number
     nombre?: StringWithAggregatesFilter<"producto"> | string
+    sabor?: StringWithAggregatesFilter<"producto"> | string
     tipo_prod?: Enumproducto_tipo_prodWithAggregatesFilter<"producto"> | $Enums.producto_tipo_prod
     u_med?: Enumproducto_u_medWithAggregatesFilter<"producto"> | $Enums.producto_u_med
     precio?: FloatWithAggregatesFilter<"producto"> | number
@@ -10779,6 +10798,7 @@ export namespace Prisma {
   export type productoCreateInput = {
     id_producto: number
     nombre: string
+    sabor: string
     tipo_prod: $Enums.producto_tipo_prod
     u_med: $Enums.producto_u_med
     precio: number
@@ -10788,6 +10808,7 @@ export namespace Prisma {
   export type productoUncheckedCreateInput = {
     id_producto: number
     nombre: string
+    sabor: string
     tipo_prod: $Enums.producto_tipo_prod
     u_med: $Enums.producto_u_med
     precio: number
@@ -10797,6 +10818,7 @@ export namespace Prisma {
   export type productoUpdateInput = {
     id_producto?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
+    sabor?: StringFieldUpdateOperationsInput | string
     tipo_prod?: Enumproducto_tipo_prodFieldUpdateOperationsInput | $Enums.producto_tipo_prod
     u_med?: Enumproducto_u_medFieldUpdateOperationsInput | $Enums.producto_u_med
     precio?: FloatFieldUpdateOperationsInput | number
@@ -10806,6 +10828,7 @@ export namespace Prisma {
   export type productoUncheckedUpdateInput = {
     id_producto?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
+    sabor?: StringFieldUpdateOperationsInput | string
     tipo_prod?: Enumproducto_tipo_prodFieldUpdateOperationsInput | $Enums.producto_tipo_prod
     u_med?: Enumproducto_u_medFieldUpdateOperationsInput | $Enums.producto_u_med
     precio?: FloatFieldUpdateOperationsInput | number
@@ -10815,6 +10838,7 @@ export namespace Prisma {
   export type productoCreateManyInput = {
     id_producto: number
     nombre: string
+    sabor: string
     tipo_prod: $Enums.producto_tipo_prod
     u_med: $Enums.producto_u_med
     precio: number
@@ -10823,6 +10847,7 @@ export namespace Prisma {
   export type productoUpdateManyMutationInput = {
     id_producto?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
+    sabor?: StringFieldUpdateOperationsInput | string
     tipo_prod?: Enumproducto_tipo_prodFieldUpdateOperationsInput | $Enums.producto_tipo_prod
     u_med?: Enumproducto_u_medFieldUpdateOperationsInput | $Enums.producto_u_med
     precio?: FloatFieldUpdateOperationsInput | number
@@ -10831,6 +10856,7 @@ export namespace Prisma {
   export type productoUncheckedUpdateManyInput = {
     id_producto?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
+    sabor?: StringFieldUpdateOperationsInput | string
     tipo_prod?: Enumproducto_tipo_prodFieldUpdateOperationsInput | $Enums.producto_tipo_prod
     u_med?: Enumproducto_u_medFieldUpdateOperationsInput | $Enums.producto_u_med
     precio?: FloatFieldUpdateOperationsInput | number
@@ -11467,6 +11493,7 @@ export namespace Prisma {
   export type productoCountOrderByAggregateInput = {
     id_producto?: SortOrder
     nombre?: SortOrder
+    sabor?: SortOrder
     tipo_prod?: SortOrder
     u_med?: SortOrder
     precio?: SortOrder
@@ -11480,6 +11507,7 @@ export namespace Prisma {
   export type productoMaxOrderByAggregateInput = {
     id_producto?: SortOrder
     nombre?: SortOrder
+    sabor?: SortOrder
     tipo_prod?: SortOrder
     u_med?: SortOrder
     precio?: SortOrder
@@ -11488,6 +11516,7 @@ export namespace Prisma {
   export type productoMinOrderByAggregateInput = {
     id_producto?: SortOrder
     nombre?: SortOrder
+    sabor?: SortOrder
     tipo_prod?: SortOrder
     u_med?: SortOrder
     precio?: SortOrder
@@ -12515,6 +12544,7 @@ export namespace Prisma {
   export type productoCreateWithoutDetalle_pedidoInput = {
     id_producto: number
     nombre: string
+    sabor: string
     tipo_prod: $Enums.producto_tipo_prod
     u_med: $Enums.producto_u_med
     precio: number
@@ -12523,6 +12553,7 @@ export namespace Prisma {
   export type productoUncheckedCreateWithoutDetalle_pedidoInput = {
     id_producto: number
     nombre: string
+    sabor: string
     tipo_prod: $Enums.producto_tipo_prod
     u_med: $Enums.producto_u_med
     precio: number
@@ -12603,6 +12634,7 @@ export namespace Prisma {
   export type productoUpdateWithoutDetalle_pedidoInput = {
     id_producto?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
+    sabor?: StringFieldUpdateOperationsInput | string
     tipo_prod?: Enumproducto_tipo_prodFieldUpdateOperationsInput | $Enums.producto_tipo_prod
     u_med?: Enumproducto_u_medFieldUpdateOperationsInput | $Enums.producto_u_med
     precio?: FloatFieldUpdateOperationsInput | number
@@ -12611,6 +12643,7 @@ export namespace Prisma {
   export type productoUncheckedUpdateWithoutDetalle_pedidoInput = {
     id_producto?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
+    sabor?: StringFieldUpdateOperationsInput | string
     tipo_prod?: Enumproducto_tipo_prodFieldUpdateOperationsInput | $Enums.producto_tipo_prod
     u_med?: Enumproducto_u_medFieldUpdateOperationsInput | $Enums.producto_u_med
     precio?: FloatFieldUpdateOperationsInput | number

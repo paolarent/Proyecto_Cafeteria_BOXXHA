@@ -39,7 +39,6 @@ model extra {
   nombre               String                 @db.VarChar(25)
   precio               Float                  @db.Float
   detalle_extra_pedido detalle_extra_pedido[]
-  producto_extra       producto_extra[]       @ignore
 }
 
 model notificacion {
@@ -83,23 +82,11 @@ model pedido {
 model producto {
   id_producto    Int                @id
   nombre         String             @db.VarChar(20)
+  sabor          String             @db.VarChar(15)
   tipo_prod      producto_tipo_prod
   u_med          producto_u_med
   precio         Float              @db.Float
   detalle_pedido detalle_pedido[]
-  producto_extra producto_extra[]   @ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model producto_extra {
-  id_producto Int
-  id_extra    Int
-  extra       extra    @relation(fields: [id_extra], references: [id_extra], onDelete: NoAction, onUpdate: NoAction, map: "fk_e_producto_extra")
-  producto    producto @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction, map: "fk_p_producto_extra")
-
-  @@index([id_extra], map: "fk_e_producto_extra_idx")
-  @@index([id_producto], map: "fk_p_producto_extra_idx")
-  @@ignore
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -122,14 +109,15 @@ enum pago_metodo_pago {
 }
 
 enum producto_tipo_prod {
-  bebida
+  bebidac
+  bebidaf
   postre
+  nuevo
 }
 
 enum producto_u_med {
   pza
-  oz12  @map("12oz")
-  oz16  @map("16oz")
+  oz
 }
 
 enum notificacion_status {

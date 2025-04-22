@@ -168,6 +168,7 @@ exports.Prisma.PedidoScalarFieldEnum = {
 exports.Prisma.ProductoScalarFieldEnum = {
   id_producto: 'id_producto',
   nombre: 'nombre',
+  sabor: 'sabor',
   tipo_prod: 'tipo_prod',
   u_med: 'u_med',
   precio: 'precio'
@@ -208,7 +209,8 @@ exports.Prisma.pedidoOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.productoOrderByRelevanceFieldEnum = {
-  nombre: 'nombre'
+  nombre: 'nombre',
+  sabor: 'sabor'
 };
 
 exports.Prisma.usuarioOrderByRelevanceFieldEnum = {
@@ -244,14 +246,15 @@ exports.pedido_status = exports.$Enums.pedido_status = {
 };
 
 exports.producto_tipo_prod = exports.$Enums.producto_tipo_prod = {
-  bebida: 'bebida',
-  postre: 'postre'
+  bebidac: 'bebidac',
+  bebidaf: 'bebidaf',
+  postre: 'postre',
+  nuevo: 'nuevo'
 };
 
 exports.producto_u_med = exports.$Enums.producto_u_med = {
   pza: 'pza',
-  oz12: 'oz12',
-  oz16: 'oz16'
+  oz: 'oz'
 };
 
 exports.usuario_tipo_usuario = exports.$Enums.usuario_tipo_usuario = {
