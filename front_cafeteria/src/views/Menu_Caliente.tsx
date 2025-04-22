@@ -23,12 +23,12 @@ const MenuBebidasCalView = () => {
                     <div className="flex flex-wrap justify-center gap-10 w-full px-8">
                         {/* 8 secciones, (8 categorias de bebida caliente) */}
 
-                        {/* EXPRESSO */}
-                        <div onClick={() => irASabores("caliente", "expresso")} className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                        {/* ESPRESSO */}
+                        <div onClick={() => irASabores("caliente", "espresso")} className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
                             <img className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" />
                             <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
                                 group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]">
-                                EXPRESSO
+                                ESPRESSO
                             </button>
                         </div>
 

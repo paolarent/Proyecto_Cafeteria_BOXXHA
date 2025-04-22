@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "outDir": "./dist",  // Especifica el directorio de salida para los archivos JS compilados
+    "rootDir": "./src",  // Especifica el directorio raíz para los archivos TypeScript
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "sourceMap": true  // Crea los archivos source map para depuración
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+// Este archivo de configuración de TypeScript (tsconfig.json) está diseñado para un proyecto Node.js.

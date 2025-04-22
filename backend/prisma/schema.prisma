@@ -1,0 +1,158 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model detalle_extra_pedido {
+  id_detalle     Int            @id
+  id_extra       Int
+  cantidad       Int
+  precio_extra   Float          @db.Float
+  detalle_pedido detalle_pedido @relation(fields: [id_detalle], references: [id_detalle], onDelete: NoAction, onUpdate: NoAction, map: "fk_detalleped_detext")
+  extra          extra          @relation(fields: [id_extra], references: [id_extra], onDelete: NoAction, onUpdate: NoAction, map: "fk_extra_detalleext")
+
+  @@index([id_extra], map: "fk_extra_detalleext_idx")
+}
+
+model detalle_pedido {
+  id_detalle           Int                   @id
+  id_pedido            Int
+  id_producto          Int
+  cantidad             Int
+  precio_unitario      Float                 @db.Float
+  subtotal             Float                 @db.Float
+  detalle_extra_pedido detalle_extra_pedido?
+  pedido               pedido                @relation(fields: [id_pedido], references: [id_pedido], onDelete: NoAction, onUpdate: NoAction, map: "fk_pedido_detalleped")
+  producto             producto              @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction, map: "fk_producto_detalleped")
+
+  @@index([id_pedido], map: "fk_pedido_detalleped_idx")
+  @@index([id_producto], map: "fk_producto_detalleped_idx")
+}
+
+model extra {
+  id_extra             Int                    @id
+  nombre               String                 @db.VarChar(25)
+  precio               Float                  @db.Float
+  detalle_extra_pedido detalle_extra_pedido[]
+  producto_extra       producto_extra[]       @ignore
+}
+
+model notificacion {
+  id_notificacion Int                 @id
+  id_pedido       Int
+  mensaje         String              @db.VarChar(50)
+  status          notificacion_status
+  fecha           DateTime            @default(now()) @db.Timestamp(0)
+  pedido          pedido              @relation(fields: [id_pedido], references: [id_pedido], onDelete: NoAction, onUpdate: NoAction, map: "fk_pedido_notif")
+
+  @@index([id_pedido], map: "fk_pedido_notif_idx")
+}
+
+model pago {
+  id_pago      Int              @id
+  id_pedido    Int
+  metodo_pago  pago_metodo_pago
+  monto_pagado Float            @db.Float
+  fecha_pago   DateTime         @default(now()) @db.Timestamp(0)
+  status       pago_status
+  pedido       pedido           @relation(fields: [id_pedido], references: [id_pedido], onDelete: NoAction, onUpdate: NoAction, map: "fk_pedido_pago")
+
+  @@index([id_pedido], map: "fk_pedido_pago_idx")
+}
+
+model pedido {
+  id_pedido      Int              @id
+  id_usuario     Int
+  fecha          DateTime         @default(now()) @db.Timestamp(0)
+  status         pedido_status
+  codigo_conf    String           @db.VarChar(6)
+  total          Float?           @db.Float
+  detalle_pedido detalle_pedido[]
+  notificacion   notificacion[]
+  pago           pago[]
+  usuario        usuario          @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "fk_usuario_pedido")
+
+  @@index([id_usuario], map: "id_usuario_idx")
+}
+
+model producto {
+  id_producto    Int                @id
+  nombre         String             @db.VarChar(20)
+  tipo_prod      producto_tipo_prod
+  u_med          producto_u_med
+  precio         Float              @db.Float
+  detalle_pedido detalle_pedido[]
+  producto_extra producto_extra[]   @ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model producto_extra {
+  id_producto Int
+  id_extra    Int
+  extra       extra    @relation(fields: [id_extra], references: [id_extra], onDelete: NoAction, onUpdate: NoAction, map: "fk_e_producto_extra")
+  producto    producto @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction, map: "fk_p_producto_extra")
+
+  @@index([id_extra], map: "fk_e_producto_extra_idx")
+  @@index([id_producto], map: "fk_p_producto_extra_idx")
+  @@ignore
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model usuario {
+  id_usuario     Int                  @id
+  nombre         String               @db.VarChar(15)
+  apellido       String               @db.VarChar(25)
+  email          String?              @unique @db.VarChar(45)
+  numero_tel     String?              @db.VarChar(10)
+  usuario        String               @unique @db.VarChar(15)
+  contra         String               @db.VarChar(12)
+  tipo_usuario   usuario_tipo_usuario
+  fecha_registro DateTime             @default(now()) @db.Timestamp(0)
+  pedido         pedido[]
+}
+
+enum pago_metodo_pago {
+  tarjeta
+  efectivo
+}
+
+enum producto_tipo_prod {
+  bebida
+  postre
+}
+
+enum producto_u_med {
+  pza
+  oz12  @map("12oz")
+  oz16  @map("16oz")
+}
+
+enum notificacion_status {
+  pendiente
+  enviado
+  leido
+}
+
+enum pedido_status {
+  pendiente
+  procesando
+  listo
+  entregado
+}
+
+enum pago_status {
+  pendiente
+  exitoso
+  fallido
+}
+
+enum usuario_tipo_usuario {
+  cliente
+  empleado
+  admin
+}

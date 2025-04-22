@@ -57,7 +57,7 @@ type ImagenMap = {
 
 const imagenesSabores: ImagenMap = {
     caliente: {
-        expresso: {
+        espresso: {
             "Regular": regular,
             "Maracuya Gin": maracuya
         },
@@ -181,7 +181,7 @@ const imagenesSabores: ImagenMap = {
 
 const saboresPorTipoYNombreProducto: SaboresMap = {
     caliente: {
-        expresso: ["Regular", "Maracuya Gin"],
+        espresso: ["Regular", "Maracuya Gin"],
         americano: ["Regular", "Limon", "Gin Ale", ],
         latte: ["Regular", "Caramelo", "Vainilla", "Avellana", "Moka", "Moka Blanco", "Dulce de leche"],
         //cappuccino: no tiene sabores, solo el regular/tradicional

@@ -1,6 +1,6 @@
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
-import IconoFrappe from "../assets/Iconos/Icono_14oz.png";
-import IconoRocas from "../assets/Iconos/Icono_16oz.png";
+import IconoFrappe from "../assets/Iconos/icono_frappe2.png";
+import IconoRocas from "../assets/Iconos/icono_rocas2.png";
 import NavBar from "../components/NavBar";
 
 const Rocas_FrappeView = () => {
@@ -35,7 +35,7 @@ const Rocas_FrappeView = () => {
                             <button className="flex flex-col justify-center transition-transform duration-300 hover:scale-105 w-40 h-40 bg-white rounded-2xl border-2 border-black">
                                 <img
                                     src={IconoRocas}
-                                    className="w-24 h-24 object-contain mx-auto"    
+                                    className="w-24 h-24 object-contain mx-auto pt-4"    
                                 />
                                 <span className="font-Montserrat text-xl text-[#34251d] pt-2">Rocas</span>
                             </button>
