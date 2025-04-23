@@ -16,7 +16,7 @@ const MenuBoxxha = () => {
                     className="absolute inset-0 z-0"
                     style={{
                         backgroundImage: `url(${fondoCafe})`,
-                        //backgroundSize: "cover", 
+                        //backgroundSize: "cover",              //DUDOSO, MAÑANA CHECALO MEJOR
                         backgroundPosition: "center",
                         backgroundRepeat: "repeat",
                         opacity: 0.1
