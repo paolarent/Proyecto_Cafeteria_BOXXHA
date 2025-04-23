@@ -91,14 +91,14 @@ model producto {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model usuario {
-  id_usuario     Int                  @id
+  id_usuario     Int                  @id @default(autoincrement())
   nombre         String               @db.VarChar(15)
   apellido       String               @db.VarChar(25)
   email          String?              @unique @db.VarChar(45)
   numero_tel     String?              @db.VarChar(10)
   usuario        String               @unique @db.VarChar(15)
   contra         String               @db.VarChar(12)
-  tipo_usuario   usuario_tipo_usuario
+  tipo_usuario   usuario_tipo_usuario @default(cliente)
   fecha_registro DateTime             @default(now()) @db.Timestamp(0)
   pedido         pedido[]
 }

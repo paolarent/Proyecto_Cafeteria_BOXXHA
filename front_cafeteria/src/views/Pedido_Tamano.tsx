@@ -1,6 +1,9 @@
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 import IconoCafe12OZ from "../assets/Iconos/Icono_14oz.png";
 import IconoCafe16OZ from "../assets/Iconos/Icono_16oz.png";
+import BotonRegresar from "../assets/regresar.png";
+import BotonContinuar from "../assets/continuar.png";
+
 import NavBar from "../components/NavBar";
 
 const PedidoTamañoView = () => {
@@ -25,7 +28,7 @@ const PedidoTamañoView = () => {
                 />
                 {/*Con la propiedad relative z-10 me aseguro que sea un fondo estatico*/ }
                 {/*Con la layout flex puedo colocar los elementos en cualquier posición dentro del contenedor */}
-                <section className="relative w-full flex flex-col items-center space-y-10 pt-10">
+                <section className="relative w-full flex flex-col items-center space-y-10 pt-20">
                     <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
                         <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 rounded-2xl shadow-md">
                         Seleccione el <span className="font-medium">Tamaño</span>
@@ -58,15 +61,34 @@ const PedidoTamañoView = () => {
                     
                     </div>
 
-                    {/*BOTONES PENDIENTES*/}
-                    <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
-                        <button className="w-56 h-10 bg-white rounded-2xl border-2 border-black hover:scale-105 
-                        transition-transform duration-300"> <span className="font-Montserrat text-xl text-[#34251d] pb-2"> Regresar </span></button>
-                        <button className="w-56 h-10 bg-white rounded-2xl border-2 border-black hover:scale-105 
-                        transition-transform duration-300"> <span className="font-Montserrat text-xl text-[#34251d] pb-2"> Continuar </span></button>
+                    {/* Botones laterales de navegación */}
+                    <div className="absolute top-1/2 left-0 z-20 transform -translate-y-1/2 px-40">
+                        <div className="bg-[#ffffff] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
+                            <button>
+                            <img
+                                src={BotonRegresar}
+                                alt="Botón Regresar"
+                                title="Regresar"
+                                className="w-[80px] h-auto"
+                            />
+                            </button>
+                        </div>
                     </div>
+
+                    <div className="absolute top-1/2 right-0 z-20 transform -translate-y-1/2 px-40">
+                        <div className="bg-[#ffffff] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
+                            <button>
+                                <img
+                                src={BotonContinuar}
+                                alt="Botón Continuar"
+                                title="Continuar"
+                                className="w-[80px] h-auto"
+                                />
+                            </button>
+                        </div>
+                    </div>
+
                 </section>
-                
             </main>
         </div>
     );

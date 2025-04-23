@@ -17,9 +17,11 @@ const MenuBebidasCalView = () => {
 
             <main className="flex flex-1 bg-[#B0CEAC]">
                 <section className="w-full flex flex-col items-center pt-5 space-y-10 pb-10">
+                    
                     <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d]">
                     - Bebidas <span className="font-bold">Calientes</span> -
                     </h2>
+                    
                     <div className="flex flex-wrap justify-center gap-10 w-full px-8">
                         {/* 8 secciones, (8 categorias de bebida caliente) */}
 

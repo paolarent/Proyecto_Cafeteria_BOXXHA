@@ -59,13 +59,12 @@ const imagenesSabores: ImagenMap = {
     caliente: {
         espresso: {
             "Regular": regular,
-            "Maracuya Gin": maracuya
+            "Cortado": maracuya,
+            "Affogato": maracuya
         },
 
         americano: {
-            "Regular": regular,
-            "Limon": limon,
-            "Gin Ale": gin_ale
+            "Regular": regular
         },
 
         latte: {

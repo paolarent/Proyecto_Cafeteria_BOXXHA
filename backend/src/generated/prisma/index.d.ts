@@ -10863,33 +10863,31 @@ export namespace Prisma {
   }
 
   export type usuarioCreateInput = {
-    id_usuario: number
     nombre: string
     apellido: string
     email?: string | null
     numero_tel?: string | null
     usuario: string
     contra: string
-    tipo_usuario: $Enums.usuario_tipo_usuario
+    tipo_usuario?: $Enums.usuario_tipo_usuario
     fecha_registro?: Date | string
     pedido?: pedidoCreateNestedManyWithoutUsuarioInput
   }
 
   export type usuarioUncheckedCreateInput = {
-    id_usuario: number
+    id_usuario?: number
     nombre: string
     apellido: string
     email?: string | null
     numero_tel?: string | null
     usuario: string
     contra: string
-    tipo_usuario: $Enums.usuario_tipo_usuario
+    tipo_usuario?: $Enums.usuario_tipo_usuario
     fecha_registro?: Date | string
     pedido?: pedidoUncheckedCreateNestedManyWithoutUsuarioInput
   }
 
   export type usuarioUpdateInput = {
-    id_usuario?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
     apellido?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10915,19 +10913,18 @@ export namespace Prisma {
   }
 
   export type usuarioCreateManyInput = {
-    id_usuario: number
+    id_usuario?: number
     nombre: string
     apellido: string
     email?: string | null
     numero_tel?: string | null
     usuario: string
     contra: string
-    tipo_usuario: $Enums.usuario_tipo_usuario
+    tipo_usuario?: $Enums.usuario_tipo_usuario
     fecha_registro?: Date | string
   }
 
   export type usuarioUpdateManyMutationInput = {
-    id_usuario?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
     apellido?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -12896,26 +12893,25 @@ export namespace Prisma {
   }
 
   export type usuarioCreateWithoutPedidoInput = {
-    id_usuario: number
     nombre: string
     apellido: string
     email?: string | null
     numero_tel?: string | null
     usuario: string
     contra: string
-    tipo_usuario: $Enums.usuario_tipo_usuario
+    tipo_usuario?: $Enums.usuario_tipo_usuario
     fecha_registro?: Date | string
   }
 
   export type usuarioUncheckedCreateWithoutPedidoInput = {
-    id_usuario: number
+    id_usuario?: number
     nombre: string
     apellido: string
     email?: string | null
     numero_tel?: string | null
     usuario: string
     contra: string
-    tipo_usuario: $Enums.usuario_tipo_usuario
+    tipo_usuario?: $Enums.usuario_tipo_usuario
     fecha_registro?: Date | string
   }
 
@@ -13019,7 +13015,6 @@ export namespace Prisma {
   }
 
   export type usuarioUpdateWithoutPedidoInput = {
-    id_usuario?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
     apellido?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
