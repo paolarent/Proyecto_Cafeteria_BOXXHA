@@ -96,7 +96,7 @@ model usuario {
   email          String?              @unique @db.VarChar(45)
   numero_tel     String?              @db.VarChar(10)
   usuario        String               @unique @db.VarChar(15)
-  contra         String               @db.VarChar(12)
+  contra         String               @db.VarChar(70)
   tipo_usuario   usuario_tipo_usuario @default(cliente)
   fecha_registro DateTime             @default(now()) @db.Timestamp(0)
   pedido         pedido[]

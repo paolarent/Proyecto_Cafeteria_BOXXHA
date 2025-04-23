@@ -4,8 +4,38 @@ import NavBar from "../components/NavBar"
 import { useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
 
+import { useState } from "react";
+import { loginUser } from "../services/authService";
+
 const LoginView = () => {
     const navigate = useNavigate();
+
+    const [identificador, setIdentificador] = useState("");
+    const [contra, setContra] = useState("");
+    const [error, setError] = useState("");
+    const [mensaje, setMensaje] = useState("");
+  
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setError("");
+      setMensaje("");
+  
+      try {
+        const data = await loginUser(identificador, contra);
+        setMensaje(data.message);
+  
+        // Guarda el token en localStorage para mantener al usuario logueado
+        localStorage.setItem("token", data.token);
+  
+        // Redireccionar despues de mostrar el mensaje
+        setTimeout(() => {
+            navigate("/");  // Redirigir después de un tiempo
+        }, 1000);  // 1 segundo
+  
+      } catch (err: any) {
+        setError(err.message);
+      }
+    };
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -26,11 +56,13 @@ const LoginView = () => {
                     <section className="w-1/2 flex items-center justify-center">
                         <div className="bg-white p-8 rounded-xl shadow-md w-[90%] max-w-md">
                             <h2 className="text-4xl font-Montserrat font-bold text-[#453126] mb-6 text-center">Iniciar sesión</h2>
-                            <form className="space-y-4">
+                            <form className="space-y-4" onSubmit={handleSubmit}>
                                 <div>
                                     <label className="block text-l text-[#453126] mb-1">Email, Télefono o Usuario</label>
                                     <input
-                                    type="email"
+                                    type="text"
+                                    value={identificador}
+                                    onChange={(e) => setIdentificador(e.target.value)}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#3B2B26] bg-[#5C48481A]"
                                     />
                                 </div>
@@ -38,6 +70,8 @@ const LoginView = () => {
                                     <label className="block text-l text-[#453126] mb-1">Contraseña</label>
                                     <input
                                     type="password"
+                                    value={contra}
+                                    onChange={(e) => setContra(e.target.value)}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#3B2B26] bg-[#5C48481A] mb-4"
                                     />
                                 </div>
@@ -48,6 +82,8 @@ const LoginView = () => {
                                 >
                                     Iniciar Sesión
                                 </button>
+                                {mensaje && <p style={{ color: "green" }}>{mensaje}</p>} {/* Esto se lo puedes quitar o lo puedes poner como notif mas bonita */}
+                                {error && <p style={{ color: "red" }}>{error}</p>} {/* Esto se lo puedes quitar o lo puedes poner como notif mas bonita */}
                             </form>
                         </div>
                     </section>

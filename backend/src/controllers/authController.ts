@@ -19,8 +19,9 @@ try {
     const { identificador, contra } = req.body;
     const result = await loginUser(identificador, contra);
     res.status(200).json(result);
-} catch (e) {
-    handleHttp(res, "Error en el login");
+} catch (error: any) {
+    res.status(401).json({ error: error.message });
+    //handleHttp(res, "Error en el login");
 }
 };
 

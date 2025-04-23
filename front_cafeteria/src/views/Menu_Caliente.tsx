@@ -10,7 +10,7 @@ const MenuBebidasCalView = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col ">
+        <div className="h-screen overflow-y-scroll snap-y snap-mandatory">
             <header className="sticky top-0 z-50">
                 <NavBar />
             </header>
@@ -35,7 +35,7 @@ const MenuBebidasCalView = () => {
                         </div>
 
                         {/* AMERICANO */}
-                        <div onClick={() => irASabores("caliente", "americano")} className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                        <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
                             <img className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" />
                             <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
                                 group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]">

@@ -4,8 +4,47 @@ import NavBar from "../components/NavBar"
 import { useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
 
+// Importar el servicio de autenticación y useState
+import { registrarUsuario } from "../services/authService";
+import { useState } from "react";
+
 const RegistroView = () => {
     const navigate = useNavigate();
+
+    // Estado para manejar los datos del formulario
+    const [formaContacto, setFormaContacto] = useState("");
+    const [correoTel, setCorreoTel] = useState("");
+    const [nombre, setNombre] = useState("");
+    const [apellido, setApellido] = useState("");
+    const [usuario, setUsuario] = useState("");
+    const [contra, setContra] = useState("");
+    const [confirmContra, setConfirmContra] = useState("");
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (contra !== confirmContra) {
+            alert("Las contraseñas no coinciden");
+            return;
+        }
+
+        const payload = {
+            nombre,
+            apellido,
+            email: formaContacto === "email" ? correoTel : "",
+            numero_tel: formaContacto === "telefono" ? correoTel : "",
+            usuario,
+            contra
+        };
+
+        try {
+            await registrarUsuario(payload);
+            alert("Registro exitoso");
+            navigate("/login");
+        } catch (error: any) {
+            alert(error.message);
+        }
+    };
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -56,7 +95,7 @@ const RegistroView = () => {
                     <section className="w-1/2 flex items-center justify-center">
                         <div className="bg-white p-8 rounded-xl shadow-md w-[500px] h-[460px]">
                             <h2 className="text-4xl font-Montserrat font-bold text-[#453126] mb-4 text-center">Registrarse</h2>
-                            <form className="space-y-4">
+                            <form className="space-y-4" onSubmit={handleSubmit}>
                                 {/* Parte de seleccionar forma de registro y su input-text */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <label className="col-span-2 block text-l text-[#453126] text-center">
@@ -64,16 +103,22 @@ const RegistroView = () => {
                                     </label>
                                     
                                     <div>
-                                        <select className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold">
-                                        <option value="">Seleccionar</option>
-                                        <option value="email">Email</option>
-                                        <option value="telefono">Teléfono</option>
+                                        <select 
+                                            value={formaContacto}
+                                            onChange={(e) => setFormaContacto(e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold"
+                                        >
+                                            <option value="">Seleccionar</option>
+                                            <option value="email">Email</option>
+                                            <option value="telefono">Teléfono</option>
                                         </select>
                                     </div>
                                     
                                     <div>
                                         <input
                                         type="text"
+                                        value={correoTel}
+                                        onChange={(e) => setCorreoTel(e.target.value)}
                                         className="w-full mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                         placeholder="Email o Télefono"
                                         />
@@ -86,6 +131,8 @@ const RegistroView = () => {
                                     <label className="block text-l text-[#453126] mb-1">Nombre:</label>
                                     <input
                                         type="text"
+                                        value={nombre}
+                                        onChange={(e) => setNombre(e.target.value)}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                     />
                                     </div>
@@ -93,6 +140,8 @@ const RegistroView = () => {
                                     <label className="block text-l text-[#453126] mb-1">Apellido:</label>
                                     <input
                                         type="text"
+                                        value={apellido}
+                                        onChange={(e) => setApellido(e.target.value)}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                     />
                                     </div>
@@ -104,6 +153,8 @@ const RegistroView = () => {
                                         <label className="block text-l text-[#453126] mb-1">Contraseña:</label>
                                         <input
                                         type="password"
+                                        value={contra}
+                                        onChange={(e) => setContra(e.target.value)}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                         />
                                     </div>
@@ -111,6 +162,8 @@ const RegistroView = () => {
                                         <label className="block text-l text-[#453126] mb-1">Nombre de Usuario:</label>
                                         <input
                                         type="text"
+                                        value={usuario}
+                                        onChange={(e) => setUsuario(e.target.value)}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                         />
                                     </div>
@@ -122,6 +175,8 @@ const RegistroView = () => {
                                         <label className="block text-l text-[#453126] mb-1">Confirmar contraseña:</label>
                                         <input
                                         type="password"
+                                        value={confirmContra}
+                                        onChange={(e) => setConfirmContra(e.target.value)}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                         />
                                     </div>
@@ -142,5 +197,6 @@ const RegistroView = () => {
         </div>
     );
 };
+
 
 export default RegistroView;

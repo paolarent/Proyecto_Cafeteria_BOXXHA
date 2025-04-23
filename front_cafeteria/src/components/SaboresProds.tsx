@@ -3,6 +3,8 @@ import NavBar from "../components/NavBar";
 import { useParams } from "react-router-dom";
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 import regular from "../assets/sabores/regular.png";
+import cortado from "../assets/sabores/cortado.png";
+import affogato from "../assets/sabores/affogato.png"
 import maracuya from "../assets/sabores/maracuya.png";
 import limon from "../assets/sabores/limon.png";
 import gin_ale from "../assets/sabores/gin_ale.png";
@@ -59,13 +61,13 @@ const imagenesSabores: ImagenMap = {
     caliente: {
         espresso: {
             "Regular": regular,
-            "Cortado": maracuya,
-            "Affogato": maracuya
+            "Cortado": cortado,
+            "Affogato": affogato
         },
 
-        americano: {
-            "Regular": regular
-        },
+        //americano: {
+        //    "Regular": regular
+        //},
 
         latte: {
             "Regular": regular,
@@ -180,8 +182,8 @@ const imagenesSabores: ImagenMap = {
 
 const saboresPorTipoYNombreProducto: SaboresMap = {
     caliente: {
-        espresso: ["Regular", "Maracuya Gin"],
-        americano: ["Regular", "Limon", "Gin Ale", ],
+        espresso: ["Regular", "Cortado", "Affogato"],
+        //americano: ["Regular"],
         latte: ["Regular", "Caramelo", "Vainilla", "Avellana", "Moka", "Moka Blanco", "Dulce de leche"],
         //cappuccino: no tiene sabores, solo el regular/tradicional
         chai: ["Regular", "Dirty Chai"],
@@ -208,7 +210,6 @@ const saboresPorTipoYNombreProducto: SaboresMap = {
     },
 
     nuevo: {        //NINGUNO DE LOS NUEVOS TIENE SABORES, IRIAN DIRECTAMENTE AL TAMAÑO Y SI APLICA
-        //affogato: [""]
         //irlandes
         //frappe lotus
         //frappe caramelo
