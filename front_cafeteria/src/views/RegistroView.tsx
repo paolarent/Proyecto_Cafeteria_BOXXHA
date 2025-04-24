@@ -31,10 +31,10 @@ const RegistroView = () => {
         const payload = {
             nombre,
             apellido,
-            email: formaContacto === "email" ? correoTel : "",
-            numero_tel: formaContacto === "telefono" ? correoTel : "",
             usuario,
-            contra
+            contra,
+            ...(formaContacto === "email" && { email: correoTel }),
+            ...(formaContacto === "telefono" && { numero_tel: correoTel })
         };
 
         try {

@@ -1,6 +1,5 @@
 import NavBar from "../components/NavBar";
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
-import { useNavigate } from "react-router-dom";
 
 const MenuBoxxha = () => {
 
@@ -16,13 +15,12 @@ const MenuBoxxha = () => {
                     className="absolute inset-0 z-0"
                     style={{
                         backgroundImage: `url(${fondoCafe})`,
-                        //backgroundSize: "cover",              //DUDOSO, MAÑANA CHECALO MEJOR
+                        backgroundSize: "auto",              //DUDOSO, MAÑANA CHECALO MEJOR
                         backgroundPosition: "center",
                         backgroundRepeat: "repeat",
                         opacity: 0.1
                     }}
-                />
-                
+                />                
                 <section className="w-full flex flex-col items-center pt-10 space-y-10 pb-10 relative z-10">
                     
                     <div className="flex flex-col relative bg-white p-4 bg-opacity-80 rounded-[70px]">

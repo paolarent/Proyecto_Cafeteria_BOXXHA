@@ -4,11 +4,15 @@ import fondo_in2 from "../assets/fondo_inicio2.jpg"
 import NavBar from "../components/NavBar"
 import { motion } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
+import { useMenuContext } from '../contexts/PedirContexto';
 
 const InicioView = () => {
     const navigate = useNavigate();
+    const { scrollToMenu, menuRef, inicioRef } = useMenuContext();
+
     return (
         <div className="h-screen overflow-y-scroll snap-y snap-mandatory">
+            <div ref={inicioRef}></div>
             {/* NAVBAR y BANNER */}
             <header className="sticky top-0 z-50">
                 <NavBar />
@@ -38,11 +42,13 @@ const InicioView = () => {
                     </div>
 
                     <div className="flex gap-12">
-                        <button className="bg-[#401f0a] text-white font-Montserrat font-semibold py-3 px-6 rounded shadow-md text-2xl hover:bg-[#9a9998] transition 
-                                            transform transition-transform duration-300 hover:scale-105">
+                        <button 
+                            onClick={scrollToMenu} 
+                            className="bg-[#401f0a] text-white font-Montserrat font-semibold py-3 px-6 rounded shadow-md text-2xl hover:bg-[#9a9998] transition 
+                                                transform transition-transform duration-300 hover:scale-105">
                             Pide ahora
                         </button>
-                        <button className="border border-black text-black bg-white font-Montserrat font-semibold text-2xl py-3 px-6 rounded hover:bg-[#9a9998] hover:border-white hover:text-white transition 
+                        <button onClick={() => navigate("/nuestro_menu")} className="border border-black text-black bg-white font-Montserrat font-semibold text-2xl py-3 px-6 rounded hover:bg-[#9a9998] hover:border-white hover:text-white transition 
                                         transform transition-transform duration-300 hover:scale-105">
                             Ver menú
                         </button>
@@ -67,8 +73,9 @@ const InicioView = () => {
             </main>
 
             <section
-            className="min-h-screen bg-[#dcd1c4] bg-cover bg-center bg-no-repeat px-6 py-16"
-            style={{ backgroundImage: `url(${fondo_in2})` }}
+                ref={menuRef}
+                className="min-h-screen bg-[#dcd1c4] bg-cover bg-center bg-no-repeat px-6 py-16"
+                style={{ backgroundImage: `url(${fondo_in2})` }}
             >
                 <div className="grid grid-cols-4 gap-10 justify-items-center">
                     {/*Bebidas Calientes*/}

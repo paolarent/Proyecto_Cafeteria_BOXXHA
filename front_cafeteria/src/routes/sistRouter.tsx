@@ -30,7 +30,7 @@ const RouterWithAnimation = () => {
         <Route path="/postres" element={<MenuPostresView />} />
         <Route path="/nuevos_menu" element={<MenuNuevosView />} />
         <Route path="/sabores/:tipo/:nombre" element={<SaboresProducto />} />
-        <Route path="/pedido_tamano" element={<PedidoTamanoView />}/>
+        <Route path="/pedido_tamano" element={<PedidoTamanoView />}/>  
         <Route path="/decaf_regular" element={<Decaf_RegularView/>}/>
         <Route path="/tipo_leche" element={<Tipo_LecheView/>}/>
         <Route path="/extras" element={<ExtrasView/>} />

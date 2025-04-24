@@ -6,18 +6,26 @@ import icon_carrito from "../assets/icon_carrito.png";
 import AboutUsModal from "../components/ModalAU";
 import { useNavigate } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"; //Iconos para el menu responsive
+import { useMenuContext } from '../contexts/PedirContexto';
 
-const NavBar = () => {
+const NavBar: React.FC = () => {
     const navigate = useNavigate();
     const [showAboutModal, setShowAboutModal] = useState(false);    //para controlar el modal
     const [isMenuOpen, setIsMenuOpen] = useState(false);        //para controlar el menu movil
+    const { scrollToMenu, scrollToInicio } = useMenuContext(); //Obtener la función scrollToMenu desde el contexto
 
     return (
         <div className="w-full flex flex-col bg-white shadow-md">
             {/* Barra de navegación superior */}
             <nav className="flex justify-between items-center p-4 border-b border-gray-200">
                 <div className="flex items-center h-10 space-x-2">
-                    <button onClick={() => navigate("/")} className="flex items-center space-x-2 hover:scale-105 transition">
+                    <button 
+                        onClick={() => {
+                            navigate("/"); 
+                            setTimeout(scrollToInicio, 300);  //Da tiempo a que la navegación ocurra (cambio de ruta)
+                        }}
+
+                        className="flex items-center space-x-2 hover:scale-105 transition">
                         <img src={logom} alt="Logo" className="h-14" />
                         <span className="text-xl font-extrabold font-serif">BOXXHA CAFÉ</span>
                     </button>
@@ -32,10 +40,31 @@ const NavBar = () => {
 
                 {/* Menú normal en escritorio, diseño original, se oculta en pantallas pequeñas y se muestra en las grandes */}
                 <ul className="hidden md:flex space-x-8 text-sm font-Montserrat font-medium text-black-700 items-center">
-                    <li><button onClick={() => navigate("/")} className="text-lg hover:[color:#A1C99C] transition">Inicio</button></li>
+                    <li>
+                        <button 
+                            onClick={() => {
+                                navigate("/"); 
+                                setTimeout(scrollToInicio, 300);  //Da tiempo a que la navegación ocurra (cambio de ruta)
+                            }}
+                            className="text-lg hover:[color:#A1C99C] transition">Inicio
+                        </button>
+                    </li>
+
                     <li><button onClick={() => setShowAboutModal(true)} className="text-lg hover:[color:#A1C99C] transition">Nosotros</button></li>
-                    <li><button className="text-lg hover:[color:#A1C99C] transition">Shop</button></li>
-                    <li><button className="text-lg hover:[color:#A1C99C] transition">Menú</button></li>
+                    
+                    <li>
+                        <button
+                            onClick={() => {
+                                navigate("/"); 
+                                setTimeout(scrollToMenu, 300);  //Da tiempo a que la navegación ocurra (cambio de ruta)
+                            }}
+                            className="text-lg hover:[color:#A1C99C] transition"
+                        >
+                        Pedir
+                        </button>
+                    </li>
+
+                    <li><button onClick={() => navigate("/nuestro_menu")} className="text-lg hover:[color:#A1C99C] transition">Menú</button></li>
                     <li><button onClick={() => navigate("/login")}><img src={icon_user} alt="Usuario" className="h-7 hover:scale-110 transition" /></button></li>
                     <li><button><img src={icon_like} alt="Favorito" className="h-7 hover:scale-110 transition" /></button></li>
                     <li><button><img src={icon_carrito} alt="Carrito" className="h-7 hover:scale-110 transition" /></button></li>
@@ -68,7 +97,11 @@ const NavBar = () => {
 
                         <button 
                             className="hover:text-[#A1C99C] block"
-                            onClick={() => { navigate("/"); setIsMenuOpen(false); }}
+                            onClick={() => {
+                                navigate("/"); 
+                                setTimeout(scrollToInicio, 300);  //Da tiempo a que la navegación ocurra (cambio de ruta)
+                                setIsMenuOpen(false);
+                            }}
                         >Inicio</button>
 
                         <button 
@@ -76,9 +109,16 @@ const NavBar = () => {
                             onClick={() => { setShowAboutModal(true); setIsMenuOpen(false); }}
                         >Nosotros</button>
 
-                        <button 
+                        <button
+                            onClick={() => {
+                                navigate("/"); 
+                                setTimeout(scrollToMenu, 300);  //Da tiempo a que la navegación ocurra (cambio de ruta)
+                            }}
                             className="hover:text-[#A1C99C] block"
-                        >Shop</button>
+                            >
+                            Pedir
+                        </button>
+
 
                         <button 
                             className="hover:text-[#A1C99C] block"

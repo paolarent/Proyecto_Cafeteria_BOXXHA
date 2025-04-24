@@ -14,16 +14,16 @@ export const registrarUsuario = async (datos: any) => {
 
     return response.data;
   } catch (error: any) {
-    console.error("❌ Error al registrar:", error);
+    console.error("Error al registrar:", error);
   
     if (error.response) {
-      console.error("🔍 Detalle del error:", error.response.data);
+      console.error("Detalle del error:", error.response.data);
       throw new Error(error.response.data.message || "Error en el registro");
     } else if (error.request) {
-      console.error("📡 No se recibió respuesta del servidor", error.request);
+      console.error("No se recibió respuesta del servidor", error.request);
       throw new Error("No se recibió respuesta del servidor");
     } else {
-      console.error("❓ Error desconocido", error.message);
+      console.error("Error desconocido", error.message);
       throw new Error("Error desconocido al registrar");
     }
   }
