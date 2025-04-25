@@ -23,10 +23,11 @@ const LoginView = () => {
       try {
         const data = await loginUser(identificador, contra);
         setMensaje(data.message);
-  
+        
         // Guarda el token en localStorage para mantener al usuario logueado
         localStorage.setItem("token", data.token);
-  
+        localStorage.setItem("usuario", JSON.stringify(data.usuario));
+        
         // Redireccionar despues de mostrar el mensaje
         setTimeout(() => {
             navigate("/");  // Redirigir después de un tiempo

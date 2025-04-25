@@ -1,44 +1,132 @@
 import NavBar from "../components/NavBar";
-const producto = {
-    nombre: "Café Latte",
+import Footer from "../components/Footer";
+import { getResumen } from "../services/protectedServices";
+import { useEffect, useState } from "react";
+
+const productos = [
+    {
+    nombre: "Latte",
     sabor: "Vainilla",
     tamano: "16 OZ",
     leche: "Entera",
-    extras: ["Leche de almendra", "Doble shot"]
+    extras: ["+2 Azucar", "+1 Canela"]
+    },
+    {
+    nombre: "Americano",
+    sabor: "Limon",
+    tamano: "12 OZ",
+    leche: "Entera",
+    extras: ["+2 Azucar"]
+    }
+
+];
+
+const tarjeta = {
+    nombreTitular:"",
+    numTarjeta:"",
+    fechaVencimiento:"",
+    cvv:""
 };
 
 const Resumen_CompraView = () => {
+    const [metodo, setMetodo] = useState('efectivo');
+    const [mensaje, setMensaje] = useState("");
+
+    useEffect(() => {
+        const fetchResumen = async () => {
+        try {
+            const data = await getResumen();
+            setMensaje(data.mensaje);
+        } catch (error) {
+            console.error("Error al obtener resumen:", error);
+            setMensaje("No autorizado. Redirigiendo...");
+            // Aquí podemos redirigir con react-router cuando no tengan acceso
+            // navigate("/login");
+        }
+        };
+
+        fetchResumen();
+    }, []);
+
     return (
         <div className="relative h-full w-full flex flex-col">
             <header className="sticky top-0 z-50">
                 <NavBar />
             </header>
             
-            <main className="flex flex-row flex-1 relative">
+            <main className="flex flex-row flex-1 h-full relative">
                 {/*Sección izquierda para el resumen de compra */}
-                <section className="flex flex-col w-1/2 bg-white p-8">
-                    <h2 className="font-Montserrat font-regular text-3xl text-left text-[#34251d] pb-2">Resumen compra</h2>
+                <section className="flex flex-col w-1/2 bg-[#F7F7F7] p-12">
+                    <div className="sticky top-20 w-full shadow-xl bg-white rounded-2xl p-8">
+                        <h2 className="font-Montserrat font-bold text-3xl text-left text-[#34251d] pb-2">Resumen compra</h2>
                     {/* Posible componente */}
-                    <div className="flex flex-col w-96 h-56 min-w-max bg-[#E2E2E2] justify-left rounded-2xl p-4">
-                        <p>{producto.nombre}</p>
-                        <p>{producto.sabor}</p>
-                        <p>{producto.tamano}</p>
-                        <p>{producto.leche}</p>
-                        <p>Extras</p>
+                    <div className="flex flex-col w-96 min-h-max bg-[#E2E2E2] justify-left rounded-2xl p-4">
+                        <p className="font-Montserrat font-semibold text-xl text-left text-[#34251d] pb-2">{producto.nombre}</p>
+                        <p className="font-Montserrat font-regular text-xl text-left text-[#34251d] pb-2"> 
+                        <span className="font-semibold"> Sabor: </span> {producto.sabor}</p>
+                        <p className="font-Montserrat font-regular text-xl text-left text-[#34251d] pb-2">
+                        <span className="font-semibold"> Tamaño: </span>{producto.tamano}</p>
+                        <p className="font-Montserrat font-regular text-xl text-left text-[#34251d] pb-2">
+                        <span className="font-semibold"> Leche: </span>{producto.leche}</p>
+                        <p className="font-Montserrat font-semibold text-xl text-left text-[#34251d] pb-2">Extras</p>
                         <ul>
                             {producto.extras.map((extra, index) => (
-                            <li key={index}>{extra}</li>
+                            <li className="font-Montserrat font-regular text-xl text-left text-[#34251d] pb-2   " key={index}>{extra}</li>
                             ))}
                         </ul>
+                    </div>
                     </div>
                 </section>
 
                 {/*Sección derecha para los formularios */}
-                <section className="flex flex-col w-1/2  bg-[#FFE6D9] p-12 gap-14">
-                    <div className="bg-white w-full h-full rounded-2xl justify-left p-8">
+                <section className="flex flex-col w-1/2  bg-[#947666] p-12 gap-14">
+                    <div className="flex flex-col bg-white w-full shadow-xl h-full rounded-2xl justify-left p-8">
+                        <h2 className="font-Montserrat font-bold text-3xl text-left text-[#34251d] pb-4"> Método de pago</h2>
+                        {/*Cambiar esta label por una combobox */}
+                            <select onChange={(e) => setMetodo(e.target.value)}className="font-Montserrat font-regular text-left text-[#34251d] w-3/4 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold">
+                                <option>Efectivo</option>
+                                <option>Tarjeta Mastercard/Visa</option>
+                        </select>
+                        {metodo === "Tarjeta Mastercard/Visa" && (
+                            <div className="Flex flex-col min-w-full pt-4"> 
+                                <h2 className="font-Montserrat font-semibold text-xl text-left text-[#34251d]">Numero de la tarjeta</h2>
+                                <input
+                                        type="text"
+                                        className="font-Montserrat font-regular w-3/4 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        placeholder="xxxx-xxxx-xxxx-xxxx"
+                                />
+                                {/*Sección para la fecha de vencimiento y codigo cvv */}
+                                <div className="w-full flex flex-row pt-4">
+                                    <div className="Relative flex flex-col w-1/2">
+                                        <h2 className="font-Montserrat font-semibold text-xl text-left text-[#34251d]">Fecha de Vencimiento</h2>
+                                        <input
+                                                type="text"
+                                                className="font-Montserrat font-regular w-1/2 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                                placeholder="01/26"
+                                        />
+                                    </div>
+                                    <div className="Relative flex flex-col w-1/2">
+                                        <h2 className="font-Montserrat font-semibold text-xl text-left text-[#34251d]">Código CVV</h2>
+                                        <input
+                                                type="text"
+                                                className="font-Montserrat font-regular w-1/2 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                                placeholder="cvv"
+                                        />
+                                    </div>
+                                </div> 
+                                <h2 className="font-Montserrat font-semibold text-xl text-left text-[#34251d] pt-4">Nombre del titular</h2>
+                                <input
+                                        type="text"
+                                        className="font-Montserrat font-regular w-3/4 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        placeholder="José Romulo Sosa Ortíz"
+                                />
+                            </div>
+                        )}
+                    </div>
+                    <div className="bg-white w-full h-full shadow-xl rounded-2xl justify-left p-8">
                         {/*Contenedor de la dirección escrita o leyenda */}
                         <div className="relative flex flex-col justify-left w-full">
-                            <p className="font-Montserrat font-bold text-3xl text-left text-[#34251d]"> 
+                            <p className="font-Montserrat font-bold text-3xl text-left text-[#34251d] pb-2 "> 
                                 Entrega
                             </p>
                             <p className="font-Montserrat font-semibold text-xl text-left text-[#34251d] pb-2"> 
@@ -55,21 +143,9 @@ const Resumen_CompraView = () => {
                             </iframe>
                         </div>
                     </div>
-                    <div className="flex flex-col bg-white w-full h-full rounded-2xl justify-left p-8">
-                        <h2 className="font-Montserrat font-bold text-2xl text-left text-[#34251d]"> Metodo de pago</h2>
-                        <label>Label</label>
-                        <input className="border-2 border-black"/>
-                        <label>Label</label>
-                        <input className="border-2 border-black"/>
-                        <label>Label</label>
-                        <input className="border-2 border-black"/>
-                        <label>Label</label>
-                        <input className="border-2 border-black"/>
-                        <label>Label</label>
-                        <input className="border-2 border-black"/>
-                    </div>
                 </section>
             </main>
+            <Footer />
         </div>
     );
 };

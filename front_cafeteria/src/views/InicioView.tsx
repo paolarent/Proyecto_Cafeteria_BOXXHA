@@ -1,7 +1,8 @@
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
-import fondo_in1 from "../assets/foto_inicio1.png"
-import fondo_in2 from "../assets/fondo_inicio2.jpg"
-import NavBar from "../components/NavBar"
+import fondo_in1 from "../assets/foto_inicio1.png";
+import fondo_in2 from "../assets/fondo_inicio2.jpg";
+import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 import { motion } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 import { useMenuContext } from '../contexts/PedirContexto';
@@ -17,6 +18,7 @@ const InicioView = () => {
             <header className="sticky top-0 z-50">
                 <NavBar />
             </header>
+
             <div className="overflow-hidden bg-[#5a3c29] text-white py-2">
                 <motion.div
                     animate={{ x: ["0%", "-100vw"] }}
@@ -116,6 +118,7 @@ const InicioView = () => {
                 </div>
 
             </section>
+                <Footer />
         </div>
     ); 
 };

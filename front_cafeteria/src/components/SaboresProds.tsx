@@ -1,5 +1,6 @@
 import React from "react";
 import NavBar from "../components/NavBar";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 import regular from "../assets/sabores/regular.png";
@@ -218,6 +219,7 @@ const saboresPorTipoYNombreProducto: SaboresMap = {
 
 const SaboresProducto: React.FC = () => {
     const { tipo, nombre } = useParams(); //Usamos useParams para obtener los parámetros de la URL de la ruta
+    const navigate = useNavigate();
 
     //Verificamos si los valores de tipo y nombre existen en los datos
     const sabores = saboresPorTipoYNombreProducto[tipo as string]?.[nombre?.toLowerCase() || ""] || [];
@@ -252,18 +254,22 @@ const SaboresProducto: React.FC = () => {
                         <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 rounded-2xl shadow-md">
                             Sabores de <span className="font-medium">{nombre?.toUpperCase()}</span> {/*({tipo})*/}
                         </h2>
-                    </div>
+                    </div> 
 
                     <div className="flex flex-wrap justify-center gap-10 w-full px-8">
                         {sabores.map((sabor, idx) => (
                             <div className="relative z-10 bg-[#ffffff] px-5 py-5 rounded-2xl border border-black border-2 transition-transform duration-300 hover:scale-105">
-                                <div className="group flex flex-col items-center w-[200px] h-[250px]">
+                                <div 
+                                    
+
+                                    className="group flex flex-col items-center w-[200px] h-[250px]">
                                     <img 
                                         src={imagenesSabores[tipo as string]?.[nombre?.toLowerCase() || ""]?.[sabor] || ""}
                                         alt={sabor}
                                         className="rounded-[20px] w-[160px] h-[140px] mt-6 mb-6" 
                                     />
-                                    <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
+                                    <button 
+                                        className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
                                         group-hover:bg-[#B0CEAC] group-hover:text-[#000000] rounded-[10px]">
                                         {sabor}
                                     </button>

@@ -1,4 +1,5 @@
 import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 
 const MenuBoxxha = () => {
@@ -15,16 +16,16 @@ const MenuBoxxha = () => {
                     className="absolute inset-0 z-0"
                     style={{
                         backgroundImage: `url(${fondoCafe})`,
-                        backgroundSize: "auto",              //DUDOSO, MAÑANA CHECALO MEJOR
+                        backgroundSize: "auto",              
                         backgroundPosition: "center",
                         backgroundRepeat: "repeat",
                         opacity: 0.1
                     }}
                 />                
-                <section className="w-full flex flex-col items-center pt-10 space-y-10 pb-10 relative z-10">
+                <section className="w-full flex flex-col items-center pt-10 space-y-10 pb-6 relative z-10">
                     
                     <div className="flex flex-col relative bg-white p-4 bg-opacity-80 rounded-[70px]">
-                        <h2 className="font-Montserrat font-semibold text-5xl text-center text-[#34251d]">
+                        <h2 className="font-Montserrat font-semibold text-5xl text-center text-[#311808]">
                             ¡ Descubre nuestro variado Menú !
                         </h2>
                     </div>
@@ -221,9 +222,9 @@ const MenuBoxxha = () => {
                         </div>
 
                     </div>
-
                 </section>
             </main>
+                <Footer />
         </div>
     );
 };

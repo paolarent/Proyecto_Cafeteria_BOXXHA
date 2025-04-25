@@ -1,6 +1,8 @@
 import { Button } from "@headlessui/react";
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 import NavBar from "../components/NavBar";
+import BotonRegresar from "../assets/regresar.png";
+import BotonContinuar from "../assets/continuar.png";
 
 const ExtrasView = () => {
     return (
@@ -80,12 +82,33 @@ const ExtrasView = () => {
                         </div>
                     </div>
 
-                <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
-                    <button className="w-56 h-10 bg-white rounded-2xl border-2 border-black hover:scale-105 
-                    transition-transform duration-300"> <span className="font-Montserrat text-xl text-[#34251d] pb-2"> Regresar </span></button>
-                    <button className="w-56 h-10 bg-white rounded-2xl border-2 border-black hover:scale-105 
-                    transition-transform duration-300"> <span className="font-Montserrat text-xl text-[#34251d] pb-2"> Continuar </span></button>
-                </div>
+                {/* Botones laterales de navegación */}
+                <div className="absolute top-1/2 left-0 z-20 transform -translate-y-1/2 px-40">
+                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
+                            <button>
+                            <img
+                                src={BotonRegresar}
+                                alt="Botón Regresar"
+                                title="Regresar"
+                                className="w-[80px] h-auto"
+                            />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="absolute top-1/2 right-0 z-20 transform -translate-y-1/2 px-40">
+                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
+                            <button>
+                                <img
+                                src={BotonContinuar}
+                                alt="Botón Continuar"
+                                title="Continuar"
+                                className="w-[80px] h-auto"
+                                />
+                            </button>
+                        </div>
+                    </div>
+
                 </section>
             </main>
         </div>

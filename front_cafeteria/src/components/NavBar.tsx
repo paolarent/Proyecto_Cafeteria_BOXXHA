@@ -7,12 +7,14 @@ import AboutUsModal from "../components/ModalAU";
 import { useNavigate } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"; //Iconos para el menu responsive
 import { useMenuContext } from '../contexts/PedirContexto';
+import { UserMenu } from "../components/DD_DatosUsuario"; // Ajusta la ruta según tu estructura
 
 const NavBar: React.FC = () => {
     const navigate = useNavigate();
     const [showAboutModal, setShowAboutModal] = useState(false);    //para controlar el modal
     const [isMenuOpen, setIsMenuOpen] = useState(false);        //para controlar el menu movil
     const { scrollToMenu, scrollToInicio } = useMenuContext(); //Obtener la función scrollToMenu desde el contexto
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); //para controlar el menu dropdown de usuario
 
     return (
         <div className="w-full flex flex-col bg-white shadow-md">
@@ -66,7 +68,19 @@ const NavBar: React.FC = () => {
 
                     <li><button onClick={() => navigate("/nuestro_menu")} className="text-lg hover:[color:#A1C99C] transition">Menú</button></li>
                     <li><button onClick={() => navigate("/login")}><img src={icon_user} alt="Usuario" className="h-7 hover:scale-110 transition" /></button></li>
-                    <li><button><img src={icon_like} alt="Favorito" className="h-7 hover:scale-110 transition" /></button></li>
+                    
+                    <li className="relative">
+                        <button onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}>
+                            <img src={icon_like} alt="Favorito" className="h-7 hover:scale-110 transition" />
+                        </button>
+                        {isUserMenuOpen && (
+                            <div className="absolute right-0 z-50">
+                                <UserMenu onClose={() => setIsUserMenuOpen(false)} />
+                            </div>
+                        )}
+                    </li>
+                    
+                    {/**<li><button ><img src={icon_like} alt="Favorito" className="h-7 hover:scale-110 transition" /></button></li>*/}
                     <li><button><img src={icon_carrito} alt="Carrito" className="h-7 hover:scale-110 transition" /></button></li>
                 </ul>
             </nav>

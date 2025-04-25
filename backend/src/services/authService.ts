@@ -92,15 +92,16 @@ export const loginUser = async (identificador: string, contra: string) => {
   }
 
   // Generar token JWT
-  const token = jwt.sign(
-    { id: user.id_usuario },
-    process.env.JWT_SECRET as string,
-    { expiresIn: "5h" }
-  );
+  //const token = jwt.sign(
+   // { id: user.id_usuario },
+   // process.env.JWT_SECRET as string,
+    //{ expiresIn: "5h" }
+  //);
+  const token = generateToken(user.id_usuario);
 
   return {
     message: "Inicio de sesión exitoso",
-    token,
+    token: token,
     user: {
       id: user.id_usuario,
       usuario: user.usuario,
@@ -108,3 +109,7 @@ export const loginUser = async (identificador: string, contra: string) => {
     }
   };
 };
+
+function generateToken(id_usuario: number){
+  return jwt.sign({id_usuario}, process.env.JWT_SECRET as string, {expiresIn: "3h"});
+}
