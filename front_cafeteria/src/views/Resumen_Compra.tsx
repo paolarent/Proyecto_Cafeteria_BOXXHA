@@ -1,5 +1,6 @@
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
+import ProductoContenedor from "../components/ProductoContenedor"
 import { getResumen } from "../services/protectedServices";
 import { useEffect, useState } from "react";
 
@@ -49,7 +50,7 @@ const Resumen_CompraView = () => {
     }, []);
 
     return (
-        <div className="relative h-full w-full flex flex-col">
+        <div className=" h-full w-full flex flex-col">
             <header className="sticky top-0 z-50">
                 <NavBar />
             </header>
@@ -57,24 +58,20 @@ const Resumen_CompraView = () => {
             <main className="flex flex-row flex-1 h-full relative">
                 {/*Sección izquierda para el resumen de compra */}
                 <section className="flex flex-col w-1/2 bg-[#F7F7F7] p-12">
-                    <div className="sticky top-20 w-full shadow-xl bg-white rounded-2xl p-8">
+                    <div className="sticky top-20 w-full shadow-xl bg-white rounded-2xl gap-4 p-8">
                         <h2 className="font-Montserrat font-bold text-3xl text-left text-[#34251d] pb-2">Resumen compra</h2>
-                    {/* Posible componente */}
-                    <div className="flex flex-col w-96 min-h-max bg-[#E2E2E2] justify-left rounded-2xl p-4">
-                        <p className="font-Montserrat font-semibold text-xl text-left text-[#34251d] pb-2">{producto.nombre}</p>
-                        <p className="font-Montserrat font-regular text-xl text-left text-[#34251d] pb-2"> 
-                        <span className="font-semibold"> Sabor: </span> {producto.sabor}</p>
-                        <p className="font-Montserrat font-regular text-xl text-left text-[#34251d] pb-2">
-                        <span className="font-semibold"> Tamaño: </span>{producto.tamano}</p>
-                        <p className="font-Montserrat font-regular text-xl text-left text-[#34251d] pb-2">
-                        <span className="font-semibold"> Leche: </span>{producto.leche}</p>
-                        <p className="font-Montserrat font-semibold text-xl text-left text-[#34251d] pb-2">Extras</p>
-                        <ul>
-                            {producto.extras.map((extra, index) => (
-                            <li className="font-Montserrat font-regular text-xl text-left text-[#34251d] pb-2   " key={index}>{extra}</li>
+                        <div className="flex flex-col gap-y-4">
+                            {productos.map((producto, index) => (
+                                <ProductoContenedor
+                                key={index}
+                                nombre={producto.nombre}
+                                sabor={producto.sabor}
+                                tamano={producto.tamano}
+                                leche={producto.leche}
+                                extras={producto.extras}
+                                />
                             ))}
-                        </ul>
-                    </div>
+                        </div>
                     </div>
                 </section>
 

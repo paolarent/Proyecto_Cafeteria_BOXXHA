@@ -20,11 +20,45 @@ const RegistroView = () => {
     const [contra, setContra] = useState("");
     const [confirmContra, setConfirmContra] = useState("");
 
+    const [errores, setErrores] = useState({
+        nombre: "",
+        apellido: "",
+        usuario: "",
+        correoTel: "",
+        contra: "",
+        confirmContra: "",
+    });
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const telefonoRegex = /^([0-9]{5})+(-)+([0-9]{6})$/;
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        const nuevosErrores = {
+            nombre: nombre.trim() === "" ? "Campo obligatorio" : "",
+            apellido: apellido.trim() === "" ? "Campo obligatorio" : "",
+            usuario: usuario.trim() === "" ? "Campo obligatorio" : "",
+            contra: contra.trim() === "" ? "Campo obligatorio" : "",
+            correoTel:
+                formaContacto === "email" && !emailRegex.test(correoTel)
+                ? "Formato de correo inválido"
+                : formaContacto === "telefono" && !telefonoRegex.test(correoTel)
+                ? "Formato de teléfono inválido"
+                : "",
+            confirmContra: 
+                correoTel.trim() === ""
+                ? "Campo obligatorio"
+                : contra !== confirmContra 
+                ? "Las contraseñas no coinciden" 
+                : "",
+        };
 
-        if (contra !== confirmContra) {
-            alert("Las contraseñas no coinciden");
+        setErrores(nuevosErrores);
+
+        if (Object.values(nuevosErrores).some((msg) => msg !== "")) {
+            alert("Por favor corrige los errores.");
+            setErrores(nuevosErrores);
             return;
         }
 
@@ -108,7 +142,7 @@ const RegistroView = () => {
                                             onChange={(e) => setFormaContacto(e.target.value)}
                                             className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold"
                                         >
-                                            <option value="">Seleccionar</option>
+                                            <option value="">Seleccionar *</option>
                                             <option value="email">Email</option>
                                             <option value="telefono">Teléfono</option>
                                         </select>
@@ -119,30 +153,34 @@ const RegistroView = () => {
                                         type="text"
                                         value={correoTel}
                                         onChange={(e) => setCorreoTel(e.target.value)}
-                                        className="w-full mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        className={`w-full mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] 
+                                         ${errores.contra ? 'border-red-500' : 'border-gray-300'}`}
                                         placeholder="Email o Télefono"
                                         />
+                                        {errores.correoTel && <p className="text-red-500 text-xs">{errores.correoTel}</p>}
                                     </div>
                                 </div>
 
                                 {/* Nombre y Apellido */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                    <label className="block text-l text-[#453126] mb-1">Nombre:</label>
+                                    <label className="block text-l text-[#453126] mb-1">Nombre:  <span className="text-red-500">*</span> </label>
                                     <input
                                         type="text"
                                         value={nombre}
                                         onChange={(e) => setNombre(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                        ${errores.nombre ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                     </div>
                                     <div>
-                                    <label className="block text-l text-[#453126] mb-1">Apellido:</label>
+                                    <label className="block text-l text-[#453126] mb-1">Apellido:  <span className="text-red-500">*</span> </label>
                                     <input
                                         type="text"
                                         value={apellido}
                                         onChange={(e) => setApellido(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                        ${errores.apellido ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                     </div>
                                 </div>
@@ -150,21 +188,23 @@ const RegistroView = () => {
                                 {/* Contraseña y Nombre de Usuario */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-l text-[#453126] mb-1">Contraseña:</label>
+                                        <label className="block text-l text-[#453126] mb-1">Contraseña:  <span className="text-red-500">*</span> </label>
                                         <input
                                         type="password"
                                         value={contra}
                                         onChange={(e) => setContra(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                        ${errores.contra ? 'border-red-500' : 'border-gray-300'}`}
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-l text-[#453126] mb-1">Nombre de Usuario:</label>
+                                        <label className="block text-l text-[#453126] mb-1">Nombre de Usuario:  <span className="text-red-500">*</span> </label>
                                         <input
                                         type="text"
                                         value={usuario}
                                         onChange={(e) => setUsuario(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        ${errores.usuario ? 'border-red-500' : 'border-gray-300'}`}
                                         />
                                     </div>
                                 </div>
@@ -172,13 +212,15 @@ const RegistroView = () => {
                                 {/* Confirmar contraseña */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-l text-[#453126] mb-1">Confirmar contraseña:</label>
+                                        <label className="block text-l text-[#453126] mb-1">Confirmar contraseña:  <span className="text-red-500">*</span> </label>
                                         <input
                                         type="password"
                                         value={confirmContra}
                                         onChange={(e) => setConfirmContra(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                        ${errores.confirmContra ? 'border-red-500' : 'border-gray-300'}`}
                                         />
+                                        {errores.confirmContra && <p className="text-red-500 text-xs">{errores.confirmContra}</p>}
                                     </div>
 
                                     {/* Botón */}

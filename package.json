@@ -4,5 +4,8 @@
   },
   "scripts": {
     "dev": "concurrently \"cd backend && npm run dev\" \"cd front_cafeteria && npm run dev\""
+  },
+  "dependencies": {
+    "sonner": "^2.0.3"
   }
 }

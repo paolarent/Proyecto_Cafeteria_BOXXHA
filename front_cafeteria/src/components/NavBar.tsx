@@ -7,7 +7,8 @@ import AboutUsModal from "../components/ModalAU";
 import { useNavigate } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"; //Iconos para el menu responsive
 import { useMenuContext } from '../contexts/PedirContexto';
-import { UserMenu } from "../components/DD_DatosUsuario"; // Ajusta la ruta según tu estructura
+import { UserMenu } from "../components/DD_DatosUsuario"; 
+import { Toaster, toast } from 'sonner';
 
 const NavBar: React.FC = () => {
     const navigate = useNavigate();
@@ -15,6 +16,26 @@ const NavBar: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);        //para controlar el menu movil
     const { scrollToMenu, scrollToInicio } = useMenuContext(); //Obtener la función scrollToMenu desde el contexto
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); //para controlar el menu dropdown de usuario
+
+    const user = JSON.parse(localStorage.getItem("usuario") || '""'); //Recuperar el usuario almacenado sin las comillas
+
+    // Esto sirve para saber si hay un usuario que haya ingresado sesion, si si le muestra sus datos, si no lo dirige a /login
+    const handlePerfilClick = () => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            setIsUserMenuOpen(!isUserMenuOpen);
+        } else {
+            navigate("/login");
+        }
+    }
+
+    // Cerrar sesion
+    const logOut = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("usuario");
+        setIsUserMenuOpen(false);
+        navigate("/");
+    }
 
     return (
         <div className="w-full flex flex-col bg-white shadow-md">
@@ -67,17 +88,22 @@ const NavBar: React.FC = () => {
                     </li>
 
                     <li><button onClick={() => navigate("/nuestro_menu")} className="text-lg hover:[color:#A1C99C] transition">Menú</button></li>
-                    <li><button onClick={() => navigate("/login")}><img src={icon_user} alt="Usuario" className="h-7 hover:scale-110 transition" /></button></li>
+                    <li><button 
+                    onClick={handlePerfilClick}>
+                    <img src={icon_user} alt="Usuario" className="h-7 hover:scale-110 transition" />
+                    </button>
+                    {isUserMenuOpen && user && (
+                        <div className="absolute right-0 z-50">
+                                {/* Barra de navegación superior */}
+                            <UserMenu user={user} onClose={() => setIsUserMenuOpen(false)} onLogout={logOut} />
+                        </div>
+                        )}
+                    </li>
                     
                     <li className="relative">
-                        <button onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}>
+                        <button>
                             <img src={icon_like} alt="Favorito" className="h-7 hover:scale-110 transition" />
                         </button>
-                        {isUserMenuOpen && (
-                            <div className="absolute right-0 z-50">
-                                <UserMenu onClose={() => setIsUserMenuOpen(false)} />
-                            </div>
-                        )}
                     </li>
                     
                     {/**<li><button ><img src={icon_like} alt="Favorito" className="h-7 hover:scale-110 transition" /></button></li>*/}

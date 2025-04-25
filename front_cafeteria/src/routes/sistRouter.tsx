@@ -15,6 +15,7 @@ import ExtrasView from "../views/ExtrasView.tsx";
 import Rocas_FrappeView from "../views/Rocas_FrappeView.tsx";
 import Resumen_CompraView from "../views/Resumen_Compra.tsx";
 import Menu_General from "../views/Menu_general.tsx";
+import Admin_Inicio from "../views/Admin_Inicio.tsx";
 
 const RouterWithAnimation = () => {
   const location = useLocation();
@@ -37,6 +38,7 @@ const RouterWithAnimation = () => {
         <Route path="/estilo" element={<Rocas_FrappeView/>} />
         <Route path="/resumen" element={<Resumen_CompraView/>}/>
         <Route path="/nuestro_menu" element={<Menu_General/>}/>
+        <Route path="/admin_inicio" element={<Admin_Inicio/>}/>
       </Routes>
     </AnimatePresence>
   );

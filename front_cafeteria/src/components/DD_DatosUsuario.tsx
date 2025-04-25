@@ -4,16 +4,25 @@ import icon_logout from "../assets/Iconos/cerrarsesion.png"
 
 interface UserMenuProps {
     onClose: () => void;
-    username: string;
+    user: string;
     onLogout: () => void;
 }
 
-export function UserMenu({ onClose, username, onLogout }: UserMenuProps) {
-    
+export function UserMenu({ onClose, user, onLogout }: UserMenuProps) {
+     const handleUpdateUser = () => {
+        // Redirigir a una vista de actualización de usuario
+        // navigate('/actualizar-usuario');
+    };
+
+    const handleUpdatePassword = () => {
+        // Redirigir a una vista de actualización de contraseña
+        // navigate('/actualizar-contraseña');
+    };
+
     return (
         <div className="absolute right-0 mt-2 w-80 font-Montserrat bg-white border rounded-lg shadow-lg z-50 border border-black border-2">
             <div className="flex justify-between items-center px-4 pt-3 pb-2 border-b">
-            <span className="font-regular text-xl">Hola,  <span className="font-bold">{username}</span></span>
+            <span className="font-regular text-xl">Hola,  <span className="font-bold">{user}</span></span>
             
             <button
                 onClick={onClose}
@@ -39,7 +48,9 @@ export function UserMenu({ onClose, username, onLogout }: UserMenuProps) {
             </ul>
     
             <div className="border-t text-lg bg-[#d5c3bd] rounded-b-lg overflow-hidden">
-                <button onClick={onLogout} className="w-full flex items-center gap-2 p-2 font-bold text-[#311808] hover:bg-[#B0CEAC] pl-4">
+                <button 
+                    onClick={onLogout}
+                    className="w-full flex items-center gap-2 p-2 font-bold text-[#311808] hover:bg-[#B0CEAC] pl-4">
                     <img src={icon_logout} alt="Cerrar sesión" className="w-6 h-6" />
                     <span className="pl-2">Cerrar sesión</span>
                 </button>

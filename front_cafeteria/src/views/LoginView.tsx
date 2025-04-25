@@ -15,27 +15,44 @@ const LoginView = () => {
     const [error, setError] = useState("");
     const [mensaje, setMensaje] = useState("");
   
+    const [errores, setErrores] = useState({
+        identificador: false,
+        contra: false,
+    });
+
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       setError("");
       setMensaje("");
   
-      try {
+    const nuevosErrores = {
+        identificador: identificador.trim() === "", //Si alguno de los campos esta vacio salta un error
+        contra: contra.trim() === "",
+    };
+
+    setErrores(nuevosErrores);
+
+    if (nuevosErrores.identificador || nuevosErrores.contra) {
+        setError("Por favor llena todos los campos");
+        return;
+    }
+
+    try {
         const data = await loginUser(identificador, contra);
         setMensaje(data.message);
-        
-        // Guarda el token en localStorage para mantener al usuario logueado
+
+        // Guarda el token en localStorage para mantener al usuario logueado, el usuario para mostrarlo en el dropdown menu
         localStorage.setItem("token", data.token);
-        localStorage.setItem("usuario", JSON.stringify(data.usuario));
-        
+        localStorage.setItem("usuario", JSON.stringify(data.user.usuario));
+
         // Redireccionar despues de mostrar el mensaje
         setTimeout(() => {
             navigate("/");  // Redirigir después de un tiempo
         }, 1000);  // 1 segundo
   
-      } catch (err: any) {
-        setError(err.message);
-      }
+    }   catch (err: any) {
+            setError(err.message);
+        }
     };
 
     return (
@@ -63,8 +80,16 @@ const LoginView = () => {
                                     <input
                                     type="text"
                                     value={identificador}
-                                    onChange={(e) => setIdentificador(e.target.value)}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#3B2B26] bg-[#5C48481A]"
+                                    onChange={(e) => {
+                                    setIdentificador(e.target.value);
+                                    // Manejo de errores en frontend
+                                    if (errores.identificador && e.target.value.trim() !== "") {
+                                        setErrores((prev) => ({ ...prev, identificador: false }));
+                                    }
+                                    }}
+                                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring bg-[#5C48481A] ${
+                                        errores.identificador ? "border-red-400 focus:ring-red-500" : "border-gray-300 focus:ring-[#3B2B26]"
+                                    }`}
                                     />
                                 </div>
                                 <div>
@@ -72,8 +97,16 @@ const LoginView = () => {
                                     <input
                                     type="password"
                                     value={contra}
-                                    onChange={(e) => setContra(e.target.value)}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#3B2B26] bg-[#5C48481A] mb-4"
+                                    onChange={(e) => {
+                                    setContra(e.target.value);
+                                    // Manejo de errores en frontend
+                                    if (errores.identificador && e.target.value.trim() !== "") {
+                                        setErrores((prev) => ({ ...prev, identificador: false }));
+                                    }  
+                                    }}
+                                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring bg-[#5C48481A] mb-1 ${
+                                    errores.contra ? "border-red-400 focus:ring-red-500" : "border-gray-300 focus:ring-[#3B2B26]"
+                                    }`}
                                     />
                                 </div>
                                 <button
