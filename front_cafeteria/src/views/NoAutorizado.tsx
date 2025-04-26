@@ -26,7 +26,7 @@ const NoAutorizado = () => {
                     <p className="text-gray-600 text-xl mb-4 mx-2"><span className="font-bold">ERROR:</span> No tiene permisos para acceder a esta página.</p>
                     <button
                         onClick={handleHover}
-                        className="mt-6 bg-[#401f0a] text-white font-semibold py-2 px-6 rounded shadow-md text-xl hover:bg-[#B0CEAC] 
+                        className="mt-6 bg-[#401f0a] text-white font-semibold py-3 px-6 rounded shadow-md text-xl hover:bg-[#B0CEAC] 
                         hover:text-black transition transform transition-transform duration-300 hover:scale-105"      
                     >       
                     Volver al Inicio   
