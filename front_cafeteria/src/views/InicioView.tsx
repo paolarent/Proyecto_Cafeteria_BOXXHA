@@ -98,21 +98,21 @@ const InicioView = () => {
                         </button>
                     </div>
 
-                    {/*Postres*/}
-                    <div onClick={() => navigate("/postres")} className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
+                    {/*Frappés*/}
+                    <div onClick={() => navigate("/frappes")} className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
                         <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
                             group-hover:bg-[#424141] group-hover:text-white mb-2">
-                            Postres
+                            Frappés
                         </button>
                         <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px]" />
                     </div>
 
-                    {/*Nuevos*/}
-                    <div onClick={() => navigate("/nuevos_menu")} className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105">
+                    {/*Postres*/}
+                    <div onClick={() => navigate("/postres")} className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105">
                         <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" />
                         <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
                             group-hover:bg-[#424141] group-hover:text-white">
-                            Nuevos
+                            Postres
                         </button>
                     </div>
                 </div>

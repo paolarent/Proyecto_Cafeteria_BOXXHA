@@ -11,7 +11,8 @@ const app = express();
 // Especificar a la API que puede ser consumida 
 app.use(cors({
     origin: "*", // Permitir todas las solicitudes de origen para pruebas
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }));
   
 // Permitir el uso de JSON en las peticiones

@@ -6,19 +6,11 @@ interface UserMenuProps {
     onClose: () => void;
     user: string;
     onLogout: () => void;
+    onUpdateContra: () => void;
+    onUpdateDatos: () => void;
 }
 
-export function UserMenu({ onClose, user, onLogout }: UserMenuProps) {
-     const handleUpdateUser = () => {
-        // Redirigir a una vista de actualización de usuario
-        // navigate('/actualizar-usuario');
-    };
-
-    const handleUpdatePassword = () => {
-        // Redirigir a una vista de actualización de contraseña
-        // navigate('/actualizar-contraseña');
-    };
-
+export function UserMenu({ onClose, user, onLogout, onUpdateContra, onUpdateDatos }: UserMenuProps) {
     return (
         <div className="absolute right-0 mt-2 w-80 font-Montserrat bg-white border rounded-lg shadow-lg z-50 border border-black border-2">
             <div className="flex justify-between items-center px-4 pt-3 pb-2 border-b">
@@ -37,14 +29,27 @@ export function UserMenu({ onClose, user, onLogout }: UserMenuProps) {
             </div>
     
             <ul className="p-2 space-y-2 text-lg">
-            <li className="flex items-center gap-2 cursor-pointer hover:bg-[#f1e6df] p-2 rounded">
-                <img src={icon_usuario} alt="Usuario" className="w-6 h-6" />
-                <span className="pl-2">Actualizar Usuario</span>
-            </li>
-            <li className="flex items-center gap-2 cursor-pointer hover:bg-[#f1e6df] p-2 rounded">
-                <img src={icon_contra} alt="Contraseña" className="w-6 h-6" />
-                <span className="pl-2">Actualizar Contraseña</span>
-            </li>
+
+                <li className="flex items-center gap-2 cursor-pointer hover:bg-[#f1e6df] p-2 rounded"
+                    onClick={() => {
+                        onClose();  //cierra el modal actual
+                        onUpdateDatos();    //abre el modal para actualizar los datos del usuario
+                    }}
+                >
+                    <img src={icon_usuario} alt="Usuario" className="w-6 h-6" />
+                    <span className="pl-2">Actualizar Usuario</span>
+                </li>
+                
+                <li className="flex items-center gap-2 cursor-pointer hover:bg-[#f1e6df] p-2 rounded"
+                    onClick={() => {
+                        onClose(); //Cierra el menú
+                        onUpdateContra(); //Abre el modal para actualizar la contrasena
+                    }}
+                >
+                    <img src={icon_contra} alt="Contraseña" className="w-6 h-6" />
+                    <span className="pl-2">Actualizar Contraseña</span>
+                </li>
+                
             </ul>
     
             <div className="border-t text-lg bg-[#d5c3bd] rounded-b-lg overflow-hidden">

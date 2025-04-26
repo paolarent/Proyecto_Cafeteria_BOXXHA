@@ -38,6 +38,7 @@ model extra {
   nombre               String                 @db.VarChar(25)
   precio               Float                  @db.Float
   detalle_extra_pedido detalle_extra_pedido[]
+  producto_extra       producto_extra[]
 }
 
 model notificacion {
@@ -79,13 +80,15 @@ model pedido {
 }
 
 model producto {
-  id_producto    Int                @id
-  nombre         String             @db.VarChar(20)
-  sabor          String             @db.VarChar(15)
-  tipo_prod      producto_tipo_prod
-  u_med          producto_u_med
-  precio         Float              @db.Float
-  detalle_pedido detalle_pedido[]
+  id_producto     Int                @id
+  nombre          String             @db.VarChar(20)
+  tipo_prod       producto_tipo_prod
+  precio          Float              @db.Float
+  detalle_pedido  detalle_pedido[]
+  producto_sabor  producto_sabor[]
+  producto_tamano producto_tamano[]
+  producto_leche  producto_leche[]
+  producto_extra  producto_extra[]
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -114,11 +117,6 @@ enum producto_tipo_prod {
   nuevo
 }
 
-enum producto_u_med {
-  pza
-  oz
-}
-
 enum notificacion_status {
   pendiente
   enviado
@@ -142,4 +140,62 @@ enum usuario_tipo_usuario {
   cliente
   empleado
   admin
+}
+
+model sabor {
+  id_sabor  Int              @id @default(autoincrement())
+  nombre    String           @db.VarChar(20)
+  productos producto_sabor[]
+}
+
+model tamano {
+  id_tamano Int               @id @default(autoincrement())
+  nombre    String            @db.VarChar(20)
+  productos producto_tamano[]
+}
+
+model leche {
+  id_leche  Int              @id @default(autoincrement())
+  nombre    String           @db.VarChar(20)
+  productos producto_leche[]
+}
+
+model producto_extra {
+  id_producto Int
+  id_extra    Int
+
+  producto producto @relation(fields: [id_producto], references: [id_producto])
+  extra    extra    @relation(fields: [id_extra], references: [id_extra])
+
+  @@id([id_producto, id_extra])
+}
+
+model producto_sabor {
+  id_producto Int
+  id_sabor    Int
+
+  producto producto @relation(fields: [id_producto], references: [id_producto])
+  sabor    sabor    @relation(fields: [id_sabor], references: [id_sabor])
+
+  @@id([id_producto, id_sabor])
+}
+
+model producto_tamano {
+  id_producto Int
+  id_tamano   Int
+
+  producto producto @relation(fields: [id_producto], references: [id_producto])
+  tamano   tamano   @relation(fields: [id_tamano], references: [id_tamano])
+
+  @@id([id_producto, id_tamano])
+}
+
+model producto_leche {
+  id_producto Int
+  id_leche    Int
+
+  producto producto @relation(fields: [id_producto], references: [id_producto])
+  leche    leche    @relation(fields: [id_leche], references: [id_leche])
+
+  @@id([id_producto, id_leche])
 }

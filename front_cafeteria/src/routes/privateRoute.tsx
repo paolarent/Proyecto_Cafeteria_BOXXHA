@@ -9,11 +9,9 @@ interface Props {
 const PrivateRoute = ({ children }: Props) => {
   const token = localStorage.getItem("token");
 
-  console.log("Token en PrivateRoute:", token); // Verifica el token en la consola
-  // Si no hay token, redirige al login
+  // Si no hay token, redirige al pagina de error
   if (!token) {
-    console.log("No hay token, redirigiendo a /login"); // Mensaje de depuración
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/401Error" replace />;
   }
 
   // Si hay token, permite el acceso

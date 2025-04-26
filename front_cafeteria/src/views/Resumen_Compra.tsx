@@ -3,6 +3,8 @@ import Footer from "../components/Footer";
 import ProductoContenedor from "../components/ProductoContenedor"
 import { getResumen } from "../services/protectedServices";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const productos = [
     {
@@ -32,6 +34,7 @@ const tarjeta = {
 const Resumen_CompraView = () => {
     const [metodo, setMetodo] = useState('efectivo');
     const [mensaje, setMensaje] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchResumen = async () => {
@@ -41,8 +44,8 @@ const Resumen_CompraView = () => {
         } catch (error) {
             console.error("Error al obtener resumen:", error);
             setMensaje("No autorizado. Redirigiendo...");
-            // Aquí podemos redirigir con react-router cuando no tengan acceso
-            // navigate("/login");
+            // Aquí podemos redirigir cuando no tengan acceso, ejemplo ERROR: 401 NO AUTORIZADO
+            //navigate("/401Error");
         }
         };
 

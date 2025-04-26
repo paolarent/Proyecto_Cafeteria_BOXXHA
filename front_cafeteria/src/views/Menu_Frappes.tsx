@@ -20,7 +20,7 @@ const MenuNuevosView = () => {
             <main className="flex flex-1 bg-[#B0CEAC]">
             <section className="w-full flex flex-col items-center space-y-10 pt-20">
                 <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d]">
-                - <span className="font-bold">Nuevos</span> en el Menú -
+                - Nuestros <span className="font-bold">Frappés</span> -
                 </h2>
                 <div className="flex flex-wrap justify-center gap-10 w-full px-8">
 

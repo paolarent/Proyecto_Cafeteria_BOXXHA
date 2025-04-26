@@ -16,13 +16,21 @@ const Admin_Inicio = () => {
                     className="w-20 h-20"
                 />
                 <p className="font-Montserrat font-bold text-xl text-[#34251d]"> Bienvenido Administrador </p>
-
-                <div className="flex flex-col h-full w-full p-4 pl-6">
-                    <p className="font-Montserrat font-semibold text-xl text-left border-black border-b-2 text-[#34251d]">Productos</p>
-                    <button > </button>
+                <div className="flex flex-col h-full w-full items-left justify-left text-left gap-1 p-4 pl-6">
+                    <h2 className="font-Montserrat w-full font-semibold text-xl border-black border-b-2 text-[#34251d]">Productos</h2>  
+                    <button className="text-left w-full transition-transform duration-300 hover:scale-105 hover:bg-[#f2ddc9] pt-1"> Agregar producto</button>
+                    <button className="text-left w-full transition-transform duration-300 hover:scale-105 hover:bg-[#f2ddc9] pt-1"> Editar producto</button>
+                    <button className="text-left w-full transition-transform duration-300 hover:scale-105 hover:bg-[#f2ddc9] pt-1"> Eliminar producto</button>
                 </div>
-
+                <div className="flex flex-col h-full w-full items-left justify-left text-left gap-1 p-4 pl-6">
+                    <h2 className="font-Montserrat w-full font-semibold text-xl border-black border-b-2 text-[#34251d]">Empleados</h2>  
+                    <button className="text-left w-full transition-transform duration-300 hover:scale-105 hover:bg-[#f2ddc9] pt-1"> Agregar Empleado</button>
+                    <button className="text-left w-full transition-transform duration-300 hover:scale-105 hover:bg-[#f2ddc9] pt-1"> Editar Empleado</button>
+                    <button className="text-left w-full transition-transform duration-300 hover:scale-105 hover:bg-[#f2ddc9] pt-1"> Eliminar Empleado</button>
+                </div>
+                
             </div>
+            
             <div className="flex flex-col w-3/4 h-screen items-center shadow-xl rounded-2xl bg-white p-4 p-6 ">
             </div>
 

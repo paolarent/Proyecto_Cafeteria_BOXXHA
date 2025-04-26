@@ -8,7 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"; //Iconos para el menu responsive
 import { useMenuContext } from '../contexts/PedirContexto';
 import { UserMenu } from "../components/DD_DatosUsuario"; 
-import { Toaster, toast } from 'sonner';
+import { CambiarContraModal } from "../components/ActualizarContra";
+import { CambiarDatosModal } from "../components/ActualizarDUser";
+
 
 const NavBar: React.FC = () => {
     const navigate = useNavigate();
@@ -16,10 +18,13 @@ const NavBar: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);        //para controlar el menu movil
     const { scrollToMenu, scrollToInicio } = useMenuContext(); //Obtener la función scrollToMenu desde el contexto
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); //para controlar el menu dropdown de usuario
+    const [MostrarModalContra, setMostrarModalContra] = useState(false); //controlar mostrar el modal para actualizar la contrasena
+    const [MostrarModalDatosA, setMostrarModalDatosA] = useState(false);    //controlar el modal de actualizar los datos
+
 
     const user = JSON.parse(localStorage.getItem("usuario") || '""'); //Recuperar el usuario almacenado sin las comillas
 
-    // Esto sirve para saber si hay un usuario que haya ingresado sesion, si si le muestra sus datos, si no lo dirige a /login
+    //Esto sirve para saber si hay un usuario que haya ingresado sesion, si si le muestra sus datos, si no lo dirige a /login
     const handlePerfilClick = () => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -88,14 +93,30 @@ const NavBar: React.FC = () => {
                     </li>
 
                     <li><button onClick={() => navigate("/nuestro_menu")} className="text-lg hover:[color:#A1C99C] transition">Menú</button></li>
+                    
                     <li><button 
                     onClick={handlePerfilClick}>
                     <img src={icon_user} alt="Usuario" className="h-7 hover:scale-110 transition" />
                     </button>
                     {isUserMenuOpen && user && (
                         <div className="absolute right-0 z-50">
-                                {/* Barra de navegación superior */}
-                            <UserMenu user={user} onClose={() => setIsUserMenuOpen(false)} onLogout={logOut} />
+                            {/* Barra de navegación superior */}
+                            <UserMenu
+                                user={user}
+                                onClose={() => setIsUserMenuOpen(false)}
+                                onLogout={logOut}
+                                
+                                onUpdateContra={() => {
+                                    setIsUserMenuOpen(false); // Cierra el dropdown
+                                    setMostrarModalContra(true); // Abre el modal contra
+                                }}
+
+                                onUpdateDatos={() => {
+                                    setIsUserMenuOpen(false); // Cierra el dropdown
+                                    setMostrarModalDatosA(true); // Abre el modal datos
+                                }}
+                            />
+
                         </div>
                         )}
                     </li>
@@ -179,10 +200,19 @@ const NavBar: React.FC = () => {
                 </>
             )}
 
-            {/* Modal */}
+            {/* Modales */}
             {showAboutModal && (
                 <AboutUsModal isOpen={showAboutModal} onClose={() => setShowAboutModal(false)} />
             )}
+
+            {MostrarModalContra && (
+                <CambiarContraModal onClose={() => setMostrarModalContra(false)} />
+            )}
+
+            {MostrarModalDatosA && (
+                <CambiarDatosModal onClose={() => setMostrarModalDatosA(false)} />
+            )}
+
         </div>
     );
 };
