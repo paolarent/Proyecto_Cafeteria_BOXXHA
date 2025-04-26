@@ -5,7 +5,7 @@ import { auth } from "../middlewares/auth";
 
 const router = Router();
 
-// Ruta POST https://h2x0xj0m-3000.usw3.devtunnels.ms/userRoutes
+// Ruta PUT https://h2x0xj0m-3000.usw3.devtunnels.ms/userRoutes
 // El archivo index.ts de la carpeta routes  es el que se encarga de cargar todas las rutas de la aplicacion
 
 // http://25.4.40.124:3000/userRoutes/actualizarUser
