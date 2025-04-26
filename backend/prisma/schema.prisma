@@ -7,17 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model detalle_extra_pedido {
-  id_detalle     Int            @id
-  id_extra       Int
-  cantidad       Int
-  precio_extra   Float          @db.Float
-  detalle_pedido detalle_pedido @relation(fields: [id_detalle], references: [id_detalle], onDelete: NoAction, onUpdate: NoAction, map: "fk_detalleped_detext")
-  extra          extra          @relation(fields: [id_extra], references: [id_extra], onDelete: NoAction, onUpdate: NoAction, map: "fk_extra_detalleext")
-
-  @@index([id_extra], map: "fk_extra_detalleext_idx")
-}
-
 model detalle_pedido {
   id_detalle           Int                   @id
   id_pedido            Int
@@ -25,21 +14,36 @@ model detalle_pedido {
   cantidad             Int
   precio_unitario      Float                 @db.Float
   subtotal             Float                 @db.Float
-  detalle_extra_pedido detalle_extra_pedido?
   pedido               pedido                @relation(fields: [id_pedido], references: [id_pedido], onDelete: NoAction, onUpdate: NoAction, map: "fk_pedido_detalleped")
   producto             producto              @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction, map: "fk_producto_detalleped")
 
   @@index([id_pedido], map: "fk_pedido_detalleped_idx")
   @@index([id_producto], map: "fk_producto_detalleped_idx")
+  detalleextra         detalle_extra[]
 }
 
 model extra {
   id_extra             Int                    @id
   nombre               String                 @db.VarChar(25)
   precio               Float                  @db.Float
-  detalle_extra_pedido detalle_extra_pedido[]
-  producto_extra       producto_extra[]
+
+  detalleextra         detalle_extra[]
 }
+
+model detalle_extra {
+  id_detalle_extra Int     @id @default(autoincrement())
+  id_detalle       Int
+  id_extra         Int?
+  cantidad         Int?    @db.Int
+  precio_total     Float?  @db.Float
+
+  detalle_pedido detalle_pedido @relation(fields: [id_detalle], references: [id_detalle])
+  extra          extra?        @relation(fields: [id_extra], references: [id_extra])
+
+  @@index([id_detalle], map: "fk_detalle_detalle_extra_idx")
+  @@index([id_extra], map: "fk_extra_detalle_extra_idx")
+}
+
 
 model notificacion {
   id_notificacion Int                 @id
@@ -85,13 +89,8 @@ model producto {
   tipo_prod       producto_tipo_prod
   precio          Float              @db.Float
   detalle_pedido  detalle_pedido[]
-  producto_sabor  producto_sabor[]
-  producto_tamano producto_tamano[]
-  producto_leche  producto_leche[]
-  producto_extra  producto_extra[]
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model usuario {
   id_usuario     Int                  @id @default(autoincrement())
   nombre         String               @db.VarChar(15)
@@ -103,6 +102,8 @@ model usuario {
   tipo_usuario   usuario_tipo_usuario @default(cliente)
   fecha_registro DateTime             @default(now()) @db.Timestamp(0)
   pedido         pedido[]
+
+  @@index([email], map: "email_idx")
 }
 
 enum pago_metodo_pago {
@@ -140,62 +141,4 @@ enum usuario_tipo_usuario {
   cliente
   empleado
   admin
-}
-
-model sabor {
-  id_sabor  Int              @id @default(autoincrement())
-  nombre    String           @db.VarChar(20)
-  productos producto_sabor[]
-}
-
-model tamano {
-  id_tamano Int               @id @default(autoincrement())
-  nombre    String            @db.VarChar(20)
-  productos producto_tamano[]
-}
-
-model leche {
-  id_leche  Int              @id @default(autoincrement())
-  nombre    String           @db.VarChar(20)
-  productos producto_leche[]
-}
-
-model producto_extra {
-  id_producto Int
-  id_extra    Int
-
-  producto producto @relation(fields: [id_producto], references: [id_producto])
-  extra    extra    @relation(fields: [id_extra], references: [id_extra])
-
-  @@id([id_producto, id_extra])
-}
-
-model producto_sabor {
-  id_producto Int
-  id_sabor    Int
-
-  producto producto @relation(fields: [id_producto], references: [id_producto])
-  sabor    sabor    @relation(fields: [id_sabor], references: [id_sabor])
-
-  @@id([id_producto, id_sabor])
-}
-
-model producto_tamano {
-  id_producto Int
-  id_tamano   Int
-
-  producto producto @relation(fields: [id_producto], references: [id_producto])
-  tamano   tamano   @relation(fields: [id_tamano], references: [id_tamano])
-
-  @@id([id_producto, id_tamano])
-}
-
-model producto_leche {
-  id_producto Int
-  id_leche    Int
-
-  producto producto @relation(fields: [id_producto], references: [id_producto])
-  leche    leche    @relation(fields: [id_leche], references: [id_leche])
-
-  @@id([id_producto, id_leche])
 }
