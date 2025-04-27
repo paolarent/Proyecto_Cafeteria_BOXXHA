@@ -5,11 +5,10 @@ import img_frappe_caramel from "../assets/frappe_caramelo2.png"
 
 const MenuNuevosView = () => {
     const navigate = useNavigate();
-    //agregue esto aqui, pero no aplica a ninguno de los "nuevos", pero si se llega a cambiar es reutilizable, adaptable a
-    /* type TipoBebida = 'caliente' | 'frio' | 'postre' | 'nuevo';
+    type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
     const irASabores = (tipo: TipoBebida, nombre: string) => {
         navigate(`/sabores/${tipo}/${nombre}`);
-    }; */
+    }; 
 
     return (
         <div className="min-h-screen flex flex-col ">

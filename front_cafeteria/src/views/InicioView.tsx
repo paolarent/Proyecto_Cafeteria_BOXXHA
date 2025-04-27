@@ -11,6 +11,12 @@ const InicioView = () => {
     const navigate = useNavigate();
     const { scrollToMenu, menuRef, inicioRef } = useMenuContext();
 
+    {/* ATAJO DE FRAPPES */}
+    type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
+    const irASabores = (tipo: TipoBebida, nombre: string) => {
+        navigate(`/sabores/${tipo}/${nombre}`);
+    };
+
     return (
         <div className="h-screen overflow-y-scroll snap-y snap-mandatory">
             <div ref={inicioRef}></div>
@@ -98,8 +104,8 @@ const InicioView = () => {
                         </button>
                     </div>
 
-                    {/*Frappés*/}
-                    <div onClick={() => navigate("/frappes")} className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
+                    {/*Frappés (VA DIRECTAMENTE A SABORES PQ NO HAY SUBCATEGORIA DE PRODUCTOS AQUI)*/}
+                    <div onClick={() => irASabores("frappe", "frappé")} className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
                         <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
                             group-hover:bg-[#424141] group-hover:text-white mb-2">
                             Frappés

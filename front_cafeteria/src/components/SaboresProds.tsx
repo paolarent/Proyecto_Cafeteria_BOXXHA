@@ -3,7 +3,7 @@ import NavBar from "../components/NavBar";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
-import regular from "../assets/sabores/regular.png";
+import clasico from "../assets/sabores/regular.png";
 import cortado from "../assets/sabores/cortado.png";
 import affogato from "../assets/sabores/affogato.png"
 import maracuya from "../assets/sabores/maracuya.png";
@@ -43,6 +43,8 @@ import pay_clasico from "../assets/sabores/pay_clasico.png";
 import pay_lotus from "../assets/sabores/pay_lotus.png";
 import pay_frutosr from "../assets/sabores/pay_frutosr.png";
 import pay_tortuga from "../assets/sabores/pay_tortuga.png";
+import taro from "../assets/sabores/taro.png";
+import chocolate from "../assets/sabores/chocolate.png"
 
 type SaboresMap = {
     [key: string]: {
@@ -61,27 +63,31 @@ type ImagenMap = {
 const imagenesSabores: ImagenMap = {
     caliente: {
         espresso: {
-            "Regular": regular,
+            "Clásico": clasico,
             "Cortado": cortado,
             "Affogato": affogato
         },
 
-        //americano: {
-        //    "Regular": regular
-        //},
+        americano: {
+            "Clásico": clasico
+        },
 
         latte: {
-            "Regular": regular,
+            "Clásico": clasico,
             "Caramelo": caramelo,
             "Vainilla": vainilla,
             "Avellana": avellana,
             "Moka": moka,
             "Moka Blanco": moka_blanco,
-            "Dulce de leche": dulce_leche
+            "Cajeta": dulce_leche
+        },
+
+        cappuccino: {
+            "Clásico": clasico
         },
 
         chai: {
-            "Regular": chai,
+            "Clásico": chai,
             "Dirty Chai": dirty_chai
         },
 
@@ -94,39 +100,35 @@ const imagenesSabores: ImagenMap = {
         },
 
         matcha: {
-            "Regular": matcha,
+            "Clásico": matcha,
             "Caramelo": caramelo,
             "Raffaello": raffaello
+        },
+
+        chocolate: {
+            "Clásico": chocolate
         }
     },
 
     frio: {
         latte: {
-            "Regular": regular,
+            "Clásico": clasico,
             "Caramelo": caramelo,
             "Vainilla": vainilla,
             "Avellana": avellana,
             "Moka": moka,
             "Moka Blanco": moka_blanco,
-            "Dulce de leche": dulce_leche
-        },
-
-        frappe: {
-            "Frappuccino": regular,
-            "Strawberry Cream": fresa,
-            "Oreo": oreo,
-            "Nutella": nutella,
-            "Raffaello": raffaello
+            "Cajeta": dulce_leche
         },
 
         americano: {
-            "Regular": regular,
+            "Clásico": clasico,
             "Limon": limon,
             "Gin Ale": gin_ale
         },
 
         matcha: {
-            "Regular": matcha,
+            "Clásico": matcha,
             "Caramelo": caramelo,
             "Raffaello": raffaello,
             "Pasion Fruit": maracuya,
@@ -134,7 +136,7 @@ const imagenesSabores: ImagenMap = {
         },
 
         chai: {
-            "Regular": chai,
+            "Clásico": chai,
             "Dirty Chai": dirty_chai
         },
 
@@ -144,6 +146,29 @@ const imagenesSabores: ImagenMap = {
             "Maracuya Green Tea": maracuya_gt,
             "Strawberry Black Tea": strawberry_bt,
             "Tisana Berry": tisana_be
+        },
+
+        taro: {
+            "Clásico": taro
+        }
+    },
+
+    frappe: {    
+        frappé: {
+            "Frappuchino": clasico, 
+            "Latte Caramelo": caramelo, 
+            "Latte Vainilla": vainilla, 
+            "Latte Avellana": avellana, 
+            "Latte Moka": moka, 
+            "Latte Moka Blanco": moka_blanco, 
+            "Latte Cajeta": dulce_leche, 
+            "Oreo": oreo, 
+            "Strawberry Cream": fresa, 
+            "Nutella": nutella, 
+            "Taro": taro, 
+            "Chai": chai, 
+            "Dirty Chai": dirty_chai, 
+            "Matcha": matcha
         }
     },
 
@@ -174,47 +199,41 @@ const imagenesSabores: ImagenMap = {
             "Frutos Rojos": pay_frutosr,
             "Tortuga": pay_tortuga
         }
-    },
-
-    nuevo: {    //NINGUNO DE LOS NUEVOS TIENE SABORES, IRIAN DIRECTAMENTE AL TAMAÑO Y SI APLICA, NO IMAGENES
-
     }
 };
 
 const saboresPorTipoYNombreProducto: SaboresMap = {
     caliente: {
-        espresso: ["Regular", "Cortado", "Affogato"],
-        //americano: ["Regular"],
-        latte: ["Regular", "Caramelo", "Vainilla", "Avellana", "Moka", "Moka Blanco", "Dulce de leche"],
-        //cappuccino: no tiene sabores, solo el regular/tradicional
-        chai: ["Regular", "Dirty Chai"],
+        espresso: ["Clásico", "Cortado", "Affogato"],
+        americano: ["Clásico"],
+        latte: ["Clásico", "Caramelo", "Vainilla", "Avellana", "Moka", "Moka Blanco", "Cajeta"],
+        cappuccino: ["Clásico"],
+        chai: ["Clásico", "Dirty Chai"],
         té: ["Té Verde", "Té Negro", "Maracuya Green Tea", "Strawberry Black Tea", "Tisana Berry"],
-        matcha: ["Regular", "Caramelo", "Raffaello"]
-        //chocolate no tiene sabores
+        matcha: ["Clásico", "Caramelo", "Raffaello"],
+        chocolate: ["Clásico"]
     },
 
     frio: {
-        latte: ["Regular", "Caramelo", "Vainilla", "Avellana", "Moka", "Moka Blanco", "Dulce de leche"],
-        frappe: ["Frappuccino", "Strawberry Cream", "Oreo", "Nutella", "Raffaello"],
-        americano: ["Regular", "Limon", "Gin Ale", ],
-        matcha: ["Regular", "Caramelo", "Raffaello", "Pasion Fruit", "Coconut"],
-        chai: ["Regular", "Dirty Chai"],
-        té: ["Té Verde", "Té Negro", "Maracuya Green Tea", "Strawberry Black Tea", "Tisana Berry"]
-        //taro: solo es el regular, no hay sabores en el menú
+        latte: ["Clásico", "Caramelo", "Vainilla", "Avellana", "Moka", "Moka Blanco", "Cajeta"],
+        americano: ["Clásico", "Limon", "Gin Ale", ],
+        matcha: ["Clásico", "Caramelo", "Raffaello", "Pasion Fruit", "Coconut"],
+        chai: ["Clásico", "Dirty Chai"],
+        té: ["Té Verde", "Té Negro", "Maracuya Green Tea", "Strawberry Black Tea", "Tisana Berry"],
+        taro: ["Clásico"]
+    },
+
+    frappe: {        
+        frappé: ["Frappuchino", "Latte Caramelo", "Latte Vainilla", "Latte Avellana", "Latte Moka", 
+            "Latte Moka Blanco", "Latte Cajeta", "Oreo", "Strawberry Cream", "Nutella", "Taro", "Chai", "Dirty Chai", "Matcha"]
     },
 
     postre: {
-        roles: ["Clasico", "Nuez", "Ferrero Rocher", "Lotus", "Kinder Bueno"],
+        roles: ["Clásico", "Nuez", "Ferrero Rocher", "Lotus", "Kinder Bueno"],
         galletas: ["Chocolate", "Alfajor", "Red Velvet"],
         pasteles: ["Zanahoria", "Chocolate", "Red Velvet"],
         pays: ["Cheesecake clasico", "Lotus", "Frutos Rojos", "Tortuga"]
-    },
-
-    nuevo: {        //NINGUNO DE LOS NUEVOS TIENE SABORES, IRIAN DIRECTAMENTE AL TAMAÑO Y SI APLICA
-        //irlandes
-        //frappe lotus
-        //frappe caramelo
-    },
+    }
 };
 
 const SaboresProducto: React.FC = () => {
@@ -223,6 +242,36 @@ const SaboresProducto: React.FC = () => {
 
     //Verificamos si los valores de tipo y nombre existen en los datos
     const sabores = saboresPorTipoYNombreProducto[tipo as string]?.[nombre?.toLowerCase() || ""] || [];
+
+    const handleSaborClick = (tipo: string, nombre: string, sabor?: string) => {
+        let tipoLower = tipo.toLowerCase();
+        let nombreLower = nombre.toLowerCase();
+        let saborFinal = sabor;
+    
+        //El plan es que asigne sabor Regular a los productos q no tienen sabor, asigna regular
+        if (!saborFinal) {
+            if (
+                (tipoLower === "caliente" && (nombreLower === "americano" || nombreLower === "cappuccino" || nombreLower === "chocolate")) ||
+                (tipoLower === "frio" && nombreLower === "taro")
+                //(tipoLower === "frappe" && nombreLower === "frappé") //los frappes si tienen sabor pero el tipo y el nombre viene siendo lo mismo
+            ) {
+                saborFinal = "Regular";
+            }
+        }
+
+        //Redirecciones especiales dependiendo de lo que sigue de sabores
+        if (tipoLower === "caliente" && nombreLower === "espresso") {   //el espresso tiene medida "fija", asi q no va a tamaño
+            navigate("/decaf_regular");             //si es espresso se salta el tamaño y va a elegir el cafe 
+        } else if (tipoLower === "caliente" && nombreLower === "espresso") {
+            navigate("/");
+        } else if (tipoLower === "postre") {            //TEMPORAL, el postre llega hasta el sabor
+            navigate("/resumen");
+        } else {
+            //Todos los productos menos los postres y el espresso van a tamaño
+            navigate("/pedido_tamano");
+        }
+    };
+    
 
     if (sabores.length === 0) {
         return <p>No se encontraron sabores disponibles para {nombre} en tipo {tipo}.</p>;
@@ -258,11 +307,11 @@ const SaboresProducto: React.FC = () => {
 
                     <div className="flex flex-wrap justify-center gap-10 w-full px-8">
                         {sabores.map((sabor, idx) => (
-                            <div className="relative z-10 bg-[#ffffff] px-5 py-5 rounded-2xl border border-black border-2 transition-transform duration-300 hover:scale-105">
-                                <div 
-                                    
-
-                                    className="group flex flex-col items-center w-[200px] h-[250px]">
+                            <div 
+                                //LLAMAR A LA FUNCION PARA REDIRIGIR DEPENDIENDO DEL CONTEXTO
+                                onClick={() => handleSaborClick(tipo!, nombre!, sabor)}
+                                className="relative z-10 bg-[#ffffff] px-5 py-5 rounded-2xl border border-black border-2 transition-transform duration-300 hover:scale-105">
+                                <div className="group flex flex-col items-center w-[200px] h-[250px]">
                                     <img 
                                         src={imagenesSabores[tipo as string]?.[nombre?.toLowerCase() || ""]?.[sabor] || ""}
                                         alt={sabor}

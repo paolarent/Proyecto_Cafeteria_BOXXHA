@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const MenuBebidasCalView = () => {
     const navigate = useNavigate();
-    type TipoBebida = 'caliente' | 'frio' | 'postre' | 'nuevo';
+    type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
     const irASabores = (tipo: TipoBebida, nombre: string) => {
         navigate(`/sabores/${tipo}/${nombre}`);
     };
@@ -35,7 +35,7 @@ const MenuBebidasCalView = () => {
                         </div>
 
                         {/* AMERICANO */}
-                        <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                        <div onClick={() => irASabores("caliente", "americano")} className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
                             <img className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" />
                             <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
                                 group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]">
@@ -53,7 +53,7 @@ const MenuBebidasCalView = () => {
                         </div>
 
                         {/* CAPPUCCINO */}
-                        <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                        <div onClick={() => irASabores("caliente", "cappuccino")} className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
                             <img className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" />
                             <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
                                 group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]">
@@ -89,7 +89,7 @@ const MenuBebidasCalView = () => {
                         </div>
 
                         {/* CHOCOLATE */}
-                        <div className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
+                        <div onClick={() => irASabores("caliente", "chocolate")} className="group flex flex-col items-center transition-transform duration-300 hover:scale-105">
                             <img className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2" />
                             <button className="w-full font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-80 
                                 group-hover:bg-[#f0eceb] group-hover:text-[#38241c] rounded-[10px]">

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const MenuPostresView = () => {
     const navigate = useNavigate();
-    type TipoBebida = 'caliente' | 'frio' | 'postre' | 'nuevo';
+    type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
     const irASabores = (tipo: TipoBebida, nombre: string) => {
         navigate(`/sabores/${tipo}/${nombre}`);
     };
