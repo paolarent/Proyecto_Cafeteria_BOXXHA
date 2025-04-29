@@ -1,7 +1,7 @@
 // src/controllers/productController.ts
 
 import { Request, Response } from "express";
-import { getBebidasCalientes, getBebidasFrias, getFrappes, getExtras, getPostres, getLeches, getTamanos, getSaboresCategoria } from "../services/productService";
+import { getBebidasCalientes, getBebidasFrias, getFrappes, getExtras, getPostres, getLeches, getTamanos, getCategoriasGenerico, getSaboresGenerico } from "../services/productService";
 
 export const getBebCalientes = async (req: Request, res: Response) => {
     try {
@@ -12,15 +12,34 @@ export const getBebCalientes = async (req: Request, res: Response) => {
     }
 }
 
-export const getSabores = async (req: Request, res: Response) => {
+export const getSabores = async (req: Request, res: Response): Promise<void> => {
+    const { tabla } = req.params;
+    const nombre = req.query.nombre as string;
+
+    if (!nombre){
+        res.status(400).json({error: "Falta el parámetro nombre"});
+    }
+
     try {
-        const { categoria } = req.params;
-        const sabores = await getSaboresCategoria(categoria);
-        res.json(sabores); 
+        const sabores = await getSaboresGenerico(tabla, nombre);
+        res.json(sabores);
     } catch (error){
         res.status(500).json({error: "Error al obtener sabores"});
-    } 
-}
+    }
+};
+
+// Se usa el promise<void> para indicar que la función no devuelve nada
+export const getCategorias = async (req: Request, res: Response): Promise<void> => {
+    const { tabla } = req.params;
+
+    try {
+        const categorias = await getCategoriasGenerico(tabla);
+        res.json(categorias);
+    }
+    catch (error) {
+        res.status(500).json({error: "Error al obtener categorias"});
+    }
+};
 
 export const getBebFrias = async (req: Request, res: Response) => {
     try {

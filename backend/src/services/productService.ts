@@ -11,16 +11,49 @@ export const getBebidasCalientes = async () => {
   });
 };
 
-export const getCategoriasCalientes = async () => {
-    return prisma.bebcaliente.findMany({
+export const getCategoriasGenerico = async (tabla: string) => {
+    const tablasPermitidas: Record<string, any> = {
+        'bebcaliente': prisma.bebcaliente,
+        'bebfria': prisma.bebfria,
+        'frappe': prisma.frappe,
+        'postre': prisma.postre
+    };
+
+    const modelo = tablasPermitidas[tabla as keyof typeof tablasPermitidas];
+
+    if (!modelo){
+        throw new Error('Tabla no válida');
+    }
+
+    return modelo.findMany({
         distinct: ['nombre'],
         select: { nombre: true}
     });
 };
 
-export const getSaboresCategoria = async (nombre: string) => {
-    return prisma.bebcaliente.findMany({
-        where: { nombre },
+// Sirve para obtener los sabores de cualquier producto de cualquier tabla
+// Se le pasa el nombre de la tabla y el nombre del producto
+export const getSaboresGenerico = async (tabla: string, nombre: string) => {
+    const tablasPermitidas: Record<string, any> = {
+        'bebcaliente': prisma.bebcaliente,
+        'bebfria': prisma.bebfria,
+        'frappe': prisma.frappe,
+        'postre': prisma.postre
+    };
+
+    const modelo = tablasPermitidas[tabla as keyof typeof tablasPermitidas];
+
+    if (!modelo){
+        throw new Error('Tabla no válida');
+    }
+
+    return modelo.findMany({
+        where: {
+            nombre:{
+                equals: nombre
+            } 
+        },
+        distinct: ['sabor'],
         select: { sabor: true }
     });
 };

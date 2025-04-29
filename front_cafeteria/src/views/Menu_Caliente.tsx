@@ -1,10 +1,24 @@
 import NavBar from "../components/NavBar";
 import { useNavigate } from "react-router-dom";
 //import { usePedido } from "../contexts/PedidoContext";
-
+import { getCategoria } from "../services/productService";
+import { useEffect, useState } from "react";
 
 const MenuBebidasCalView = () => {
+    const [categorias, setCategorias] = useState<string[]>([]);
+
     const navigate = useNavigate();
+    useEffect(() => {
+        const fetchCategorias = async () => {
+          const data = await getCategoria("bebcaliente");
+          if (data) {
+            const nombres = data.map((item: { nombre: string }) => item.nombre);
+            setCategorias(nombres);
+          }
+        };
+        fetchCategorias();
+      }, []);
+      
     //const { actualizarPedido } = usePedido(); //Para capturar el pedido
     type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
     const irASabores = (tipo: TipoBebida, nombre: string) => {
