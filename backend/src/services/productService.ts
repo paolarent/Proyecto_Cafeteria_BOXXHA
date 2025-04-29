@@ -11,6 +11,20 @@ export const getBebidasCalientes = async () => {
   });
 };
 
+export const getCategoriasCalientes = async () => {
+    return prisma.bebcaliente.findMany({
+        distinct: ['nombre'],
+        select: { nombre: true}
+    });
+};
+
+export const getSaboresCategoria = async (nombre: string) => {
+    return prisma.bebcaliente.findMany({
+        where: { nombre },
+        select: { sabor: true }
+    });
+};
+
 export const getBebidasFrias = async () => {
     return prisma.bebfria.findMany({
       select: {
