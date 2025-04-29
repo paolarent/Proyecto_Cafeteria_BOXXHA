@@ -122,9 +122,11 @@ const MenuBoxxha = () => {
                             <div className="w-80 h-80 bg-gray-300 rounded-2xl"></div>
                             <div>
                                 <h3 className="font-bold text-3xl">FRAPPÉ</h3> <br></br>
-                                <p className="text-xl"><span className="font-bold">Sabores:</span> Frappuccino, </p>
-                                <p className="text-xl">Oreo, Nutella, Raffaello,</p>
-                                <p className="text-xl">Strawberry Cream</p>  <br></br> 
+                                <p className="text-md"><span className="font-bold text-xl">Sabores:</span>  Frappuccino, Oreo</p>
+                                <p className="text-md">Nutella, Taro, Matcha, Strawberry</p>
+                                <p className="text-md">Cream, Chai, Dirty Chai, Latte (Vainilla,</p> 
+                                <p className="text-md">Caramelo, Moka, Moka Blanco,</p>
+                                <p className="text-md">Avellana, Cajeta)</p> <br></br>
                                 <p className="text-xl"><span className="font-bold">Tamaño:</span> 12 y 16 OZ</p> <br></br>
                                 <p className="text-xl"><span className="font-bold">Presentación:</span> Frío</p> <br></br>
                                 <p className="text-xl"><span className="font-bold">Precio base:</span> $90 - $95</p>

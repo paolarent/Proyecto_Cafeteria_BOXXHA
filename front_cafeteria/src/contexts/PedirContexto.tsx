@@ -7,15 +7,15 @@ interface MenuContextType {
     scrollToInicio: () => void;
 }
 
-// Añadimos `children` como un prop de tipo `ReactNode`
+//Añadimos `children` como un prop de tipo `ReactNode`
 interface MenuProviderProps {
     children: ReactNode;
 }
 
-// Crea el contexto
+//Crea el contexto
 const MenuContext = createContext<MenuContextType | undefined>(undefined);
 
-// Componente proveedor que envolverá tu aplicación
+//Componente proveedor que envuelve la aplicación
 export const MenuProvider: React.FC<MenuProviderProps> = ({ children }) => {
     const menuRef = useRef<HTMLDivElement | null>(null);
     const inicioRef = useRef<HTMLDivElement | null>(null);
