@@ -174,7 +174,7 @@ const imagenesSabores: ImagenMap = {
 
     postre: {
         roles: {
-            "Clasico": rol_clasico,
+            "Clásico": rol_clasico,
             "Nuez": rol_nuez,
             "Ferrero Rocher": rol_ferrero,
             "Lotus": rol_lotus,
