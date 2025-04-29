@@ -7,25 +7,59 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model bebcaliente {
+  id_bebcaliente   Int      @id 
+  nombre           String   @db.VarChar(15)
+  sabor            String   @db.VarChar(25)
+  precio_base      Float
+
+  detallepedido  detalle_pedido[]
+}
+
+model bebfria {
+  id_bebfria   Int      @id 
+  nombre       String   @db.VarChar(15)
+  sabor        String   @db.VarChar(25)
+  precio_base  Float
+
+  detallepedido  detalle_pedido[]
+}
+
 model detalle_pedido {
   id_detalle           Int                   @id
   id_pedido            Int
-  id_producto          Int
-  cantidad             Int
-  precio_unitario      Float                 @db.Float
-  subtotal             Float                 @db.Float
+  id_bebcaliente       Int?
+  id_bebfria           Int?
+  id_frappe            Int?
+  id_postre            Int?
+  id_tamano            Int
+  regular              Boolean?
+  id_leche             Int?
+  total                Float?
+  
   pedido               pedido                @relation(fields: [id_pedido], references: [id_pedido], onDelete: NoAction, onUpdate: NoAction, map: "fk_pedido_detalleped")
-  producto             producto              @relation(fields: [id_producto], references: [id_producto], onDelete: NoAction, onUpdate: NoAction, map: "fk_producto_detalleped")
+  bebcaliente          bebcaliente?          @relation(fields: [id_bebcaliente], references: [id_bebcaliente], map: "fk_bebidac_detalleped")
+  bebfria              bebfria?              @relation(fields: [id_bebfria], references: [id_bebfria], map: "fk_bebidaf_detalleped")
+  frappe               frappe?               @relation(fields: [id_frappe], references: [id_frappe], map: "fk_frappe_detalleped")
+  postre               postre?               @relation(fields: [id_postre], references: [id_postre], map: "fk_postre_detalleped")
+  tamano               tamano?               @relation(fields: [id_tamano], references: [id_tamano],  map: "fk_tamano_detalleped")
+  leche                leche?                @relation(fields: [id_leche], references: [id_leche],  map: "fk_leche_detalleped")
 
   @@index([id_pedido], map: "fk_pedido_detalleped_idx")
-  @@index([id_producto], map: "fk_producto_detalleped_idx")
+  @@index([id_bebcaliente], map: "fk_bebidac_detalleped_idx")
+  @@index([id_bebfria], map: "fk_bebidaf_detalleped_idx")
+  @@index([id_frappe], map: "fk_frappe_detalleped_idx")
+  @@index([id_postre], map: "fk_postre_detalleped_idx")
+  @@index([id_tamano], map: "fk_tamano_detalleped_idx")
+  @@index([id_leche], map: "fk_leche_detalleped_idx")
+
   detalleextra         detalle_extra[]
 }
 
 model extra {
   id_extra             Int                    @id
   nombre               String                 @db.VarChar(25)
-  precio               Float                  @db.Float
+  precio_extra         Float                  @db.Float
 
   detalleextra         detalle_extra[]
 }
@@ -44,13 +78,28 @@ model detalle_extra {
   @@index([id_extra], map: "fk_extra_detalle_extra_idx")
 }
 
+model frappe {
+  id_frappe       Int       @id
+  nombre          String    @db.VarChar(15)
+  sabor           String    @db.VarChar(25)
+  precio_base     Float
+
+  detallepedido  detalle_pedido[]
+}
+
+model leche {
+  id_leche        Int       @id
+  nombre          String    @db.VarChar(25)
+  precio_leche    Float
+
+  detallepedido detalle_pedido[]
+}
 
 model notificacion {
   id_notificacion Int                 @id
   id_pedido       Int
   mensaje         String              @db.VarChar(50)
-  status          notificacion_status
-  fecha           DateTime            @default(now()) @db.Timestamp(0)
+
   pedido          pedido              @relation(fields: [id_pedido], references: [id_pedido], onDelete: NoAction, onUpdate: NoAction, map: "fk_pedido_notif")
 
   @@index([id_pedido], map: "fk_pedido_notif_idx")
@@ -83,12 +132,21 @@ model pedido {
   @@index([id_usuario], map: "id_usuario_idx")
 }
 
-model producto {
-  id_producto     Int                @id
-  nombre          String             @db.VarChar(20)
-  tipo_prod       producto_tipo_prod
-  precio          Float              @db.Float
-  detalle_pedido  detalle_pedido[]
+model postre {
+  id_postre       Int               @id
+  nombre          String            @db.VarChar(15)
+  sabor           String            @db.VarChar(25)
+  precio_base     Float
+
+  detallepedido   detalle_pedido[]
+}
+
+model tamano {
+  id_tamano       Int               @id 
+  nombre          String            @db.VarChar(4)
+  precio_tamano   Float
+  
+  detallepedido   detalle_pedido[]
 }
 
 model usuario {
@@ -109,19 +167,6 @@ model usuario {
 enum pago_metodo_pago {
   tarjeta
   efectivo
-}
-
-enum producto_tipo_prod {
-  bebidac
-  bebidaf
-  postre
-  nuevo
-}
-
-enum notificacion_status {
-  pendiente
-  enviado
-  leido
 }
 
 enum pedido_status {

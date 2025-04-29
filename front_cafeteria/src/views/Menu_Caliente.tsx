@@ -1,11 +1,14 @@
 import NavBar from "../components/NavBar";
 import { useNavigate } from "react-router-dom";
+//import { usePedido } from "../contexts/PedidoContext";
 
 
 const MenuBebidasCalView = () => {
     const navigate = useNavigate();
+    //const { actualizarPedido } = usePedido(); //Para capturar el pedido
     type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
     const irASabores = (tipo: TipoBebida, nombre: string) => {
+        //actualizarPedido({ tipo, nombre });
         navigate(`/sabores/${tipo}/${nombre}`);
     };
 

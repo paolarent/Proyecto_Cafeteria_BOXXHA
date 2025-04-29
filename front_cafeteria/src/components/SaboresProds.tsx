@@ -46,6 +46,8 @@ import pay_tortuga from "../assets/sabores/pay_tortuga.png";
 import taro from "../assets/sabores/taro.png";
 import chocolate from "../assets/sabores/chocolate.png"
 
+//import { usePedido } from "../contexts/PedidoContext";
+
 type SaboresMap = {
     [key: string]: {
         [producto: string]: string[];
@@ -239,6 +241,7 @@ const saboresPorTipoYNombreProducto: SaboresMap = {
 const SaboresProducto: React.FC = () => {
     const { tipo, nombre } = useParams(); //Usamos useParams para obtener los parámetros de la URL de la ruta
     const navigate = useNavigate();
+    //const { actualizarPedido } = usePedido(); //Para capturar el pedido
 
     //Verificamos si los valores de tipo y nombre existen en los datos
     const sabores = saboresPorTipoYNombreProducto[tipo as string]?.[nombre?.toLowerCase() || ""] || [];
@@ -258,6 +261,12 @@ const SaboresProducto: React.FC = () => {
                 saborFinal = "Regular";
             }
         }
+
+        // Contexto para llevar seguimiento del pedido
+        /*actualizarPedido({
+            nombre: nombreLower,
+            sabor: saborFinal
+        });*/
 
         //Redirecciones especiales dependiendo de lo que sigue de sabores
         if (tipoLower === "caliente" && nombreLower === "espresso") {   //el espresso tiene medida "fija", asi q no va a tamaño
