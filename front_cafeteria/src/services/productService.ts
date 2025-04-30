@@ -11,3 +11,20 @@ export const getCategoria = async (tabla: string) => {
     }
 };
 
+export const getSabor = async (tabla: string, nombre: string) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/${tabla}/sabores?nombre=${nombre}`);
+        return response.data;
+    } catch (error){
+        console.error("Error al obtener sabores: ", error);
+    }
+}
+
+export const getProductos = async (tabla: string) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/${tabla}`);
+        return response.data;
+    } catch (error){
+        console.error("Error al obtener productos: ", error);
+    }
+}

@@ -6,7 +6,7 @@ import icon_carrito from "../assets/icon_carrito.png";
 import AboutUsModal from "../components/ModalAU";
 import { useNavigate } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"; //Iconos para el menu responsive
-import { useMenuContext } from '../contexts/PedirContexto';
+import { useMenuContext } from '../contexts/ScrollContexto';
 import { UserMenu } from "../components/DD_DatosUsuario"; 
 import { CambiarContraModal } from "../components/ActualizarContra";
 import { CambiarDatosModal } from "../components/ActualizarDUser";

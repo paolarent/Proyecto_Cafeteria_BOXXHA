@@ -20,6 +20,13 @@ const productos = [
     tamano: "12 OZ",
     leche: "Entera",
     extras: ["+2 Azucar"]
+    },
+    {
+        nombre: "Americano",
+        sabor: "Limon",
+        tamano: "12 OZ",
+        leche: "Entera",
+        extras: ["+2 Azucar"]
     }
 
 ];
@@ -31,6 +38,7 @@ const tarjeta = {
     cvv:""
 };
 
+{/* Ruta /resumen */}
 const Resumen_CompraView = () => {
     const [metodo, setMetodo] = useState('efectivo');
     const [mensaje, setMensaje] = useState("");
@@ -80,9 +88,9 @@ const Resumen_CompraView = () => {
 
                 {/*Sección derecha para los formularios */}
                 <section className="flex flex-col w-1/2  bg-[#947666] p-12 gap-14">
+                    {/*Mapa con Dirección Boxxha Café*/}
                     <div className="flex flex-col bg-white w-full shadow-xl h-full rounded-2xl justify-left p-8">
                         <h2 className="font-Montserrat font-bold text-3xl text-left text-[#34251d] pb-4"> Método de pago</h2>
-                        {/*Cambiar esta label por una combobox */}
                             <select onChange={(e) => setMetodo(e.target.value)}className="font-Montserrat font-regular text-left text-[#34251d] w-3/4 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold">
                                 <option>Efectivo</option>
                                 <option>Tarjeta Mastercard/Visa</option>
@@ -96,7 +104,7 @@ const Resumen_CompraView = () => {
                                         placeholder="xxxx-xxxx-xxxx-xxxx"
                                 />
                                 {/*Sección para la fecha de vencimiento y codigo cvv */}
-                                <div className="w-full flex flex-row pt-4">
+                                <div className="w-full flex flex-row pt-4 font-Montserrat">
                                     <div className="Relative flex flex-col w-1/2">
                                         <h2 className="font-Montserrat font-semibold text-xl text-left text-[#34251d]">Fecha de Vencimiento</h2>
                                         <input
@@ -114,12 +122,14 @@ const Resumen_CompraView = () => {
                                         />
                                     </div>
                                 </div> 
-                                <h2 className="font-Montserrat font-semibold text-xl text-left text-[#34251d] pt-4">Nombre del titular</h2>
+                                <h2 className="font-semibold text-xl text-left text-[#34251d] pt-4">Nombre del titular</h2>
                                 <input
                                         type="text"
-                                        className="font-Montserrat font-regular w-3/4 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        className=" font-regular w-3/4 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                         placeholder="José Romulo Sosa Ortíz"
                                 />
+                                <button className="w-1/2 bg-white rounded-2xl">
+                                Realizar pago</button>
                             </div>
                         )}
                     </div>
@@ -134,7 +144,6 @@ const Resumen_CompraView = () => {
                                 Blvd. Macapule 2589, Viñedos, 81228 Los Mochis, Sin.
                             </p>
                         </div>
-                        {/*Mapa con Dirección Boxxha Café*/}
                         <div className="flex flex-col w-full">
                             <iframe 
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d897.8664617336078!2d-108.98246811785354!3d25.821190637920285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ba2900647132dd%3A0xc09c4a8f6a0e69cf!2scafeteria%20boxxha!5e0!3m2!1ses-419!2smx!4v1745380050009!5m2!1ses-419!2smx" 

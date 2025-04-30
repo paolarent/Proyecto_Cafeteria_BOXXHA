@@ -5,7 +5,7 @@ import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import { motion } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
-import { useMenuContext } from '../contexts/PedirContexto';
+import { useMenuContext } from '../contexts/ScrollContexto';
 
 const InicioView = () => {
     const navigate = useNavigate();

@@ -28,7 +28,7 @@ const RegistroView = () => {
         contra: "",
         confirmContra: "",
     });
-
+    // Cambiar el regex del telefono 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const telefonoRegex = /^([0-9]{5})+(-)+([0-9]{6})$/;
 
@@ -127,16 +127,16 @@ const RegistroView = () => {
                     </section>
 
                     <section className="w-1/2 flex items-center justify-center">
-                        <div className="bg-white p-8 rounded-xl shadow-md w-[500px] h-[460px]">
-                            <h2 className="text-4xl font-Montserrat font-bold text-[#453126] mb-4 text-center">Registrarse</h2>
+                        <div className="bg-white p-6 rounded-xl shadow-md w-[450px] h-[530px]">
+                            <h2 className="text-4xl font-Montserrat font-bold text-[#453126] mb-2 text-center">Registrarse</h2>
                             <form className="space-y-4" onSubmit={handleSubmit}>
                                 {/* Parte de seleccionar forma de registro y su input-text */}
                                 <div className="grid grid-cols-2 gap-4">
-                                    <label className="col-span-2 block text-l text-[#453126] text-center">
+                                    <label className="col-span-2 block text-md text-[#453126] text-center">
                                         Elija una forma de identificarse:
                                     </label>
                                     
-                                    <div>
+                                    <div className="text-md">
                                         <select 
                                             value={formaContacto}
                                             onChange={(e) => setFormaContacto(e.target.value)}
@@ -153,8 +153,8 @@ const RegistroView = () => {
                                         type="text"
                                         value={correoTel}
                                         onChange={(e) => setCorreoTel(e.target.value)}
-                                        className={`w-full mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] 
-                                         ${errores.contra ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full mt-0 px-3 py-2 text-md border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] 
+                                        ${errores.contra ? 'border-red-500' : 'border-gray-300'}`}
                                         placeholder="Email o Télefono"
                                         />
                                         {errores.correoTel && <p className="text-red-500 text-xs">{errores.correoTel}</p>}
@@ -162,75 +162,77 @@ const RegistroView = () => {
                                 </div>
 
                                 {/* Nombre y Apellido */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                    <label className="block text-l text-[#453126] mb-1">Nombre:  <span className="text-red-500">*</span> </label>
+                                <div>
+                                    {/*<label className="block text-md text-[#453126] mb-1">Nombre:  <span className="text-red-500">*</span> </label>*/}
                                     <input
                                         type="text"
                                         value={nombre}
                                         onChange={(e) => setNombre(e.target.value)}
                                         className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
                                         ${errores.nombre ? 'border-red-500' : 'border-gray-300'}`}
+                                        placeholder="Nombre:"
                                     />
-                                    </div>
-                                    <div>
-                                    <label className="block text-l text-[#453126] mb-1">Apellido:  <span className="text-red-500">*</span> </label>
+                                </div>
+
+                                <div>
+                                    {/*<label className="block text-md text-[#453126] mb-1">Apellido:  <span className="text-red-500">*</span> </label>*/}
                                     <input
                                         type="text"
                                         value={apellido}
                                         onChange={(e) => setApellido(e.target.value)}
                                         className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
                                         ${errores.apellido ? 'border-red-500' : 'border-gray-300'}`}
+                                        placeholder="Apellido:"
                                     />
-                                    </div>
+                                </div>
+
+                                <div>
+                                    {/*<label className="block text-md text-[#453126] mb-1">Nombre de Usuario:  <span className="text-red-500">*</span> </label>*/}
+                                    <input
+                                    type="text"
+                                    value={usuario}
+                                    onChange={(e) => setUsuario(e.target.value)}
+                                    className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                    ${errores.usuario ? 'border-red-500' : 'border-gray-300'}`}
+                                    placeholder="Nombre de Usuario:"
+                                    />
                                 </div>
 
                                 {/* Contraseña y Nombre de Usuario */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-l text-[#453126] mb-1">Contraseña:  <span className="text-red-500">*</span> </label>
-                                        <input
-                                        type="password"
-                                        value={contra}
-                                        onChange={(e) => setContra(e.target.value)}
-                                        className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
-                                        ${errores.contra ? 'border-red-500' : 'border-gray-300'}`}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-l text-[#453126] mb-1">Nombre de Usuario:  <span className="text-red-500">*</span> </label>
-                                        <input
-                                        type="text"
-                                        value={usuario}
-                                        onChange={(e) => setUsuario(e.target.value)}
-                                        className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
-                                        ${errores.usuario ? 'border-red-500' : 'border-gray-300'}`}
-                                        />
-                                    </div>
+                                <div>
+                                    {/*<label className="block text-md text-[#453126] mb-1">Contraseña:  <span className="text-red-500">*</span> </label>*/}
+                                    <input
+                                    type="password"
+                                    value={contra}
+                                    onChange={(e) => setContra(e.target.value)}
+                                    className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                    ${errores.contra ? 'border-red-500' : 'border-gray-300'}`}
+                                    placeholder="Contraseña:"
+                                    />
                                 </div>
 
-                                {/* Confirmar contraseña */}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-l text-[#453126] mb-1">Confirmar contraseña:  <span className="text-red-500">*</span> </label>
-                                        <input
-                                        type="password"
-                                        value={confirmContra}
-                                        onChange={(e) => setConfirmContra(e.target.value)}
-                                        className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
-                                        ${errores.confirmContra ? 'border-red-500' : 'border-gray-300'}`}
-                                        />
-                                        {errores.confirmContra && <p className="text-red-500 text-xs">{errores.confirmContra}</p>}
-                                    </div>
-
-                                    {/* Botón */}
-                                    <button
-                                        type="submit"
-                                        className="w-full mt-6 mb-2 px-3 py-3 bg-[#3B2B26] font-Montserrat font-semibold text-white rounded-md hover:bg-[#555655] transition-transform duration-300 hover:scale-105"
-                                    >
-                                        REGISTRARSE
-                                    </button>
+                                <div>
+                                    {/*<label className="block text-md text-[#453126] mb-1">Confirmar contraseña:  <span className="text-red-500">*</span> </label>*/}
+                                    <input
+                                    type="password"
+                                    value={confirmContra}
+                                    onChange={(e) => setConfirmContra(e.target.value)}
+                                    className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                    ${errores.confirmContra ? 'border-red-500' : 'border-gray-300'}`}
+                                    placeholder="Confirmar contraseña:"
+                                    />
+                                    {errores.confirmContra && <p className="text-red-500 text-xs">{errores.confirmContra}</p>}
+                                    
                                 </div>
+
+                                {/* Botón */}
+                                <button
+                                    type="submit"
+                                    className="w-full mt-6 mb-2 px-3 py-3 bg-[#3B2B26] font-Montserrat font-semibold text-white rounded-md hover:bg-[#555655] transition-transform duration-300 hover:scale-105"
+                                >
+                                    REGISTRARSE
+                                </button>
+                                    
                             </form>
                         </div>
                     </section>

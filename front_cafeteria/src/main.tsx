@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import AppRouter from './routes/sistRouter';
-import { MenuProvider } from '../src/contexts/PedirContexto';
+import { MenuProvider } from './contexts/ScrollContexto';
 import './index.css';
 import { PedidoProvider } from '../src/contexts/PedidoContext';
 
