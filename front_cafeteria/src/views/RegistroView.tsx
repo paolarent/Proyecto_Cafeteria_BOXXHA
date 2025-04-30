@@ -155,7 +155,8 @@ const RegistroView = () => {
                                         onChange={(e) => setCorreoTel(e.target.value)}
                                         className={`w-full mt-0 px-3 py-2 text-md border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] 
                                         ${errores.contra ? 'border-red-500' : 'border-gray-300'}`}
-                                        placeholder="Email o Télefono"
+                                        placeholder={formaContacto === "email" ? "nombre@correo.com" 
+                                            : formaContacto === "telefono" ? "### ### ####" : "Email o Teléfono" }
                                         />
                                         {errores.correoTel && <p className="text-red-500 text-xs">{errores.correoTel}</p>}
                                     </div>

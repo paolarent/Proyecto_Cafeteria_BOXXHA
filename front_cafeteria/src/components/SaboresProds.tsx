@@ -7,15 +7,18 @@ import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 import  saboresPorTipoYNombreProducto  from "../data/saboresPorTipo"; //Importamos los datos de sabores
 import  imagenesSabores  from "../data/imagenesSabores"; //Importamos los datos de imagenes
 
+import { getSabor } from "../services/productService"; 
+import { usePedido } from '../contexts/PedidoContext';
+
 const SaboresProducto: React.FC = () => {
     const { tipo, nombre } = useParams(); //Usamos useParams para obtener los parámetros de la URL de la ruta
     const navigate = useNavigate();
-    //const { actualizarPedido } = usePedido(); //Para capturar el pedido
+    const { actualizarPedido } = usePedido(); //Para capturar el pedido
 
     //Verificamos si los valores de tipo y nombre existen en los datos
     const sabores = saboresPorTipoYNombreProducto[tipo as string]?.[nombre?.toLowerCase() || ""] || [];
 
-    const handleSaborClick = (tipo: string, nombre: string, sabor?: string) => {
+    const handleSaborClick = async (tipo: string, nombre: string, sabor?: string) => {
         let tipoLower = tipo.toLowerCase();
         let nombreLower = nombre.toLowerCase();
         let saborFinal = sabor;
@@ -31,12 +34,28 @@ const SaboresProducto: React.FC = () => {
             }
         }
 
-        // Contexto para llevar seguimiento del pedido
-        /*actualizarPedido({
-            nombre: nombreLower,
-            sabor: saborFinal
-        });*/
-
+        try {
+            const response = await getSabor(tipoLower, nombreLower, saborFinal || "Regular");
+            const idProducto = response?.id; // asume que backend devuelve { id: number }
+    
+            // Guarda el ID en el contexto
+            actualizarPedido({ id_bebida: idProducto });
+    
+            // Lógica de navegación según el producto
+            if (tipoLower === "caliente" && nombreLower === "espresso" && saborFinal !== "Cortado") {
+                navigate("/resumen");
+            } else if (tipoLower === "caliente" && nombreLower === "espresso") {
+                navigate("/tipo_leche");
+            } else if (tipoLower === "postre") {
+                navigate("/resumen");
+            } else {
+                navigate("/pedido_tamano");
+            }
+        } catch (error) {
+            console.error("Error al obtener el ID del producto:", error);
+            // Podrías mostrar un mensaje de error aquí si quieres
+        }
+        
         //Redirecciones especiales dependiendo de lo que sigue de sabores
         if (tipoLower === "caliente" && nombreLower === "espresso" && saborFinal !== "Cortado" ) {   //el espresso tiene medida "fija", asi q no va a tamaño
             navigate("/resumen");             //si es espresso se salta el tamaño y va a elegir el cafe 

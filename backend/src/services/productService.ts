@@ -33,7 +33,7 @@ export const getCategoriasGenerico = async (tabla: string) => {
 
 // Sirve para obtener los sabores de cualquier producto de cualquier tabla
 // Se le pasa el nombre de la tabla y el nombre del producto
-export const getSaboresGenerico = async (tabla: string, nombre: string) => {
+export const getIdSaborPorProducto = async (tabla: string, nombre: string, sabor: string) => {
     const tablasPermitidas: Record<string, any> = {
         'bebcaliente': prisma.bebcaliente,
         'bebfria': prisma.bebfria,
@@ -43,20 +43,31 @@ export const getSaboresGenerico = async (tabla: string, nombre: string) => {
 
     const modelo = tablasPermitidas[tabla as keyof typeof tablasPermitidas];
 
-    if (!modelo){
+    if (!modelo) {
         throw new Error('Tabla no válida');
     }
 
-    return modelo.findMany({
+    const campoId = `id_${tabla}`; // Concatenar dinámicamente el nombre del campo
+
+    // Realiza la búsqueda y selecciona el campo id adecuado
+    const resultado = await modelo.findFirst({
         where: {
-            nombre:{
-                equals: nombre
-            } 
+            nombre: nombre,
+            sabor: sabor
         },
-        distinct: ['sabor'],
-        select: { sabor: true }
+        select: {
+            [campoId]: true // Usamos el campo dinámico
+        }
     });
+
+    if (!resultado) {
+        throw new Error(`No se encontró el sabor ${sabor} para el producto ${nombre} en la tabla ${tabla}`);
+    }
+
+    return resultado;
 };
+
+
 
 export const getBebidasFrias = async () => {
     return prisma.bebfria.findMany({

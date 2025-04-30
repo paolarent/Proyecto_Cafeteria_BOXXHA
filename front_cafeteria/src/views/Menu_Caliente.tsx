@@ -3,10 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { getCategoria } from "../services/productService";
 import { useEffect, useState } from "react";
 
+import { usePedido } from '../contexts/PedidoContext'; 
+
 const MenuBebidasCalView = () => {
     const [categorias, setCategorias] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const { actualizarPedido } = usePedido();
 
     useEffect(() => {
         const fetchCategorias = async () => {
@@ -22,6 +25,7 @@ const MenuBebidasCalView = () => {
 
     type TipoBebida = "caliente" | "frio" | "frappe" | "postre";
     const irASabores = (tipo: TipoBebida, nombre: string) => {
+        actualizarPedido({ tipo, nombre });
         navigate(`/sabores/${tipo}/${nombre}`);
     };
 

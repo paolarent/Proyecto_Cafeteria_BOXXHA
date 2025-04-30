@@ -1,6 +1,20 @@
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
+import frappe from "../assets/frappe.png";
+import rol from "../assets/postres.jpg";
+import galleta from "../assets/galleta.jpg";
+import pastel from "../assets/pastel.jpg";
+import pay from "../assets/pay.jpg";
+import latte from "../assets/beb_calientes.jpeg";
+import americano from "../assets/americano.jpeg";
+import espresso from "../assets/espresso.jpg";
+import cappuccino from "../assets/cappuccino.jpg";
+import chocolate from "../assets/chocolate.jpg";
+import te from "../assets/te.jpeg";
+import taro from "../assets/taro.jpg";
+import chai from "../assets/chai.jpg";
+import matcha from "../assets/matcha.jpg"
 
 const MenuBoxxha = () => {
     return(
@@ -41,7 +55,7 @@ const MenuBoxxha = () => {
 
                         {/* Tarjeta 1 */}
                         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center bg-white bg-opacity-80 p-4 rounded-2xl">
-                            <div className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"></div>
+                            <img src={espresso} className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl" />
                             <div className="text-center md:text-left">
                                 <h3 className="font-bold text-2xl md:text-3xl">ESPRESSO</h3> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Clásico,</p>
@@ -54,7 +68,7 @@ const MenuBoxxha = () => {
 
                         {/* Tarjeta 2 */}
                         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center bg-white bg-opacity-80 p-4 rounded-2xl">
-                            <div className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"></div>
+                            <img src={americano} className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl" />
                             <div className="text-center md:text-left">
                                 <h3 className="font-bold text-2xl md:text-3xl">AMERICANO</h3> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Clásico, Limón,</p>
@@ -67,12 +81,12 @@ const MenuBoxxha = () => {
 
                         {/* Tarjeta 3 */}
                         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center bg-white bg-opacity-80 p-4 rounded-2xl">
-                            <div className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"></div>
+                            <img src={latte} className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl" />
                             <div className="text-center md:text-left">
                                 <h3 className="font-bold text-2xl md:text-3xl">LATTE</h3> <br />
-                                <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Clásico, Caramelo,</p>
-                                <p className="text-md md:text-lg">Vainilla, Avellana, Moka,</p> 
-                                <p className="text-md md:text-lg">Moka Blanco, Cajeta</p> <br />
+                                <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Clásico, Moka,</p>
+                                <p className="text-md md:text-lg">Vainilla, Avellana, Cajeta,</p> 
+                                <p className="text-md md:text-lg">Moka Blanco, Caramelo</p> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Tamaño:</span> 12 y 16 OZ</p> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Presentación:</span> Caliente y Frío</p> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Precio base:</span> $60 - $90</p>
@@ -81,7 +95,7 @@ const MenuBoxxha = () => {
 
                         {/* Tarjeta 4 */}
                         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center bg-white bg-opacity-80 p-4 rounded-2xl">
-                            <div className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"></div>
+                            <img src={chai} className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl" />
                             <div className="text-center md:text-left">
                                 <h3 className="font-bold text-2xl md:text-3xl">CHAI</h3> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Clásico, Dirty</p>
@@ -94,12 +108,12 @@ const MenuBoxxha = () => {
 
                         {/* Tarjeta 5 */}
                         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center bg-white bg-opacity-80 p-4 rounded-2xl">
-                            <div className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"></div>
+                            <img src={matcha} className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl" />
                             <div className="text-center md:text-left">
                                 <h3 className="font-bold text-2xl md:text-3xl">MATCHA</h3> <br />
-                                <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Clásico, Caramelo,</p>
+                                <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Clásico, Coconut,</p>
                                 <p className="text-md md:text-lg">Raffaello, Pasion Fruit,</p> 
-                                <p className="text-md md:text-lg">Coconut</p> <br />
+                                <p className="text-md md:text-lg">Caramelo</p> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Tamaño:</span> 12 y 16 OZ</p> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Presentación:</span> Caliente y Frío</p> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Precio base:</span> $80 - $100</p>
@@ -108,7 +122,7 @@ const MenuBoxxha = () => {
 
                         {/* Tarjeta 6 */}
                         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center bg-white bg-opacity-80 p-4 rounded-2xl">
-                            <div className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"></div>
+                            <img src={te} className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl" />
                             <div className="text-center md:text-left">
                                 <h3 className="font-bold text-2xl md:text-3xl">TÉ</h3> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Té Verde,</p>
@@ -123,7 +137,7 @@ const MenuBoxxha = () => {
 
                         {/* Tarjeta 7 */}
                         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center bg-white bg-opacity-80 p-4 rounded-2xl">
-                            <div className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"></div>
+                            <img src={frappe} className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl" />
                             <div className="text-center md:text-left">
                                 <h3 className="font-bold text-2xl md:text-3xl">FRAPPÉ</h3> <br />
                                 <p className="text-sm md:text-md"><span className="font-bold text-md md:text-lg">Sabores:</span> Frappuccino, Oreo</p>
@@ -139,7 +153,7 @@ const MenuBoxxha = () => {
 
                         {/* Tarjeta 8 */}
                         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center bg-white bg-opacity-80 p-4 rounded-2xl">
-                            <div className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"></div>
+                            <img src={taro} className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl" />
                             <div className="text-center md:text-left">
                                 <h3 className="font-bold text-2xl md:text-3xl">TARO</h3> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Clásico</p> <br />
@@ -151,7 +165,7 @@ const MenuBoxxha = () => {
 
                         {/* Tarjeta 9 */}
                         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center bg-white bg-opacity-80 p-4 rounded-2xl">
-                            <div className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"></div>
+                            <img src={cappuccino} className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl" />
                             <div className="text-center md:text-left">
                                 <h3 className="font-bold text-2xl md:text-3xl">CAPPUCCINO</h3> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Clásico</p> <br />
@@ -163,7 +177,7 @@ const MenuBoxxha = () => {
 
                         {/* Tarjeta 10 */}
                         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center bg-white bg-opacity-80 p-4 rounded-2xl">
-                            <div className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"></div>
+                            <img src={chocolate} className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl" />
                             <div className="text-center md:text-left">
                                 <h3 className="font-bold text-2xl md:text-3xl">CHOCOLATE</h3> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Clásico</p> <br />
@@ -185,7 +199,7 @@ const MenuBoxxha = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 p-4 md:p-6 w-full max-w-7xl font-Montserrat">
 
                         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center bg-white bg-opacity-80 p-4 rounded-2xl">
-                            <div className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"></div>
+                            <img src={rol} className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl" />
                             <div className="text-center md:text-left">
                                 <h3 className="font-bold text-2xl md:text-3xl">ROLES</h3> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Clásico, Nuez,</p> 
@@ -197,7 +211,7 @@ const MenuBoxxha = () => {
                         </div>
 
                         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center bg-white bg-opacity-80 p-4 rounded-2xl">
-                            <div className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"></div>
+                            <img src={galleta} className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"/>
                             <div className="text-center md:text-left">
                                 <h3 className="font-bold text-2xl md:text-3xl">GALLETAS</h3> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Chocolate,</p> 
@@ -208,7 +222,7 @@ const MenuBoxxha = () => {
                         </div>
 
                         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center bg-white bg-opacity-80 p-4 rounded-2xl">
-                            <div className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"></div>
+                            <img src={pastel} className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl" />
                             <div className="text-center md:text-left">
                                 <h3 className="font-bold text-2xl md:text-3xl">PASTELES</h3> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Zahanoria,</p> 
@@ -219,7 +233,7 @@ const MenuBoxxha = () => {
                         </div>
 
                         <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center bg-white bg-opacity-80 p-4 rounded-2xl">
-                            <div className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"></div>
+                            <img src={pay} className="w-40 h-40 md:w-80 md:h-80 bg-gray-300 rounded-2xl"/>
                             <div className="text-center md:text-left">
                                 <h3 className="font-bold text-2xl md:text-3xl">PAYS</h3> <br />
                                 <p className="text-md md:text-lg"><span className="font-bold">Sabores:</span> Cheesecake</p> 

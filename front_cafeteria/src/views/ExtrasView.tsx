@@ -31,7 +31,7 @@ const ExtrasView = () => {
                                 <span className="font-Montserrat font-black text-3xl text-[#34251d]"> - </span> 
                             </button>
                             <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black">
-                                <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full"> Shot de espresso </span>
+                                <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full"> Azucar estándar </span>
                             </div>
                             <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
                             hover:scale-105 transition-transform hover:bg-[#B0CEAC] duration-300">
@@ -45,7 +45,7 @@ const ExtrasView = () => {
                                 <span className="font-Montserrat font-black text-3xl text-[#34251d]"> - </span> 
                             </button>
                             <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black">
-                                <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full"> Matcha </span>
+                                <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full"> Stevia </span>
                             </div>
                             <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
                             hover:scale-105 transition-transform hover:bg-[#B0CEAC] duration-300">
@@ -59,7 +59,7 @@ const ExtrasView = () => {
                                 <span className="font-Montserrat font-black text-3xl text-[#34251d]"> - </span>
                             </button>
                             <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black">
-                                <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full"> Perlas Explosivas </span>
+                                <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full"> Fruto del Monje </span>
                             </div>
                             <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
                             hover:scale-105 transition-transform hover:bg-[#B0CEAC] duration-300">
@@ -73,7 +73,21 @@ const ExtrasView = () => {
                                 <span className="font-Montserrat font-black text-3xl text-[#34251d]"> - </span>
                             </button>
                             <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black">
-                                <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full"> Bola de nieve</span>
+                                <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full"> Canela </span>
+                            </div>
+                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
+                            hover:scale-105 transition-transform hover:bg-[#B0CEAC] duration-300">
+                                <span className="font-Montserrat font-black text-2xl text-[#34251d]"> + </span>
+                            </button>
+                        </div>
+
+                        <div className="flex flex-row gap-3 pt-3 items-center justify-center">
+                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black
+                            hover:scale-105 transition-transform hover:bg-[#dfc3a8] duration-300">
+                                <span className="font-Montserrat font-black text-3xl text-[#34251d]"> - </span>
+                            </button>
+                            <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black">
+                                <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full"> Vainilla </span>
                             </div>
                             <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
                             hover:scale-105 transition-transform hover:bg-[#B0CEAC] duration-300">

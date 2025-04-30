@@ -1,7 +1,7 @@
 // src/controllers/productController.ts
 
 import { Request, Response } from "express";
-import { getBebidasCalientes, getBebidasFrias, getFrappes, getExtras, getPostres, getLeches, getTamanos, getCategoriasGenerico, getSaboresGenerico } from "../services/productService";
+import { getBebidasCalientes, getBebidasFrias, getFrappes, getExtras, getPostres, getLeches, getTamanos, getCategoriasGenerico, getIdSaborPorProducto } from "../services/productService";
 
 export const getBebCalientes = async (req: Request, res: Response) => {
     try {
@@ -13,15 +13,14 @@ export const getBebCalientes = async (req: Request, res: Response) => {
 }
 
 export const getSabores = async (req: Request, res: Response): Promise<void> => {
-    const { tabla } = req.params;
-    const nombre = req.query.nombre as string;
-
+    const { tabla, nombre, sabor } = req.params; // Aquí accedemos a nombre y sabor como parámetros de la URL
+ 
     if (!nombre){
         res.status(400).json({error: "Falta el parámetro nombre"});
     }
 
     try {
-        const sabores = await getSaboresGenerico(tabla, nombre);
+        const sabores = await getIdSaborPorProducto(tabla, nombre, sabor);
         res.json(sabores);
     } catch (error){
         res.status(500).json({error: "Error al obtener sabores"});

@@ -5,6 +5,12 @@ import { getResumen } from "../services/protectedServices";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// To do en este doc
+// Diseño 
+/*
+    -Boton realizar pago
+    -Maybe agregar otro metodo de pago
+*/
 
 const productos = [
     {
@@ -13,20 +19,6 @@ const productos = [
     tamano: "16 OZ",
     leche: "Entera",
     extras: ["+2 Azucar", "+1 Canela"]
-    },
-    {
-    nombre: "Americano",
-    sabor: "Limon",
-    tamano: "12 OZ",
-    leche: "Entera",
-    extras: ["+2 Azucar"]
-    },
-    {
-        nombre: "Americano",
-        sabor: "Limon",
-        tamano: "12 OZ",
-        leche: "Entera",
-        extras: ["+2 Azucar"]
     }
 
 ];
@@ -96,40 +88,42 @@ const Resumen_CompraView = () => {
                                 <option>Tarjeta Mastercard/Visa</option>
                         </select>
                         {metodo === "Tarjeta Mastercard/Visa" && (
-                            <div className="Flex flex-col min-w-full pt-4"> 
-                                <h2 className="font-Montserrat font-semibold text-xl text-left text-[#34251d]">Numero de la tarjeta</h2>
+                            <div className="flex flex-col min-w-full pt-4 gap-2 font-Montserrat"> 
+                                <h2 className="font-semibold text-xl text-left text-[#34251d]">Numero de la tarjeta</h2>
                                 <input
                                         type="text"
-                                        className="font-Montserrat font-regular w-3/4 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        className="font-regular w-3/4 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                         placeholder="xxxx-xxxx-xxxx-xxxx"
                                 />
                                 {/*Sección para la fecha de vencimiento y codigo cvv */}
-                                <div className="w-full flex flex-row pt-4 font-Montserrat">
+                                <div className="w-full flex flex-row font-Montserrat">
                                     <div className="Relative flex flex-col w-1/2">
-                                        <h2 className="font-Montserrat font-semibold text-xl text-left text-[#34251d]">Fecha de Vencimiento</h2>
+                                        <h2 className="font-semibold text-xl text-left text-[#34251d]">Fecha de Vencimiento</h2>
                                         <input
                                                 type="text"
-                                                className="font-Montserrat font-regular w-1/2 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                                className="font-regular w-1/2 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                                 placeholder="01/26"
                                         />
                                     </div>
                                     <div className="Relative flex flex-col w-1/2">
-                                        <h2 className="font-Montserrat font-semibold text-xl text-left text-[#34251d]">Código CVV</h2>
+                                        <h2 className="font-semibold text-xl text-left text-[#34251d]">Código CVV</h2>
                                         <input
                                                 type="text"
-                                                className="font-Montserrat font-regular w-1/2 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                                className="font-regular w-1/2 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                                 placeholder="cvv"
                                         />
                                     </div>
                                 </div> 
-                                <h2 className="font-semibold text-xl text-left text-[#34251d] pt-4">Nombre del titular</h2>
+                                <h2 className="font-semibold text-xl text-left text-[#34251d]">Nombre del titular</h2>
                                 <input
                                         type="text"
-                                        className=" font-regular w-3/4 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        className=" font-regular w-3/4 mt-0 px-3 py-2  border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                         placeholder="José Romulo Sosa Ortíz"
                                 />
-                                <button className="w-1/2 bg-white rounded-2xl">
+                                {/** Checar este boton de aqui después */}
+                                <button className="font-bold w-1/4 py-2 border border-gray-300 bg-[#F999F9] rounded-2xl ">
                                 Realizar pago</button>
+
                             </div>
                         )}
                     </div>

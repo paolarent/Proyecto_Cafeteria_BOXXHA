@@ -7,7 +7,7 @@ router.get("/bebcaliente", getBebCalientes);
 
 // ruta ejemplo: https://h2x0xj0m-3000.usw3.devtunnels.ms/productRoutes/postre/sabores?nombre=Rol
 // nombre de la tabla / sabores -> ?nombre=producto
-router.get("/:tabla/sabores", getSabores);
+router.get("/:tabla/sabores/:nombre/:sabor", getSabores);
 
 // ruta ejemplo: https://h2x0xj0m-3000.usw3.devtunnels.ms/productRoutes/postre/categorias
 router.get("/:tabla/categorias", getCategorias);

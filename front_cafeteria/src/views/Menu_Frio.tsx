@@ -3,10 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { getCategoria } from "../services/productService";
 import { useEffect, useState } from "react";
 
+import { usePedido } from '../contexts/PedidoContext'; 
+
 const MenuBebidasFriasView = () => {
     const [categorias, setCategorias] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const { actualizarPedido } = usePedido();
+
     useEffect(() => {
         const fetchCategorias = async () => {
             const data = await getCategoria("bebfria");
@@ -16,11 +20,12 @@ const MenuBebidasFriasView = () => {
             }
             setLoading(false);
         };
-            fetchCategorias();
+        fetchCategorias();
     }, []);
 
     type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
     const irASabores = (tipo: TipoBebida, nombre: string) => {
+        actualizarPedido({ tipo, nombre });
         navigate(`/sabores/${tipo}/${nombre}`);
     };
 

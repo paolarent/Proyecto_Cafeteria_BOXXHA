@@ -6,6 +6,10 @@ import Footer from "../components/Footer";
 import { motion } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 import { useMenuContext } from '../contexts/ScrollContexto';
+import beb_frias from "../assets/beb_frias.png";
+import frappe from "../assets/frappe.png";
+import postre from "../assets/postres.jpg";
+import beb_calientes from "../assets/beb_calientes.jpeg";
 
 const InicioView = () => {
     const navigate = useNavigate();
@@ -92,12 +96,20 @@ const InicioView = () => {
                             group-hover:bg-[#424141] group-hover:text-white mb-2">
                             Bebidas Calientes
                         </button>
-                        <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px]" />
+                        <img 
+                            src={beb_calientes}
+                            alt="bebidas calientes"
+                            className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px]" 
+                        />
                     </div>
 
                     {/*Bebidas Frias*/}
                     <div onClick={() => navigate("/bebidas_frias")} className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105">
-                        <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" />
+                        <img 
+                            src={beb_frias}
+                            alt="bebidas frias"
+                            className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" 
+                        />
                         <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
                             group-hover:bg-[#424141] group-hover:text-white">
                             Bebidas Frias
@@ -110,12 +122,20 @@ const InicioView = () => {
                             group-hover:bg-[#424141] group-hover:text-white mb-2">
                             Frappés
                         </button>
-                        <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px]" />
+                        <img 
+                            src={frappe}
+                            alt="frappes"
+                            className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px]"
+                        />
                     </div>
 
                     {/*Postres*/}
                     <div onClick={() => navigate("/postres")} className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105">
-                        <img className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" />
+                        <img 
+                            src={postre}
+                            alt="postres"
+                            className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" 
+                        />
                         <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
                             group-hover:bg-[#424141] group-hover:text-white">
                             Postres

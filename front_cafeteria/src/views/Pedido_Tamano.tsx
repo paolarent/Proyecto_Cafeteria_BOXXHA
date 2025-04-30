@@ -6,7 +6,51 @@ import BotonContinuar from "../assets/continuar.png";
 
 import NavBar from "../components/NavBar";
 
+import { usePedido } from "../contexts/PedidoContext";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react"; 
+
 const PedidoTamañoView = () => {
+    const { pedido, actualizarPedido } = usePedido(); // Accede al pedido global
+    const nombreBebida = pedido.nombre?.toLowerCase();
+    const navigate = useNavigate();
+    const [tamanoSeleccionado, setTamanoSeleccionado] = useState<number | null>(null);
+
+    const handleSeleccionarTamano = (id_tamano: number) => {
+        setTamanoSeleccionado(id_tamano);
+        actualizarPedido({ id_tamano }); // Actualiza el contexto
+    };
+
+    const handleRegresar = () => {
+        actualizarPedido({ id_tamano: undefined });
+        navigate(-2); 
+    };    
+
+    // Redirección condicional según el nombre
+    const handleSiguientePaso = () => {
+        if (!tamanoSeleccionado) {
+            alert("Por favor, selecciona un tamaño antes de continuar.");
+            return;
+        }
+
+        switch (nombreBebida) {
+            case "matcha":
+            //case "chai":
+            case "taro":
+            case "frappe":
+            case "chocolate":
+                navigate("/tipo_leche");
+                break;
+            case "latte":
+            case "americano":
+            case "cappuccino":
+                navigate("/decaf_regular");
+                break;
+            default:
+                navigate("/extras");
+        }
+    };
+    
     return (
         <div className="relative h-screen overflow-hidden flex flex-col">
             <header className="sticky top-0 z-50">
@@ -38,23 +82,25 @@ const PedidoTamañoView = () => {
                     <div className="flex flex-col md:flex-row gap-20 pt-2 justify-center items-center p-4 ">
                             
                         <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
-                            <button className="flex flex-col items-center justify-end pt-6 pb-4 hover:scale-105 transition-transform duration-300 
-                                                w-[230px] h-[230px] bg-white rounded-2xl border-2 border-black">
-                                <img
-                                    src={IconoCafe12OZ}
-                                    className="rounded-[20px] w-[100px] h-[120px] mx-auto pt-4"
-                                />
+                            <button
+                                onClick={() => handleSeleccionarTamano(1)} // ID para 12 OZ
+                                className={`flex flex-col items-center justify-end pt-6 pb-4 w-[230px] h-[230px] bg-white rounded-2xl border-2 
+                                    ${tamanoSeleccionado === 1 ? "border-green-700 bg-green-100 shadow-xl scale-105" : "border-black bg-white shadow-md"} 
+    hover:scale-105 transition-transform duration-300`}
+                            >
+                                <img src={IconoCafe12OZ} className="rounded-[20px] w-[100px] h-[120px] mx-auto pt-4" />
                                 <span className="font-Montserrat text-2xl font-semibold text-[#34251d] pt-4 pb-2">12 OZ</span>
                             </button>
                         </div>    
                         
                         <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
-                            <button className="flex flex-col items-center justify-end pt-6 pb-4 hover:scale-105 transition-transform duration-300 
-                                            w-[230px] h-[230px] bg-white rounded-2xl border-2 border-black">
-                                <img
-                                    src={IconoCafe16OZ}
-                                    className="rounded-[20px] w-[100px] h-[140px] mx-auto pt-4"    
-                                />
+                            <button
+                                onClick={() => handleSeleccionarTamano(2)} // ID para 16 OZ
+                                className={`flex flex-col items-center justify-end pt-6 pb-4 w-[230px] h-[230px] bg-white rounded-2xl border-2 
+                                    ${tamanoSeleccionado === 2 ? "border-green-700 bg-green-100 shadow-xl scale-105" : "border-black bg-white shadow-md"} 
+    hover:scale-105 transition-transform duration-300`}
+                            >
+                                <img src={IconoCafe16OZ} className="rounded-[20px] w-[100px] h-[140px] mx-auto pt-4" />
                                 <span className="font-Montserrat text-2xl font-semibold text-[#34251d] pt-4 pb-2">16 OZ</span>
                             </button>
                         </div>
@@ -64,7 +110,7 @@ const PedidoTamañoView = () => {
                     {/* Botones laterales de navegación */}
                     <div className="absolute top-1/2 left-0 z-20 transform -translate-y-1/2 px-40">
                         <div className="bg-[#ffffff] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
-                            <button>
+                            <button onClick={handleRegresar}>
                             <img
                                 src={BotonRegresar}
                                 alt="Botón Regresar"
@@ -77,7 +123,7 @@ const PedidoTamañoView = () => {
 
                     <div className="absolute top-1/2 right-0 z-20 transform -translate-y-1/2 px-40">
                         <div className="bg-[#ffffff] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
-                            <button>
+                            <button onClick={handleSiguientePaso}>
                                 <img
                                 src={BotonContinuar}
                                 alt="Botón Continuar"
