@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react"; 
 
 const PedidoTamañoView = () => {
-    const { pedido, actualizarPedido } = usePedido(); // Accede al pedido global
+    const { pedido, actualizarPedido } = usePedido(); //Accede al pedido global
     const nombreBebida = pedido.nombre?.toLowerCase();
     const navigate = useNavigate();
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState<number | null>(null);
@@ -32,12 +32,12 @@ const PedidoTamañoView = () => {
             alert("Por favor, selecciona un tamaño antes de continuar.");
             return;
         }
-
+        
         switch (nombreBebida) {
             case "matcha":
             //case "chai":
+            case"frappé":
             case "taro":
-            case "frappe":
             case "chocolate":
                 navigate("/tipo_leche");
                 break;
@@ -85,7 +85,7 @@ const PedidoTamañoView = () => {
                             <button
                                 onClick={() => handleSeleccionarTamano(1)} // ID para 12 OZ
                                 className={`flex flex-col items-center justify-end pt-6 pb-4 w-[230px] h-[230px] bg-white rounded-2xl border-2 
-                                    ${tamanoSeleccionado === 1 ? "border-green-700 bg-green-100 shadow-xl scale-105" : "border-black bg-white shadow-md"} 
+                                    ${tamanoSeleccionado === 1 ? "border-black border-8 bg-green-100 shadow-xl scale-105" : "border-black bg-white shadow-md"} 
     hover:scale-105 transition-transform duration-300`}
                             >
                                 <img src={IconoCafe12OZ} className="rounded-[20px] w-[100px] h-[120px] mx-auto pt-4" />
@@ -96,8 +96,8 @@ const PedidoTamañoView = () => {
                         <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
                             <button
                                 onClick={() => handleSeleccionarTamano(2)} // ID para 16 OZ
-                                className={`flex flex-col items-center justify-end pt-6 pb-4 w-[230px] h-[230px] bg-white rounded-2xl border-2 
-                                    ${tamanoSeleccionado === 2 ? "border-green-700 bg-green-100 shadow-xl scale-105" : "border-black bg-white shadow-md"} 
+                                className={`flex flex-col items-center justify-end pt-6 pb-2 w-[230px] h-[230px] bg-white rounded-2xl border-2 
+                                    ${tamanoSeleccionado === 2 ? "border-black border-8 bg-green-100 shadow-xl scale-105" : "border-black bg-white shadow-md"} 
     hover:scale-105 transition-transform duration-300`}
                             >
                                 <img src={IconoCafe16OZ} className="rounded-[20px] w-[100px] h-[140px] mx-auto pt-4" />

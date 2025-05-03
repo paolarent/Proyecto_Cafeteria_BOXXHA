@@ -10,14 +10,16 @@ import beb_frias from "../assets/beb_frias.png";
 import frappe from "../assets/frappe.png";
 import postre from "../assets/postres.jpg";
 import beb_calientes from "../assets/beb_calientes.jpeg";
+import { usePedido } from '../contexts/PedidoContext'; 
 
 const InicioView = () => {
     const navigate = useNavigate();
     const { scrollToMenu, menuRef, inicioRef } = useMenuContext();
-
+    const { actualizarPedido } = usePedido();
     {/* ATAJO DE FRAPPES */}
     type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
     const irASabores = (tipo: TipoBebida, nombre: string) => {
+        actualizarPedido({ tipo, nombre });
         navigate(`/sabores/${tipo}/${nombre}`);
     };
 
@@ -86,60 +88,68 @@ const InicioView = () => {
 
             <section
                 ref={menuRef}
-                className="min-h-screen bg-[#dcd1c4] bg-cover bg-center bg-no-repeat px-6 py-16"
-                style={{ backgroundImage: `url(${fondo_in2})` }}
+                className="relative min-h-screen px-6 py-16 overflow-hidden"
             >
-                <div className="grid grid-cols-4 gap-10 justify-items-center">
-                    {/*Bebidas Calientes*/}
-                    <div onClick={() => navigate("/bebidas_calientes")} className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
-                        <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
-                            group-hover:bg-[#424141] group-hover:text-white mb-2">
-                            Bebidas Calientes
-                        </button>
-                        <img 
-                            src={beb_calientes}
-                            alt="bebidas calientes"
-                            className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px]" 
-                        />
-                    </div>
+                {/* Fondo desenfocado */}
+                <div
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-sm"
+                    style={{ backgroundImage: `url(${fondo_in2})` }}
+                    aria-hidden="true"
+                />
 
-                    {/*Bebidas Frias*/}
-                    <div onClick={() => navigate("/bebidas_frias")} className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105">
-                        <img 
-                            src={beb_frias}
-                            alt="bebidas frias"
-                            className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" 
-                        />
-                        <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
-                            group-hover:bg-[#424141] group-hover:text-white">
-                            Bebidas Frias
-                        </button>
-                    </div>
+                <div className="relative z-10">
+                    <div className="grid grid-cols-4 gap-10 justify-items-center">
+                        {/*Bebidas Calientes*/}
+                        <div onClick={() => navigate("/bebidas_calientes")} className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
+                            <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
+                                group-hover:bg-[#424141] group-hover:text-white mb-2">
+                                Bebidas Calientes
+                            </button>
+                            <img 
+                                src={beb_calientes}
+                                alt="bebidas calientes"
+                                className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px]" 
+                            />
+                        </div>
 
-                    {/*Frappés (VA DIRECTAMENTE A SABORES PQ NO HAY SUBCATEGORIA DE PRODUCTOS AQUI)*/}
-                    <div onClick={() => irASabores("frappe", "frappé")} className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
-                        <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
-                            group-hover:bg-[#424141] group-hover:text-white mb-2">
-                            Frappés
-                        </button>
-                        <img 
-                            src={frappe}
-                            alt="frappes"
-                            className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px]"
-                        />
-                    </div>
+                        {/*Bebidas Frias*/}
+                        <div onClick={() => navigate("/bebidas_frias")} className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105">
+                            <img 
+                                src={beb_frias}
+                                alt="bebidas frias"
+                                className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" 
+                            />
+                            <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
+                                group-hover:bg-[#424141] group-hover:text-white">
+                                Bebidas Frias
+                            </button>
+                        </div>
 
-                    {/*Postres*/}
-                    <div onClick={() => navigate("/postres")} className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105">
-                        <img 
-                            src={postre}
-                            alt="postres"
-                            className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" 
-                        />
-                        <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
-                            group-hover:bg-[#424141] group-hover:text-white">
-                            Postres
-                        </button>
+                        {/*Frappés (VA DIRECTAMENTE A SABORES PQ NO HAY SUBCATEGORIA DE PRODUCTOS AQUI)*/}
+                        <div onClick={() => irASabores("frappe", "frappé")} className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
+                            <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
+                                group-hover:bg-[#424141] group-hover:text-white mb-2">
+                                Frappés
+                            </button>
+                            <img 
+                                src={frappe}
+                                alt="frappes"
+                                className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px]"
+                            />
+                        </div>
+
+                        {/*Postres*/}
+                        <div onClick={() => navigate("/postres")} className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105">
+                            <img 
+                                src={postre}
+                                alt="postres"
+                                className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" 
+                            />
+                            <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
+                                group-hover:bg-[#424141] group-hover:text-white">
+                                Postres
+                            </button>
+                        </div>
                     </div>
                 </div>
 

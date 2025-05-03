@@ -24,7 +24,7 @@ const ExtrasView = () => {
                         rounded-2xl shadow-md">¿Desea agregar <span className="font-medium"> Extras</span>?</h2>
                     </div>
                 
-                    <div className="flex flex-col relative bg-[#535251] p-10 bg-opacity-60 rounded-3xl">
+                    <div className="flex flex-col relative bg-[#535251] p-8 bg-opacity-60 rounded-3xl">
                         <div className="flex flex-row gap-3 pt-3 items-center justify-center">
                             <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black
                                 hover:scale-105 transition-transform hover:bg-[#dfc3a8] duration-300">
