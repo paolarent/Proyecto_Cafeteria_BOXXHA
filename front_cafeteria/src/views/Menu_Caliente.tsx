@@ -2,8 +2,28 @@ import NavBar from "../components/NavBar";
 import { useNavigate } from "react-router-dom";
 import { getCategoria } from "../services/productService";
 import { useEffect, useState } from "react";
+import espresso from "../assets/espresso.jpg";
+import cappuccino from "../assets/cappuccino.jpg";
+import latte from "../assets/beb_calientes.jpeg";
+import chocolate from "../assets/chocolate.jpg";
+import te from "../assets/te.jpeg";
+import chai from "../assets/chai.jpg";
+import americano from "../assets/americano.jpeg";
+import matchac from "../assets/matcha_cal.jpg";
+
 
 import { usePedido } from '../contexts/PedidoContext'; 
+
+const imagenesPorNombreC: { [key: string]: string } = {
+    Espresso: espresso,
+    Cappuccino: cappuccino,
+    Latte: latte,
+    Americano: americano,
+    Chai: chai,
+    Té: te,
+    Chocolate: chocolate,
+    Matcha: matchac
+};
 
 const MenuBebidasCalView = () => {
     const [categorias, setCategorias] = useState<string[]>([]);
@@ -55,6 +75,7 @@ const MenuBebidasCalView = () => {
                                     className="group flex flex-col items-center transition-transform duration-300 hover:scale-105"
                                 >
                                     <img
+                                        src={imagenesPorNombreC[nombre]}
                                         className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2"
                                         alt={nombre}
                                     />

@@ -2,8 +2,19 @@ import NavBar from "../components/NavBar"
 import { useNavigate } from "react-router-dom";
 import { getCategoria } from "../services/productService";
 import { useEffect, useState } from "react";
+import rol from "../assets/postres.jpg";
+import galleta from "../assets/galleta.jpg";
+import pastel from "../assets/pastel.jpg";
+import pay from "../assets/pay.jpg";
 
 import { usePedido } from '../contexts/PedidoContext'; 
+
+const imagenesPorNombreP: { [key: string]: string } = {
+    Rol: rol,
+    Galleta: galleta,
+    Pastel: pastel,
+    Pay: pay
+};
 
 const MenuPostresView = () => {
     const [categorias, setCategorias] = useState<string[]>([]);
@@ -58,6 +69,7 @@ const MenuPostresView = () => {
                                 >
                         
                                     <img
+                                    src={imagenesPorNombreP[nombre]}
                                     className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2"
                                     alt={nombre}
                                     />

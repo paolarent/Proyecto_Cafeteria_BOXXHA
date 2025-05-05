@@ -2,8 +2,23 @@ import NavBar from "../components/NavBar"
 import { useNavigate } from "react-router-dom";
 import { getCategoria } from "../services/productService";
 import { useEffect, useState } from "react";
+import taro from "../assets/taro.jpg";
+import lattef from "../assets/beb_frias.png";
+import matcha from "../assets/matcha.jpg";
+import tef from "../assets/te_frio.png";
+import americanof from "../assets/iced_americano.jpg";
+import chaif from "../assets/chai_frio.jpg";
 
 import { usePedido } from '../contexts/PedidoContext'; 
+
+const imagenesPorNombreF: { [key: string]: string } = {
+    Latte: lattef,
+    Americano: americanof,
+    Matcha: matcha,
+    Chai: chaif,
+    Té: tef,
+    Taro: taro
+};
 
 const MenuBebidasFriasView = () => {
     const [categorias, setCategorias] = useState<string[]>([]);
@@ -55,6 +70,7 @@ const MenuBebidasFriasView = () => {
                                     className="group flex flex-col items-center transition-transform duration-300 hover:scale-105"
                                 >
                                     <img
+                                        src={imagenesPorNombreF[nombre]}
                                         className="bg-[#D9D9D9] rounded-[20px] w-[250px] h-[250px] mb-2"
                                         alt={nombre}
                                     />
