@@ -12,13 +12,15 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({ isOpen, onClose, onConfirm 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-md w-1/3">
-        <h2 className="text-xl mb-5 font-semibold">Tienes un pedido sin terminar</h2>
-        <p className="mb-4">¿Deseas salir y perder tu selección?</p>
+        <h2 className="text-xl mb-5 font-bold">Espere, aún tiene un pedido sin terminar</h2>
+        <p className="mb-6 font-semibold">¿Desea salir y perder su selección?</p>
         <div className="flex justify-end gap-4">
-          <button onClick={onClose} className="px-4 py-2 bg-gray-400 rounded-md hover:bg-gray-500">
+          <button onClick={onClose} className="px-4 py-2 bg-[#d5c3bd] border border-[#311808] text-lg text-[#311808] rounded hover:bg-[#B0CEAC] font-bold
+                            transform transition-transform duration-300 hover:scale-105">
             Cancelar
           </button>
-          <button onClick={onConfirm} className="px-4 py-2 bg-[#a38d7f] rounded-md hover:bg-[#8e7f6b] ">
+          <button onClick={onConfirm} className="px-4 py-2 bg-[#311808] text-lg text-white rounded hover:bg-[#716865] font-bold
+                            transform transition-transform duration-300 hover:scale-105">
             Salir
           </button>
         </div>
