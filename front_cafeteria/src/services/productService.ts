@@ -29,12 +29,34 @@ export const getProductos = async (tabla: string) => {
     }
 }
 
-export const obtenerLeches = async () => {
+export const getLeches = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/leche`);
-      return response.data; // Devuelves los datos de las leches que te da la API
+      return response.data; 
     } catch (error) {
       console.error("Error al obtener las leches:", error);
       return []; // En caso de error, devuelve un array vacío
     }
   };
+
+export const getExtras = async () => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/extra`);
+        return response.data; 
+    } catch (error) {
+        console.error("Error al obtener los extras:", error);
+        return []; // En caso de error, devuelve un array vacío
+    }
+};
+
+export const getTamanos = async () => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/tamano`);
+        return response.data; 
+    } catch (error) {
+        console.error("Error al obtener los tamaños:", error);
+        return []; // En caso de error, devuelve un array vacío
+    }
+};
+
+

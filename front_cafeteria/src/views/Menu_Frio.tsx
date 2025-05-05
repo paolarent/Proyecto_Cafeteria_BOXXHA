@@ -9,7 +9,7 @@ const MenuBebidasFriasView = () => {
     const [categorias, setCategorias] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
-    const { actualizarPedido } = usePedido();
+    const { agregarPedido } = usePedido();
 
     useEffect(() => {
         const fetchCategorias = async () => {
@@ -25,8 +25,8 @@ const MenuBebidasFriasView = () => {
 
     type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
     const irASabores = (tipo: TipoBebida, nombre: string) => {
-        actualizarPedido({ tipo, nombre });
-        navigate(`/sabores/${tipo}/${nombre}`);
+        const index = agregarPedido({ tipo, nombre,  completo: false });
+        navigate(`/sabores/${tipo}/${nombre}/${index}`);
     };
 
     return (

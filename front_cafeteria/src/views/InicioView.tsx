@@ -15,12 +15,13 @@ import { usePedido } from '../contexts/PedidoContext';
 const InicioView = () => {
     const navigate = useNavigate();
     const { scrollToMenu, menuRef, inicioRef } = useMenuContext();
-    const { actualizarPedido } = usePedido();
+    const { agregarPedido } = usePedido();
+
     {/* ATAJO DE FRAPPES */}
     type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
     const irASabores = (tipo: TipoBebida, nombre: string) => {
-        actualizarPedido({ tipo, nombre });
-        navigate(`/sabores/${tipo}/${nombre}`);
+        const index = agregarPedido({ tipo, nombre, completo: false });
+        navigate(`/sabores/${tipo}/${nombre}/${index}`);
     };
 
     return (

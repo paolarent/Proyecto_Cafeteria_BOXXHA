@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext, ReactNode } from "react";
+import React, { createContext, useState, useEffect, useContext, ReactNode } from "react"; //No esta siendo usado 
 import { getCategoria } from "../services/productService";
 
 // Definimos el tipo del contexto

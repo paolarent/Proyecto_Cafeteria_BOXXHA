@@ -13,6 +13,8 @@ import { usePedido } from '../contexts/PedidoContext';
 const SaboresProducto: React.FC = () => {
     const { tipo, nombre } = useParams(); //Usamos useParams para obtener los parámetros de la URL de la ruta
     const navigate = useNavigate();
+    const {index} = useParams();
+    const i = Number(index);
     const { actualizarPedido } = usePedido(); //Para capturar el pedido
 
     //Verificamos si los valores de tipo y nombre existen en los datos
@@ -35,38 +37,46 @@ const SaboresProducto: React.FC = () => {
         }
 
         try {
-            const response = await getSabor(tipoLower, nombreLower, saborFinal || "Regular");
-            const idProducto = response?.id; // asume que backend devuelve { id: number }
-    
-            // Guarda el ID en el contexto
-            actualizarPedido({ id_bebida: idProducto });
-    
-            // Lógica de navegación según el producto
-            if (tipoLower === "caliente" && nombreLower === "espresso" && saborFinal !== "Cortado") {
-                navigate("/resumen");
-            } else if (tipoLower === "caliente" && nombreLower === "espresso") {
-                navigate("/tipo_leche");
-            } else if (tipoLower === "postre") {
-                navigate("/resumen");
-            } else {
-                navigate("/pedido_tamano");
+            if (tipoLower === "caliente") {
+                tipoLower = "bebcaliente"; 
+            } else if (tipoLower === "frio") {
+                tipoLower = "bebfria"; 
             }
+
+            const response = await getSabor(tipoLower, nombreLower, saborFinal || "Regular");
+            console.log("Respuesta de la API:", response); // Verifica la respuesta de la API en consola
+            const key = Object.keys(response)[0];  // Obtiene la primera clave (ej. "id_bebfria")
+            const idProducto = response[key];  // Accede al valor asociado a esa clave
+            console.log("ID del producto con prefijo:", idProducto);
+            const sabor = response.sabor; // Accede al sabor del producto
+            console.log("Sabor del producto:", sabor); // Verifica el sabor en consola
+
+            // Guarda el ID en el contexto
+            if (tipoLower === "postre") {
+                actualizarPedido(i,{ id_postre: idProducto , sabor: sabor, id_tamano: 3}); //id_tamano = 3 pq es pza
+            } else if (nombreLower === "espresso") {
+                actualizarPedido(i,{ id_bebida: idProducto, sabor: sabor , id_tamano: 4});
+            }
+            else {
+                actualizarPedido(i,{ id_bebida: idProducto, sabor: sabor });
+            }
+    
         } catch (error) {
             console.error("Error al obtener el ID del producto:", error);
             // Podrías mostrar un mensaje de error aquí si quieres
         }
         
         //Redirecciones especiales dependiendo de lo que sigue de sabores
-        if (tipoLower === "caliente" && nombreLower === "espresso" && saborFinal !== "Cortado" ) {   //el espresso tiene medida "fija", asi q no va a tamaño
-            navigate("/resumen");             //si es espresso se salta el tamaño y va a elegir el cafe 
-        } else if (tipoLower === "caliente" && nombreLower === "espresso" ) { //si es espresso cortado se va a elegir el tipo de leche
-            navigate("/tipo_leche");
-        } else if (tipoLower === "postre") {            //TEMPORAL, el postre llega hasta el sabor
+        if (nombreLower === "espresso" && sabor === "Cortado") {
+            navigate(`/tipo_leche/${i}`); // espresso cortado va a leche
+        } else if (nombreLower === "espresso") {
+            navigate("/resumen"); // cualquier otro espresso va a resumen
+        } else if (tipoLower === "postre") {
             navigate("/resumen");
         } else {
-            //Todos los productos menos los postres y el espresso van a tamaño
-            navigate("/pedido_tamano");
+            navigate(`/pedido_tamano/${i}`);
         }
+        
     };
     
 
@@ -103,7 +113,7 @@ const SaboresProducto: React.FC = () => {
                     </div> 
 
                     <div className="flex flex-wrap justify-center gap-10 w-full px-8">
-                        {sabores.map((sabor, idx) => (
+                        {sabores.map((sabor) => (
                             <div 
                                 //LLAMAR A LA FUNCION PARA REDIRIGIR DEPENDIENDO DEL CONTEXTO
                                 onClick={() => handleSaborClick(tipo!, nombre!, sabor)}

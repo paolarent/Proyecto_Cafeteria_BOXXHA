@@ -4,24 +4,19 @@ import ProductoContenedor from "../components/ProductoContenedor"
 import { getResumen } from "../services/protectedServices";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { usePedido } from "../contexts/PedidoContext";
+import { useCatalagos } from "../contexts/CatalagosContext"; // Usamos el hook para acceder a los catálogos
 
 // To do en este doc
 // Diseño 
 /*
     -Boton realizar pago
-    -Maybe agregar otro metodo de pago
+    -Maybe agregar otro metodo de pago (Monedero electronico si lo llegamos a agregar)
+    -Rediseñar el resumen compra (
+        Hacerlo tipo ticket de compra literalmente que ese sea el diseño
+        Seguir con el mismo diseño de los botones al realizar un pedido
+        )
 */
-
-const productos = [
-    {
-    nombre: "Latte",
-    sabor: "Vainilla",
-    tamano: "16 OZ",
-    leche: "Entera",
-    extras: ["+2 Azucar", "+1 Canela"]
-    }
-
-];
 
 const tarjeta = {
     nombreTitular:"",
@@ -32,9 +27,12 @@ const tarjeta = {
 
 {/* Ruta /resumen */}
 const Resumen_CompraView = () => {
+    const { tamanos, leches, extras } = useCatalagos(); // Accedemos a los catálogos
+    
     const [metodo, setMetodo] = useState('efectivo');
     const [mensaje, setMensaje] = useState("");
     const navigate = useNavigate();
+    const { pedidos, actualizarPedido } = usePedido();
 
     useEffect(() => {
         const fetchResumen = async () => {
@@ -51,6 +49,17 @@ const Resumen_CompraView = () => {
 
         fetchResumen();
     }, []);
+    
+    useEffect(() => {
+        const marcarCompleto = () => {
+            pedidos.forEach((pedido, index) => {
+                if (!pedido.completo){
+                    actualizarPedido(index, {completo: true});
+                }
+            });
+        };
+        marcarCompleto();
+    },[pedidos]);
 
     return (
         <div className=" h-full w-full flex flex-col">
@@ -61,40 +70,65 @@ const Resumen_CompraView = () => {
             <main className="flex flex-row flex-1 h-full relative">
                 {/*Sección izquierda para el resumen de compra */}
                 <section className="flex flex-col w-1/2 bg-[#F7F7F7] p-12">
-                    <div className="sticky top-20 w-full shadow-xl bg-white rounded-2xl gap-4 p-8">
-                        <h2 className="font-Montserrat font-bold text-3xl text-left text-[#34251d] pb-2">Resumen compra</h2>
+                    <div className="sticky font-Montserrat top-20 w-full shadow-xl bg-white rounded-2xl gap-4 p-8">
+                        <h2 className=" font-bold text-3xl text-left text-[#34251d] pb-2">Resumen compra</h2>
                         <div className="flex flex-col gap-y-4">
-                            {productos.map((producto, index) => (
-                                <ProductoContenedor
-                                key={index}
-                                nombre={producto.nombre}
-                                sabor={producto.sabor}
-                                tamano={producto.tamano}
-                                leche={producto.leche}
-                                extras={producto.extras}
-                                />
-                            ))}
+                            {pedidos.map((pedido, index) => {
+                                const regular = pedido.regular === undefined
+                                    ? "No definido"
+                                    : pedido.regular
+                                        ? "Regular"
+                                        : "Descafeinado";
+
+                                const tamanoNombre = tamanos.find(t => t.id === pedido.id_tamano)?.nombre || "No definido";
+                                const lecheNombre = leches.find(t => t.id === pedido.id_leche)?.nombre || "No definido";
+
+                                const extrasNombre = pedido.extras?.map(extra => {
+                                    const detalle = extras.find(e => e.id === extra.id);
+                                    return {
+                                        id: extra.id,
+                                        nombre: detalle?.nombre || "No definido",
+                                        cantidad: extra.cantidad
+                                    };
+                                });
+
+                                return (
+                                    <ProductoContenedor
+                                        key={index}
+                                        nombre={pedido.nombre}
+                                        tipo={pedido.tipo}
+                                        sabor={pedido.sabor}
+                                        regular={regular}
+                                        tamano={tamanoNombre}
+                                        leche={lecheNombre}
+                                        extras={extrasNombre}
+                                    />
+                                );
+                            })}
                         </div>
                     </div>
                 </section>
 
+
                 {/*Sección derecha para los formularios */}
                 <section className="flex flex-col w-1/2  bg-[#947666] p-12 gap-14">
-                    {/*Mapa con Dirección Boxxha Café*/}
+                    {/*Seccion de formulario METODO DE PAGO */}
                     <div className="flex flex-col bg-white w-full shadow-xl h-full rounded-2xl justify-left p-8">
-                        <h2 className="font-Montserrat font-bold text-3xl text-left text-[#34251d] pb-4"> Método de pago</h2>
+                        <h2 className="font-Montserrat font-bold text-3xl text-left text-[#34251d] pb-2"> Método de pago</h2>
                             <select onChange={(e) => setMetodo(e.target.value)}className="font-Montserrat font-regular text-left text-[#34251d] w-3/4 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold">
                                 <option>Efectivo</option>
                                 <option>Tarjeta Mastercard/Visa</option>
                         </select>
                         {metodo === "Tarjeta Mastercard/Visa" && (
-                            <div className="flex flex-col min-w-full pt-4 gap-2 font-Montserrat"> 
-                                <h2 className="font-semibold text-xl text-left text-[#34251d]">Numero de la tarjeta</h2>
-                                <input
-                                        type="text"
-                                        className="font-regular w-3/4 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
-                                        placeholder="xxxx-xxxx-xxxx-xxxx"
-                                />
+                            <div className="flex flex-col min-w-full pt-4 gap-4 font-Montserrat"> 
+                                <div>
+                                    <h2 className="font-semibold text-xl text-left text-[#34251d]">Numero de la tarjeta</h2>
+                                    <input
+                                            type="text"
+                                            className="font-regular w-3/4 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                            placeholder="xxxx-xxxx-xxxx-xxxx"
+                                    />
+                                </div>
                                 {/*Sección para la fecha de vencimiento y codigo cvv */}
                                 <div className="w-full flex flex-row font-Montserrat">
                                     <div className="Relative flex flex-col w-1/2">
@@ -114,19 +148,23 @@ const Resumen_CompraView = () => {
                                         />
                                     </div>
                                 </div> 
-                                <h2 className="font-semibold text-xl text-left text-[#34251d]">Nombre del titular</h2>
-                                <input
-                                        type="text"
-                                        className=" font-regular w-3/4 mt-0 px-3 py-2  border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
-                                        placeholder="José Romulo Sosa Ortíz"
-                                />
-                                {/** Checar este boton de aqui después */}
-                                <button className="font-bold w-1/4 py-2 border border-gray-300 bg-[#F999F9] rounded-2xl ">
+                                <div>
+                                    <h2 className="font-semibold text-xl text-left text-[#34251d]">Nombre del titular</h2>
+                                    <input
+                                            type="text"
+                                            className=" font-regular w-3/4 mt-0 px-3 py-2  border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                            placeholder="José Romulo Sosa Ortíz"
+                                    />
+                                </div>
+                                {/*Quizás aqui agregar el boton Guardar Tarjeta*/}
+                                <button className="font-semibold w-1/4 py-2 border text-white border-gray-300 bg-[#5c2d0f] rounded 
+                                hover:bg-[#9a9998] transition transform transition-transform duration-300 hover:scale-105 ">
                                 Realizar pago</button>
 
                             </div>
                         )}
                     </div>
+                    {/*Mapa con Dirección Boxxha Café*/}
                     <div className="bg-white w-full h-full shadow-xl rounded-2xl justify-left p-8">
                         {/*Contenedor de la dirección escrita o leyenda */}
                         <div className="relative flex flex-col justify-left w-full">

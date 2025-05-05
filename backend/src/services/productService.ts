@@ -56,7 +56,8 @@ export const getIdSaborPorProducto = async (tabla: string, nombre: string, sabor
             sabor: sabor
         },
         select: {
-            [campoId]: true // Usamos el campo dinámico
+            [campoId]: true, // Usamos el campo dinámico
+            sabor: true
         }
     });
 

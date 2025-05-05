@@ -3,10 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { getCategoria } from "../services/productService";
 import { useEffect, useState } from "react";
 
+import { usePedido } from '../contexts/PedidoContext'; 
+
 const MenuPostresView = () => {
     const [categorias, setCategorias] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const { agregarPedido } = usePedido()
+
     useEffect(() => {
         const fetchCategorias = async () => {
             const data = await getCategoria("postre");
@@ -21,7 +25,8 @@ const MenuPostresView = () => {
 
     type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
     const irASabores = (tipo: TipoBebida, nombre: string) => {
-        navigate(`/sabores/${tipo}/${nombre}`);
+        const index = agregarPedido({ tipo, nombre,  completo: false });
+        navigate(`/sabores/${tipo}/${nombre}/${index}`);
     };
 
     return (

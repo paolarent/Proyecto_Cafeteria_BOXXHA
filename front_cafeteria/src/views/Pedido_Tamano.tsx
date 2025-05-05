@@ -7,47 +7,47 @@ import BotonContinuar from "../assets/continuar.png";
 import NavBar from "../components/NavBar";
 
 import { usePedido } from "../contexts/PedidoContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react"; 
 
 const PedidoTamañoView = () => {
-    const { pedido, actualizarPedido } = usePedido(); //Accede al pedido global
-    const nombreBebida = pedido.nombre?.toLowerCase();
+    const { pedidos, actualizarPedido } = usePedido();
+    const { index } = useParams(); // Capturamos el índice desde la URL
     const navigate = useNavigate();
+    const i = Number(index);
+    const pedidoActual = pedidos[i];
+  
+    const nombreBebida = pedidoActual?.nombre?.toLowerCase();
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState<number | null>(null);
 
     const handleSeleccionarTamano = (id_tamano: number) => {
         setTamanoSeleccionado(id_tamano);
-        actualizarPedido({ id_tamano }); // Actualiza el contexto
+        actualizarPedido(i,{ id_tamano }); // Actualiza el contexto
     };
 
     const handleRegresar = () => {
-        actualizarPedido({ id_tamano: undefined });
-        navigate(-2); 
+        actualizarPedido(i,{ id_tamano: undefined });
+        navigate(-1); 
     };    
 
     // Redirección condicional según el nombre
     const handleSiguientePaso = () => {
-        if (!tamanoSeleccionado) {
-            alert("Por favor, selecciona un tamaño antes de continuar.");
-            return;
-        }
-        
+    
         switch (nombreBebida) {
             case "matcha":
-            //case "chai":
+            case "chai":
             case"frappé":
             case "taro":
             case "chocolate":
-                navigate("/tipo_leche");
+                navigate(`/tipo_leche/${i}`);
                 break;
             case "latte":
             case "americano":
             case "cappuccino":
-                navigate("/decaf_regular");
+                navigate(`/decaf_regular/${i}`);
                 break;
             default:
-                navigate("/extras");
+                navigate(`/extras/${i}`);
         }
     };
     
@@ -84,10 +84,10 @@ const PedidoTamañoView = () => {
                         <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
                             <button
                                 onClick={() => handleSeleccionarTamano(1)} // ID para 12 OZ
-                                className={`flex flex-col items-center justify-end pt-6 pb-4 w-[230px] h-[230px] bg-white rounded-2xl border-2 
-                                    ${tamanoSeleccionado === 1 ? "border-black border-8 bg-green-100 shadow-xl scale-105" : "border-black bg-white shadow-md"} 
-    hover:scale-105 transition-transform duration-300`}
-                            >
+                                className={`flex flex-col justify-center pt-6 pb-4 w-[230px] h-[230px] rounded-2xl border-2 border-black
+                                   ${tamanoSeleccionado === 1  ? 'bg-[#B0CEAC] shadow-xl scale-105' : 'bg-white border-black shadow-md'} 
+                                   hover:scale-105 transition-transform duration-300`}  
+                                >
                                 <img src={IconoCafe12OZ} className="rounded-[20px] w-[100px] h-[120px] mx-auto pt-4" />
                                 <span className="font-Montserrat text-2xl font-semibold text-[#34251d] pt-4 pb-2">12 OZ</span>
                             </button>
@@ -95,11 +95,11 @@ const PedidoTamañoView = () => {
                         
                         <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
                             <button
-                                onClick={() => handleSeleccionarTamano(2)} // ID para 16 OZ
-                                className={`flex flex-col items-center justify-end pt-6 pb-2 w-[230px] h-[230px] bg-white rounded-2xl border-2 
-                                    ${tamanoSeleccionado === 2 ? "border-black border-8 bg-green-100 shadow-xl scale-105" : "border-black bg-white shadow-md"} 
-    hover:scale-105 transition-transform duration-300`}
-                            >
+                                onClick={() => handleSeleccionarTamano(2)} // ID para 16 OZ para cambiar otra vez al borde: border-black border-8
+                                className={`flex flex-col justify-center pt-6 pb-4 w-[230px] h-[230px] rounded-2xl border-2 border-black
+                                    ${tamanoSeleccionado === 2  ? 'bg-[#B0CEAC] shadow-xl scale-105' : 'bg-white border-black shadow-md'} 
+                                    hover:scale-105 transition-transform duration-300`}  
+                                >   
                                 <img src={IconoCafe16OZ} className="rounded-[20px] w-[100px] h-[140px] mx-auto pt-4" />
                                 <span className="font-Montserrat text-2xl font-semibold text-[#34251d] pt-4 pb-2">16 OZ</span>
                             </button>
@@ -123,7 +123,14 @@ const PedidoTamañoView = () => {
 
                     <div className="absolute top-1/2 right-0 z-20 transform -translate-y-1/2 px-40">
                         <div className="bg-[#ffffff] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
-                            <button onClick={handleSiguientePaso}>
+                            <button 
+                            onClick={handleSiguientePaso}
+                            disabled = {!tamanoSeleccionado}
+                            className={`w-[80px] h-auto transition-opacity duration-300 ${
+                                !tamanoSeleccionado ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'
+                                }`   
+                            }
+                            >
                                 <img
                                 src={BotonContinuar}
                                 alt="Botón Continuar"

@@ -33,11 +33,11 @@ const RouterWithAnimation = () => {
         <Route path="/bebidas_frias" element={<MenuBebidasFriasView />} />
         <Route path="/postres" element={<MenuPostresView />} />
         <Route path="/frappes" element={<MenuFrappesView />} />
-        <Route path="/sabores/:tipo/:nombre" element={<SaboresProducto />} />
-        <Route path="/pedido_tamano" element={<PrivateRoute> <PedidoTamanoView /> </PrivateRoute> }/>  
-        <Route path="/decaf_regular" element={<PrivateRoute><Decaf_RegularView/></PrivateRoute>}/>
-        <Route path="/tipo_leche" element={<PrivateRoute><Tipo_LecheView/></PrivateRoute>}/>
-        <Route path="/extras" element={<PrivateRoute><ExtrasView/></PrivateRoute>} />
+        <Route path="/sabores/:tipo/:nombre/:index" element={<SaboresProducto />} />
+        <Route path="/pedido_tamano/:index" element={<PrivateRoute> <PedidoTamanoView /> </PrivateRoute> }/>  
+        <Route path="/decaf_regular/:index" element={<PrivateRoute><Decaf_RegularView/></PrivateRoute>}/>
+        <Route path="/tipo_leche/:index" element={<PrivateRoute><Tipo_LecheView/></PrivateRoute>}/>
+        <Route path="/extras/:index" element={<PrivateRoute><ExtrasView/></PrivateRoute>} />
         <Route path="/estilo" element={<PrivateRoute><Rocas_FrappeView/></PrivateRoute>} />
         <Route path="/resumen" element={<PrivateRoute> <Resumen_CompraView/> </PrivateRoute>}/>
         <Route path="/nuestro_menu" element={<Menu_General/>}/>

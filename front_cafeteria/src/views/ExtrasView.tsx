@@ -1,10 +1,77 @@
-import { Button } from "@headlessui/react";
+import { useEffect, useState } from "react";
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 import NavBar from "../components/NavBar";
 import BotonRegresar from "../assets/regresar.png";
 import BotonContinuar from "../assets/continuar.png";
+import { getExtras } from "../services/productService"; // tu fetch
+import { usePedido } from "../contexts/PedidoContext";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ExtrasView = () => {
+    const [extras, setExtras] = useState<{ id_extra: number; nombre: string; precio: number }[]>([]);
+    const [cantidades, setCantidades] = useState<{ [id: number]: number }>({});
+    
+    const { pedidos, actualizarPedido } = usePedido(); // Hook para acceder al contexto del pedido
+    const { index } = useParams(); // Capturamos el índice desde la URL
+    const navigate = useNavigate();
+    const i = Number(index);
+    const pedidoActual = pedidos[i];
+
+    useEffect(() => {
+        if (!pedidoActual) {
+            alert("No se encontró el pedido.");
+            navigate("/");
+            return;
+        }
+        
+        const fetchExtras = async () => {
+            try {
+                const response = await getExtras(); 
+                setExtras(response); // Asigna los datos al estado
+                console.log(response); // Muestra los datos en la consola
+                const cantidadesIniciales = response.reduce((acc: { [id_extra: number]: number }, extra: any) => {
+                    acc[extra.id_extra] = 0; // Inicializa la cantidad de cada extra a 0
+                    return acc;
+                }, {});
+                setCantidades(cantidadesIniciales); // Inicializa el estado de cantidades
+            } catch (error) {
+                console.error("Error fetching extras:", error);
+            }
+    };
+        fetchExtras();
+    }, [pedidoActual, navigate]);
+
+
+    const incrementar = (id: number) => {  
+        setCantidades((prev) => ({
+            ...prev,
+            [id]: (prev[id] ?? 0) + 1
+        }));
+    }
+
+    const decrementar = (id: number) => {   
+        setCantidades((prev) => ({
+            ...prev,
+            [id]: Math.max(0, (prev[id] ?? 0) - 1)
+        }));
+    }
+
+    const handleRegresar = () => {
+        actualizarPedido(i,{ extras: [] }); // Limpia los extras del pedido
+        navigate(-1); // Regresa a la vista anterior
+    };
+    const handleContinuar = () => {
+        const seleccionados = extras
+        .filter((extra) => cantidades[extra.id_extra] > 0) // Filtra los extras seleccionados
+        .map((extra) => ({
+            id: extra.id_extra,
+            cantidad: cantidades[extra.id_extra],
+        }));
+        actualizarPedido(i,{ extras: seleccionados }); // Actualiza el pedido en el contexto
+        navigate("/resumen"); // Navega a la vista de resumen
+    };
+
+    
     return (
         <div className="relative h-screen overflow-hidden flex flex-col">
             <header className="sticky top-0 z-50">
@@ -17,112 +84,72 @@ const ExtrasView = () => {
                     className="absolute inset-0 w-full h-full object-cover opacity-80"
                     alt="Fondo de café"
                 />
-                {/*Sección donde se encuentran el listado de extras y botones +/- */}
+                {/* Sección donde se encuentran el listado de extras y botones +/- */}
                 <section className="relative w-full flex flex-col items-center space-y-6 pt-5">
                     <div className="bg-[#535251] bg-opacity-60 rounded-2xl p-4">
                         <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 
                         rounded-2xl shadow-md">¿Desea agregar <span className="font-medium"> Extras</span>?</h2>
                     </div>
-                
+
                     <div className="flex flex-col relative bg-[#535251] p-8 bg-opacity-60 rounded-3xl">
-                        <div className="flex flex-row gap-3 pt-3 items-center justify-center">
-                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black
-                                hover:scale-105 transition-transform hover:bg-[#dfc3a8] duration-300">
-                                <span className="font-Montserrat font-black text-3xl text-[#34251d]"> - </span> 
-                            </button>
-                            <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black">
-                                <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full"> Azucar estándar </span>
+                        <p className="text-white text-lg text-center px-4 py-2 bg-green-700 rounded-xl shadow-md">
+                        Nota: Si agregas más de 3 extras, se aplicará un cargo adicional de $5.
+                        </p>
+                        {/* Mapea los extras y genera los botones dinámicamente */}
+                        {extras.map((extra) => (
+                            <div key={extra.id_extra} className="flex flex-row gap-3 pt-3 items-center justify-center">
+                                <button 
+                                    className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black
+                                    hover:scale-105 transition-transform hover:bg-[#dfc3a8] duration-300"
+                                    onClick={() => decrementar(extra.id_extra)}
+                                >
+                                    <span className="font-Montserrat font-black text-3xl text-[#34251d]"> - </span>
+                                </button>
+                                <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black">
+                                    <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full">
+                                        {extra.nombre} 
+                                        {(cantidades[extra.id_extra] ?? 0) > 0 && (
+                                            <span className="text-gray-500 ml-2 font-normal">+{cantidades[extra.id_extra]}</span>
+                                        )}
+                                    </span>
+                                </div>
+                                <button 
+                                    className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
+                                    hover:scale-105 transition-transform hover:bg-[#B0CEAC] duration-300"
+                                    onClick={() => incrementar(extra.id_extra)}
+                                >
+                                    <span className="font-Montserrat font-black text-2xl text-[#34251d]"> + </span>
+                                </button>
                             </div>
-                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
-                            hover:scale-105 transition-transform hover:bg-[#B0CEAC] duration-300">
-                                <span className="font-Montserrat font-black text-2xl text-[#34251d]"> + </span>
-                            </button>
-                        </div>
-
-                        <div className="flex flex-row gap-3 pt-3 items-center justify-center">
-                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black
-                            hover:scale-105 transition-transform hover:bg-[#dfc3a8] duration-300">
-                                <span className="font-Montserrat font-black text-3xl text-[#34251d]"> - </span> 
-                            </button>
-                            <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black">
-                                <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full"> Stevia </span>
-                            </div>
-                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
-                            hover:scale-105 transition-transform hover:bg-[#B0CEAC] duration-300">
-                                <span className="font-Montserrat font-black text-2xl text-[#34251d]"> + </span>
-                            </button>
-                        </div>
-
-                        <div className="flex flex-row gap-3 pt-3 items-center justify-center">
-                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black
-                            hover:scale-105 transition-transform hover:bg-[#dfc3a8] duration-300">
-                                <span className="font-Montserrat font-black text-3xl text-[#34251d]"> - </span>
-                            </button>
-                            <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black">
-                                <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full"> Fruto del Monje </span>
-                            </div>
-                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
-                            hover:scale-105 transition-transform hover:bg-[#B0CEAC] duration-300">
-                                <span className="font-Montserrat font-black text-2xl text-[#34251d]"> + </span>
-                            </button>
-                        </div>
-
-                        <div className="flex flex-row gap-3 pt-3 items-center justify-center">
-                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black
-                            hover:scale-105 transition-transform hover:bg-[#dfc3a8] duration-300">
-                                <span className="font-Montserrat font-black text-3xl text-[#34251d]"> - </span>
-                            </button>
-                            <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black">
-                                <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full"> Canela </span>
-                            </div>
-                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
-                            hover:scale-105 transition-transform hover:bg-[#B0CEAC] duration-300">
-                                <span className="font-Montserrat font-black text-2xl text-[#34251d]"> + </span>
-                            </button>
-                        </div>
-
-                        <div className="flex flex-row gap-3 pt-3 items-center justify-center">
-                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black
-                            hover:scale-105 transition-transform hover:bg-[#dfc3a8] duration-300">
-                                <span className="font-Montserrat font-black text-3xl text-[#34251d]"> - </span>
-                            </button>
-                            <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black">
-                                <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full"> Vainilla </span>
-                            </div>
-                            <button className="w-14 h-14 rounded-3xl bg-white shadow-md border-2 border-black 
-                            hover:scale-105 transition-transform hover:bg-[#B0CEAC] duration-300">
-                                <span className="font-Montserrat font-black text-2xl text-[#34251d]"> + </span>
-                            </button>
-                        </div>
+                        ))}
                     </div>
 
-                {/* Botones laterales de navegación */}
-                <div className="absolute top-1/2 left-0 z-20 transform -translate-y-1/2 px-40">
+                    {/* Botones laterales de navegación */}
+                    <div className="absolute top-1/2 left-0 z-20 transform -translate-y-1/2 px-40">
                         <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
-                            <button>
-                            <img
-                                src={BotonRegresar}
-                                alt="Botón Regresar"
-                                title="Regresar"
-                                className="w-[80px] h-auto"
-                            />
+                            <button onClick={handleRegresar}>
+                                <img
+                                    src={BotonRegresar}
+                                    alt="Botón Regresar"
+                                    title="Regresar"
+                                    className="w-[80px] h-auto"
+                                />
                             </button>
                         </div>
                     </div>
 
                     <div className="absolute top-1/2 right-0 z-20 transform -translate-y-1/2 px-40">
                         <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
-                            <button>
+                            <button onClick={handleContinuar}>
                                 <img
-                                src={BotonContinuar}
-                                alt="Botón Continuar"
-                                title="Continuar"
-                                className="w-[80px] h-auto"
+                                    src={BotonContinuar}
+                                    alt="Botón Continuar"
+                                    title="Continuar"
+                                    className="w-[80px] h-auto"
                                 />
                             </button>
                         </div>
                     </div>
-
                 </section>
             </main>
         </div>

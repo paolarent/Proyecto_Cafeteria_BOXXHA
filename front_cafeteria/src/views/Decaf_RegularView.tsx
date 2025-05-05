@@ -6,33 +6,37 @@ import BotonContinuar from "../assets/continuar.png";
 import NavBar from "../components/NavBar";
 
 import { usePedido } from "../contexts/PedidoContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Decaf_RegularView = () => {
-    const {pedido, actualizarPedido } = usePedido(); // Accede al pedido global
-    const navigate = useNavigate(); //Para navegar entre vistas
-    const nombreBebida = pedido.nombre?.toLowerCase();
+    const { pedidos, actualizarPedido } = usePedido();
+    const { index } = useParams(); // Capturamos el índice desde la URL
+    const navigate = useNavigate();
+    const i = Number(index);
+    const pedidoActual = pedidos[i];
+  
+    const nombreBebida = pedidoActual?.nombre?.toLowerCase();
 
     const handleSiguientePaso = () => {
         if (nombreBebida === "americano") {
-            navigate("/extras");
+            navigate(`/extras/${i}`);
         }
-        else {navigate("/tipo_leche");}
+        else {navigate(`/tipo_leche/${i}`);}
     }
 
     const handleSeleccionarRegular = () => {
-        actualizarPedido({ regular: true });
+        actualizarPedido(i,{ regular: true });
     };
 
     const handleSeleccionarDescafeinado = () => {
-        actualizarPedido({ regular: false });
+        actualizarPedido(i,{ regular: false });
     };
 
     const handleRegresar = () => {
-        actualizarPedido({ regular: undefined });
-        navigate(-2);
+        actualizarPedido(i,{ regular: undefined });
+        navigate(-1);
     }
-
+    
     return (
         <div className="relative h-screen overflow-hidden flex flex-col">
             <header className="sticky top-0 z-50">
@@ -56,8 +60,11 @@ const Decaf_RegularView = () => {
                     <div className="flex flex-col md:flex-row gap-20 pt-2 justify-center items-center">
                             
                             <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
-                                <button onClick={handleSeleccionarRegular} className="flex flex-col justify-center pt-6 pb-4 hover:scale-105 transition-transform duration-300 
-                                                    w-[230px] h-[230px] bg-white rounded-2xl border-2 border-black">
+                                <button onClick={handleSeleccionarRegular} 
+                                className={`flex flex-col justify-center pt-6 pb-4 w-[230px] h-[230px] rounded-2xl border-2 border-black
+                                    ${pedidoActual?.regular=== true ? 'bg-[#B0CEAC] shadow-xl scale-105' : 'bg-white border-black shadow-md'} 
+                                    hover:scale-105 transition-transform duration-300`}
+                                >
                                     <img
                                         src={IconoCafeina}
                                         className="rounded-[20px] w-[160px] h-[160px] m-auto"
@@ -67,8 +74,11 @@ const Decaf_RegularView = () => {
                             </div>
 
                             <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
-                                <button onClick={handleSeleccionarDescafeinado} className="flex flex-col justify-center pt-6 pb-4 hover:scale-105 transition-transform duration-300 
-                                                    w-[230px] h-[230px] bg-white rounded-2xl border-2 border-black">
+                                <button onClick={handleSeleccionarDescafeinado} 
+                                 className={`flex flex-col justify-center pt-6 pb-4 w-[230px] h-[230px] rounded-2xl border-2 border-black
+                                    ${pedidoActual?.regular=== false ? 'bg-[#B0CEAC] shadow-xl scale-105' : 'bg-white border-black shadow-md'} 
+                                    hover:scale-105 transition-transform duration-300`}
+                                >
                                     <img
                                         src={IconoNoCafeina}
                                         className="rounded-[20px] w-[160px] h-[160px] m-auto"    
@@ -95,7 +105,13 @@ const Decaf_RegularView = () => {
 
                     <div className="absolute top-1/2 right-0 z-20 transform -translate-y-1/2 px-40">
                         <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
-                            <button onClick={handleSiguientePaso}>
+                            <button onClick={handleSiguientePaso}
+                            disabled={pedidoActual?.regular === undefined}
+                            // Esto es para bloquearle al usuario que siga si no ha seleccionado una opcion
+                            className={`w-[80px] h-auto transition-opacity duration-300 ${
+                                pedidoActual?.regular === undefined ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'
+                                }`   
+                            }>
                                 <img
                                 src={BotonContinuar}
                                 alt="Botón Continuar"

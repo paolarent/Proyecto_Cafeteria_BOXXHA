@@ -4,16 +4,16 @@ import AppRouter from './routes/sistRouter';
 import { MenuProvider } from './contexts/ScrollContexto';
 import './index.css';
 import { PedidoProvider } from '../src/contexts/PedidoContext';
-import { CategoriaProvider } from '../src/contexts/CategoriaContext';
+import { CatalagosProvider } from '../src/contexts/CatalagosContext';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <MenuProvider>
-      <PedidoProvider>
-        <CategoriaProvider>
-          <AppRouter />
-        </CategoriaProvider>
-      </PedidoProvider>
+      <CatalagosProvider>
+        <PedidoProvider>
+            <AppRouter />
+        </PedidoProvider>
+      </CatalagosProvider>
     </MenuProvider>
   </React.StrictMode>,
 );

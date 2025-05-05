@@ -10,7 +10,8 @@ import { useMenuContext } from '../contexts/ScrollContexto';
 import { UserMenu } from "../components/DD_DatosUsuario"; 
 import { CambiarContraModal } from "../components/ActualizarContra";
 import { CambiarDatosModal } from "../components/ActualizarDUser";
-
+import { usePedido } from '../contexts/PedidoContext';
+import ModalConfirm from "../components/ModalConfirm";
 
 const NavBar: React.FC = () => {
     const navigate = useNavigate();
@@ -20,7 +21,48 @@ const NavBar: React.FC = () => {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); //para controlar el menu dropdown de usuario
     const [MostrarModalContra, setMostrarModalContra] = useState(false); //controlar mostrar el modal para actualizar la contrasena
     const [MostrarModalDatosA, setMostrarModalDatosA] = useState(false);    //controlar el modal de actualizar los datos
+    
+    const { resetPedidos } = usePedido();
 
+    const { pedidoActualIncompleto, indexActualIncompleto, eliminarPedido} = usePedido();
+    const [MostrarModalConfirm, setMostrarModalConfirm] = useState(false);
+
+    {/* PARA EVITAR PEDIDOS INCOMPLETOS */}
+    const handleIrAInicio = () => {
+        if (pedidoActualIncompleto) {
+            setMostrarModalConfirm(true); // Abrir modal de confirmación
+        } else {
+            navigate('/'); // No hay pedido incompleto, va directo
+            setTimeout(scrollToInicio, 300);  //Da tiempo a que la navegación ocurra (cambio de ruta)
+        }
+    };
+
+    const handleIrAPedir = () => {
+        if (pedidoActualIncompleto) {
+            setMostrarModalConfirm(true); // Abrir modal de confirmación
+        } else {
+            navigate('/'); // No hay pedido incompleto, va directo
+            setTimeout(scrollToMenu, 300);  //Da tiempo a que la navegación ocurra (cambio de ruta)
+        }
+    };
+    
+    const handleIrAMenu = () => {
+        if (pedidoActualIncompleto) {
+            setMostrarModalConfirm(true); // Abrir modal de confirmación
+        } else {
+            navigate('/nuestro_menu');
+        }
+    };
+
+    const handleConfirmarSalir = () => {
+        eliminarPedido(indexActualIncompleto); // Eliminar el pedido incompleto
+        navigate('/'); // Ir al inicio
+        setMostrarModalConfirm(false); // Cerrar modal
+    };
+    
+    const handleCancelarSalir = () => {
+        setMostrarModalConfirm(false); // Solo cerrar el modal sin hacer nada
+    };
 
     const user = JSON.parse(localStorage.getItem("usuario") || '""'); //Recuperar el usuario almacenado sin las comillas
 
@@ -38,21 +80,18 @@ const NavBar: React.FC = () => {
     const logOut = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("usuario");
+        resetPedidos();
         setIsUserMenuOpen(false);
         navigate("/");
     }
 
     return (
         <div className="w-full flex flex-col bg-white shadow-md">
-            {/* Barra de navegación superior */}
+            {/* Barra de navegación superior SUPER IMPORTANTE LA SANGRIAAA CASI LA CAGO: ANDREA*/ }
             <nav className="flex justify-between items-center p-4 border-b border-gray-200">
                 <div className="flex items-center h-10 space-x-2">
                     <button 
-                        onClick={() => {
-                            navigate("/"); 
-                            setTimeout(scrollToInicio, 300);  //Da tiempo a que la navegación ocurra (cambio de ruta)
-                        }}
-
+                        onClick={handleIrAInicio}
                         className="flex items-center space-x-2 hover:scale-105 transition">
                         <img src={logom} alt="Logo" className="h-14" />
                         <span className="text-xl font-extrabold font-serif">BOXXHA CAFÉ</span>
@@ -69,30 +108,24 @@ const NavBar: React.FC = () => {
                 {/* Menú normal en escritorio, diseño original, se oculta en pantallas pequeñas y se muestra en las grandes */}
                 <ul className="hidden md:flex space-x-8 text-sm font-Montserrat font-medium text-black-700 items-center">
                     <li>
-                        <button 
-                            onClick={() => {
-                                navigate("/"); 
-                                setTimeout(scrollToInicio, 300);  //Da tiempo a que la navegación ocurra (cambio de ruta)
-                            }}
-                            className="text-lg hover:[color:#A1C99C] transition">Inicio
+                        <button onClick={handleIrAInicio} className="text-lg hover:[color:#A1C99C] transition">
+                            Inicio
                         </button>
                     </li>
+
 
                     <li><button onClick={() => setShowAboutModal(true)} className="text-lg hover:[color:#A1C99C] transition">Nosotros</button></li>
                     
                     <li>
                         <button
-                            onClick={() => {
-                                navigate("/"); 
-                                setTimeout(scrollToMenu, 300);  //Da tiempo a que la navegación ocurra (cambio de ruta)
-                            }}
+                            onClick={handleIrAPedir}
                             className="text-lg hover:[color:#A1C99C] transition"
                         >
                         Pedir
                         </button>
                     </li>
 
-                    <li><button onClick={() => navigate("/nuestro_menu")} className="text-lg hover:[color:#A1C99C] transition">Menú</button></li>
+                    <li><button onClick={handleIrAMenu} className="text-lg hover:[color:#A1C99C] transition">Menú</button></li>
                     
                     <li><button 
                     onClick={handlePerfilClick}>
@@ -213,6 +246,12 @@ const NavBar: React.FC = () => {
                 <CambiarDatosModal onClose={() => setMostrarModalDatosA(false)} />
             )}
 
+            <ModalConfirm
+            isOpen={MostrarModalConfirm}
+            onClose={handleCancelarSalir}
+            onConfirm={handleConfirmarSalir}
+            />
+            
         </div>
     );
 };
