@@ -46,7 +46,7 @@ const Decaf_RegularView = () => {
             <main className="flex-1 relative">
                 <img 
                     src={fondoCafe} 
-                    className="absolute inset-0 w-full h-full object-cover opacity-70"
+                    className="absolute inset-0 w-full h-full object-cover opacity-50"
                     alt="Fondo de café"
                 />
                 <section className="relative w-full flex flex-col items-center space-y-10 pt-20">
@@ -75,7 +75,7 @@ const Decaf_RegularView = () => {
 
                             <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
                                 <button onClick={handleSeleccionarDescafeinado} 
-                                 className={`flex flex-col justify-center pt-6 pb-4 w-[230px] h-[230px] rounded-2xl border-2 border-black
+                                    className={`flex flex-col justify-center pt-6 pb-4 w-[230px] h-[230px] rounded-2xl border-2 border-black
                                     ${pedidoActual?.regular=== false ? 'bg-[#B0CEAC] shadow-xl scale-105' : 'bg-white border-black shadow-md'} 
                                     hover:scale-105 transition-transform duration-300`}
                                 >

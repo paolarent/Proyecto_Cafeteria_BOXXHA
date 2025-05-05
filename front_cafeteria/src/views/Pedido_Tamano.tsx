@@ -62,14 +62,10 @@ const PedidoTamañoView = () => {
                 {/*Imagen de fondo estatica*/ }
                 <img 
                     src={fondoCafe} 
-                    className="absolute inset-0 w-full h-full object-cover opacity-80"
+                    className="absolute inset-0 w-full h-full object-cover opacity-50"
                     alt="Fondo de café"
                 />
-                {/* Capa de color con algo de opacidad encima, opcional */}
-                <div
-                    className="absolute inset-0"
-                    style={{ backgroundColor: "#B0CEAC", opacity: 0.50 }}
-                />
+            
                 {/*Con la propiedad relative z-10 me aseguro que sea un fondo estatico*/ }
                 {/*Con la layout flex puedo colocar los elementos en cualquier posición dentro del contenedor */}
                 <section className="relative w-full flex flex-col items-center space-y-10 pt-20">
@@ -85,8 +81,8 @@ const PedidoTamañoView = () => {
                             <button
                                 onClick={() => handleSeleccionarTamano(1)} // ID para 12 OZ
                                 className={`flex flex-col justify-center pt-6 pb-4 w-[230px] h-[230px] rounded-2xl border-2 border-black
-                                   ${tamanoSeleccionado === 1  ? 'bg-[#B0CEAC] shadow-xl scale-105' : 'bg-white border-black shadow-md'} 
-                                   hover:scale-105 transition-transform duration-300`}  
+                                    ${tamanoSeleccionado === 1  ? 'bg-[#B0CEAC] shadow-xl scale-105' : 'bg-white border-black shadow-md'} 
+                                    hover:scale-105 transition-transform duration-300`}  
                                 >
                                 <img src={IconoCafe12OZ} className="rounded-[20px] w-[100px] h-[120px] mx-auto pt-4" />
                                 <span className="font-Montserrat text-2xl font-semibold text-[#34251d] pt-4 pb-2">12 OZ</span>
@@ -109,7 +105,7 @@ const PedidoTamañoView = () => {
 
                     {/* Botones laterales de navegación */}
                     <div className="absolute top-1/2 left-0 z-20 transform -translate-y-1/2 px-40">
-                        <div className="bg-[#ffffff] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
+                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
                             <button onClick={handleRegresar}>
                             <img
                                 src={BotonRegresar}
@@ -122,7 +118,7 @@ const PedidoTamañoView = () => {
                     </div>
 
                     <div className="absolute top-1/2 right-0 z-20 transform -translate-y-1/2 px-40">
-                        <div className="bg-[#ffffff] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
+                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
                             <button 
                             onClick={handleSiguientePaso}
                             disabled = {!tamanoSeleccionado}

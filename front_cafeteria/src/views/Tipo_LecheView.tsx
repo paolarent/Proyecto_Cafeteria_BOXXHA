@@ -52,7 +52,7 @@ const Tipo_LecheView = () => {
             </header>
             
             <main className="flex flex-1">                
-                <section className="relative w-full flex flex-col items-center space-y-10 pb-10 overflow-hidden">
+                <section className="relative w-full flex flex-col items-center space-y-4 pb-10 overflow-hidden">
                     <div
                         className="absolute inset-0 z-0"
                         style={{
