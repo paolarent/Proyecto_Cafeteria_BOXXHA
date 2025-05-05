@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePedido } from "../contexts/PedidoContext";
 import { useCatalagos } from "../contexts/CatalagosContext"; // Usamos el hook para acceder a los catálogos
+import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 
 // To do en este doc
 // Diseño 
@@ -69,9 +70,22 @@ const Resumen_CompraView = () => {
             
             <main className="flex flex-row flex-1 h-full relative">
                 {/*Sección izquierda para el resumen de compra */}
-                <section className="flex flex-col w-1/2 bg-[#F7F7F7] p-12">
-                    <div className="sticky font-Montserrat top-20 w-full shadow-xl bg-white rounded-2xl gap-4 p-8">
-                        <h2 className=" font-bold text-3xl text-left text-[#34251d] pb-2">Resumen compra</h2>
+                <section className="relative flex flex-col w-1/2 bg-[#F7F7F7] p-12"
+                        style={{
+                            backgroundImage: `url(${fondoCafe})`,
+                            //backgroundSize: "cover", 
+                            backgroundPosition: "top",
+                            backgroundRepeat: "repeat",
+                        }}
+                        >
+                        {/* Capa de color con algo de opacidad encima, opcional */}
+                        <div
+                        className="absolute inset-0 z-0"
+                        style={{ backgroundColor: "#f8e9df", opacity: 0.60 }}
+                        />
+
+                    <div className="relative z-10 sticky font-Montserrat top-20 w-full shadow-xl bg-white rounded-2xl gap-4 p-8">
+                        <h2 className=" font-bold text-3xl text-left text-[#34251d] pb-6">Resumen compra</h2>
                         <div className="flex flex-col gap-y-4">
                             {pedidos.map((pedido, index) => {
                                 const regular = pedido.regular === undefined
@@ -111,61 +125,71 @@ const Resumen_CompraView = () => {
 
 
                 {/*Sección derecha para los formularios */}
-                <section className="flex flex-col w-1/2  bg-[#947666] p-12 gap-14">
+                <section className="flex flex-col w-1/2 bg-[#B0CEAC] p-12 gap-14">
                     {/*Seccion de formulario METODO DE PAGO */}
-                    <div className="flex flex-col bg-white w-full shadow-xl h-full rounded-2xl justify-left p-8">
-                        <h2 className="font-Montserrat font-bold text-3xl text-left text-[#34251d] pb-2"> Método de pago</h2>
-                            <select onChange={(e) => setMetodo(e.target.value)}className="font-Montserrat font-regular text-left text-[#34251d] w-3/4 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold">
+                    <div className="flex flex-col bg-white w-104 shadow-xl h-auto rounded-2xl mx-auto p-10">
+                        <h2 className="font-Montserrat font-bold text-3xl text-left text-[#34251d] pb-6"> Método de pago</h2>
+                            <select onChange={(e) => setMetodo(e.target.value)}className="font-Montserrat font-regular text-left text-[#34251d] w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold">
                                 <option>Efectivo</option>
                                 <option>Tarjeta Mastercard/Visa</option>
                         </select>
                         {metodo === "Tarjeta Mastercard/Visa" && (
-                            <div className="flex flex-col min-w-full pt-4 gap-4 font-Montserrat"> 
+                            <div className="flex flex-col min-w-full pt-4 gap-4 font-Montserrat mx-auto"> 
                                 <div>
                                     <h2 className="font-semibold text-xl text-left text-[#34251d]">Numero de la tarjeta</h2>
                                     <input
                                             type="text"
-                                            className="font-regular w-3/4 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                            className="font-regular w-full mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                             placeholder="xxxx-xxxx-xxxx-xxxx"
                                     />
                                 </div>
                                 {/*Sección para la fecha de vencimiento y codigo cvv */}
                                 <div className="w-full flex flex-row font-Montserrat">
-                                    <div className="Relative flex flex-col w-1/2">
+                                    <div className="Relative flex flex-col">
                                         <h2 className="font-semibold text-xl text-left text-[#34251d]">Fecha de Vencimiento</h2>
                                         <input
                                                 type="text"
-                                                className="font-regular w-1/2 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                                className="font-regular w-40 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                                 placeholder="01/26"
                                         />
                                     </div>
-                                    <div className="Relative flex flex-col w-1/2">
+
+                                    <div className="Relative flex flex-col ml-auto">
                                         <h2 className="font-semibold text-xl text-left text-[#34251d]">Código CVV</h2>
                                         <input
                                                 type="text"
-                                                className="font-regular w-1/2 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                                className="font-regular w-40 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                                 placeholder="cvv"
                                         />
                                     </div>
                                 </div> 
+
                                 <div>
                                     <h2 className="font-semibold text-xl text-left text-[#34251d]">Nombre del titular</h2>
                                     <input
                                             type="text"
-                                            className=" font-regular w-3/4 mt-0 px-3 py-2  border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                            className=" font-regular w-full mt-0 px-3 py-2  border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                             placeholder="José Romulo Sosa Ortíz"
                                     />
                                 </div>
-                                {/*Quizás aqui agregar el boton Guardar Tarjeta*/}
-                                <button className="font-semibold w-1/4 py-2 border text-white border-gray-300 bg-[#5c2d0f] rounded 
-                                hover:bg-[#9a9998] transition transform transition-transform duration-300 hover:scale-105 ">
-                                Realizar pago</button>
 
+                                <div className="flex justify-start gap-20 mt-4">
+                                {/*Quizás aqui agregar el boton Guardar Tarjeta*/}
+                                    <button className="px-6 py-3 bg-[#311808] text-lg text-white rounded hover:bg-[#716865] font-bold
+                                    transform transition-transform duration-300 hover:scale-105">
+                                    Realizar pago</button>
+
+                                    <button className="px-6 py-3 bg-[#311808] text-lg text-white rounded hover:bg-[#716865] font-bold
+                                    transform transition-transform duration-300 hover:scale-105">
+                                    Guardar Tarjeta</button>
+                                </div>
                             </div>
                         )}
                     </div>
+
+                    
                     {/*Mapa con Dirección Boxxha Café*/}
-                    <div className="bg-white w-full h-full shadow-xl rounded-2xl justify-left p-8">
+                    <div className="bg-white w-full h-auto shadow-xl rounded-2xl justify-left p-8">
                         {/*Contenedor de la dirección escrita o leyenda */}
                         <div className="relative flex flex-col justify-left w-full">
                             <p className="font-Montserrat font-bold text-3xl text-left text-[#34251d] pb-2 "> 

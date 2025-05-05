@@ -11,11 +11,11 @@ type ProductoContenedorProps = {
 
 const ProductoContenedor: React.FC<ProductoContenedorProps> = ({ nombre, tipo, sabor, regular, tamano, leche, extras }) => {
     return (
-        <div className="flex flex-row w-full min-h-max bg-[#F7F7F7] justify-left gap-2 rounded-2xl p-4">
+        <div className="flex flex-row w-full min-h-max bg-[#e1e1e2] justify-left gap-2 rounded-2xl p-4">
             {/*Contenedor de la imagen */}
-            <div className="flex flex-col">
-                <div className="flex flex-col w-40 h-40 text-center items-center bg-gray-600">
-                    <p> Imagen</p>
+            <div className="flex flex-col pr-2">
+                <div className="flex flex-col w-40 h-40 text-center items-center bg-gray-600 rounded-2xl">
+                    <p>Imagen</p>
                 </div>
             </div>
             {/*Contenedor del detalle */}
