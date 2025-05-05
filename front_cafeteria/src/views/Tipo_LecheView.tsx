@@ -24,7 +24,6 @@ const lecheImagenes: Record<string, string> = {
     "Soya": Soya,
     "Almendra": Almendra,
 };
-  
 
 const Tipo_LecheView = () => {
     const { leches } = useCatalagos(); // Accede a las leches del catálogo
