@@ -6,6 +6,7 @@ import BotonContinuar from "../assets/continuar.png";
 import { getExtras } from "../services/productService"; // tu fetch
 import { usePedido } from "../contexts/PedidoContext";
 import { useNavigate, useParams } from "react-router-dom";
+import ModalCarrito from "../components/Carrito";
 
 const ExtrasView = () => {
     const [extras, setExtras] = useState<{ id_extra: number; nombre: string; precio: number }[]>([]);
@@ -16,6 +17,8 @@ const ExtrasView = () => {
     const navigate = useNavigate();
     const i = Number(index);
     const pedidoActual = pedidos[i];
+
+    const [showModalCarrito, setShowModalCarrito] = useState(false);    //para controlar el modal que es el carrito
 
     useEffect(() => {
         if (!pedidoActual) {
@@ -67,8 +70,9 @@ const ExtrasView = () => {
             id: extra.id_extra,
             cantidad: cantidades[extra.id_extra],
         }));
+
         actualizarPedido(i,{ extras: seleccionados }); // Actualiza el pedido en el contexto
-        navigate("/resumen"); // Navega a la vista de resumen
+        setShowModalCarrito(true);  //se abre el carrito despues de agregar un producto
     };
 
     
@@ -153,6 +157,14 @@ const ExtrasView = () => {
                     </div>
                 </section>
             </main>
+
+            {showModalCarrito && (
+                <ModalCarrito 
+                    isOpen={showModalCarrito} 
+                    onClose={() => setShowModalCarrito(false)} 
+                />
+            )}
+            
         </div>
     );
 };
