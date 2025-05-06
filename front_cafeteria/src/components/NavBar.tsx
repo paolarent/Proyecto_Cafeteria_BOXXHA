@@ -12,6 +12,7 @@ import { CambiarContraModal } from "../components/ActualizarContra";
 import { CambiarDatosModal } from "../components/ActualizarDUser";
 import { usePedido } from '../contexts/PedidoContext';
 import ModalConfirm from "../components/ModalConfirm";
+import ModalCarrito from "../components/Carrito";
 
 const NavBar: React.FC = () => {
     const navigate = useNavigate();
@@ -26,6 +27,7 @@ const NavBar: React.FC = () => {
 
     const { pedidoActualIncompleto, indexActualIncompleto, eliminarPedido} = usePedido();
     const [MostrarModalConfirm, setMostrarModalConfirm] = useState(false);
+    const [showModalCarrito, setShowModalCarrito] = useState(false);    //para controlar el modal que es el carrito
 
     {/* PARA EVITAR PEDIDOS INCOMPLETOS */}
     const handleIrAInicio = () => {
@@ -161,7 +163,12 @@ const NavBar: React.FC = () => {
                     </li>
                     
                     {/**<li><button ><img src={icon_like} alt="Favorito" className="h-7 hover:scale-110 transition" /></button></li>*/}
-                    <li><button><img src={icon_carrito} alt="Carrito" className="h-7 hover:scale-110 transition" /></button></li>
+                    <li>
+                        <button onClick={() => setShowModalCarrito(true)}>
+                            <img src={icon_carrito} alt="Carrito" className="h-7 hover:scale-110 transition" />
+                        </button>
+                    </li>
+
                 </ul>
             </nav>
 
@@ -233,7 +240,7 @@ const NavBar: React.FC = () => {
                 </>
             )}
 
-            {/* Modales */}
+            {/* MODALES */}
             {showAboutModal && (
                 <AboutUsModal isOpen={showAboutModal} onClose={() => setShowAboutModal(false)} />
             )}
@@ -251,6 +258,13 @@ const NavBar: React.FC = () => {
             onClose={handleCancelarSalir}
             onConfirm={handleConfirmarSalir}
             />
+
+            {showModalCarrito && (
+                <ModalCarrito 
+                    isOpen={showModalCarrito} 
+                    onClose={() => setShowModalCarrito(false)} 
+                />
+            )}
             
         </div>
     );
