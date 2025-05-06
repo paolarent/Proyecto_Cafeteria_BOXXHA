@@ -19,7 +19,7 @@ const ModalCarrito: React.FC<Carrito> = ({ isOpen, onClose }) => {
     const { pedidos, actualizarPedido } = usePedido(); 
     const { tamanos, leches, extras } = useCatalagos(); 
     const [mensaje, setMensaje] = useState("");
-    const { scrollToMenu, scrollToInicio } = useMenuContext();
+    const { scrollToMenu } = useMenuContext();
 
     if (!isOpen) return null;
 
@@ -100,7 +100,7 @@ const ModalCarrito: React.FC<Carrito> = ({ isOpen, onClose }) => {
                                 );
                             })
                         ) : (
-                            <p className="text-gray-500">Aún no hay productos en el carrito.</p>
+                            <p className="text-black font-bold text-center text-xl mt-8">¡ Aún no hay productos en el carrito !</p>
                         )}
                     </div>
 
