@@ -20,7 +20,7 @@ const ProductoContenedor: React.FC<ProductoContenedorProps> = ({ nombre, tipo, s
             </div>
             {/*Contenedor del detalle */}
             <div className="flex flex-col">
-                <p className="font-Montserrat font-semibold text-xl text-left text-[#34251d] pb-2">{nombre?.toUpperCase()}</p>
+                <p className="font-Montserrat font-bold text-xl text-left text-[#34251d] pb-2">{nombre?.toUpperCase()}</p>
                 <p className="font-Montserrat font-regular text-xl text-left text-[#34251d] pb-2"> 
                     <span className="font-semibold">Tipo: </span>{tipo?.toUpperCase()}
                 </p>
