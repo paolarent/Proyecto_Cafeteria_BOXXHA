@@ -4,7 +4,7 @@ import { toast, Toaster } from 'react-hot-toast';
 const Pruebas = () => {
 
   const handleToast = () => {
-    toast.success('¡Notificación de prueba exitosa!');
+    toast.error('¡Notificación de prueba exitosa!');
   };
 
   return (
@@ -12,8 +12,18 @@ const Pruebas = () => {
       <h1>Prueba de Notificación</h1>
       <button onClick={handleToast}>Mostrar Notificación</button>
       
-      {/* Asegúrate de colocar el Toaster en un lugar visible */}
-      <Toaster />
+       <Toaster    //ESTILOS DE LAS NOTIFICACIONES
+                position="top-center"
+                reverseOrder={false}
+                toastOptions={{
+                duration: 3000,  // Duración de la notificación
+                style: {
+                background: '#3B2B26',
+                color: '#fff',
+                fontFamily: 'Montserrat',
+                },
+            }}
+        />
     </div>
   );
 };
