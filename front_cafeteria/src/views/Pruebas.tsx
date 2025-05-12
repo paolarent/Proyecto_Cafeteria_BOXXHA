@@ -13,10 +13,10 @@ const Pruebas = () => {
       <button onClick={handleToast}>Mostrar Notificación</button>
       
        <Toaster    //ESTILOS DE LAS NOTIFICACIONES
-                position="top-center"
+                position="top-right"
                 reverseOrder={false}
                 toastOptions={{
-                duration: 3000,  // Duración de la notificación
+                duration: 3000,  //Duración de la notificación
                 style: {
                 background: '#3B2B26',
                 color: '#fff',

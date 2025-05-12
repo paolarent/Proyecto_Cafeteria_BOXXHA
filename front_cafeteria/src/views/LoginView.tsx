@@ -162,13 +162,14 @@ const LoginView = () => {
                 position="top-center"
                 reverseOrder={false}
                 toastOptions={{
-                duration: 3000,  // Duración de la notificación
+                duration: 3000,  //Duración de la notificación
                 style: {
-                background: '#3B2B26',
-                color: '#fff',
-                fontFamily: 'Montserrat',
+                    background: '#3B2B26',
+                    color: '#fff',
+                    fontFamily: 'Montserrat',
+                    fontWeight: 600
                 },
-            }}
+                }}
             />
         </div>
     );

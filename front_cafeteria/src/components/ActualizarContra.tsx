@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { updatePassword } from "../services/userService";
+import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
 
 interface CambiarContraProps {
     onClose: ()=> void;
@@ -9,41 +10,41 @@ export function CambiarContraModal ({ onClose }: CambiarContraProps) {
     const [actual, setActual] = useState("");
     const [nueva, setNueva] = useState("");
     const [confirmar, setConfirmar] = useState("");
-    const [error, setError] = useState("");
-    const [exito, setExito] = useState("");
+    //const [error, setError] = useState("");
+    //const [exito, setExito] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError("");
-        setExito("");
+        //setError("");
+        //setExito("");
     
         if (!actual || !nueva || !confirmar) {
-          setError("Todos los campos son obligatorios.");
-          return;
+            toast.error("Todos los campos son obligatorios.");
+            return;
         }
     
         if (nueva !== confirmar) {
-          setError("La nueva contraseña no coincide con la confirmación.");
-          return;
+            toast.error("La nueva contraseña no coincide con la confirmación.");
+            return;
         }
     
         try {    
-          await updatePassword({
-            antiguaContra: actual,
-            contra: nueva,
-          });
-    
-          setExito("Contraseña actualizada exitosamente.");
-          setActual("");
-          setNueva("");
-          setConfirmar("");
-    
-          setTimeout(() => {
-            onClose();
-          }, 1500);
-        } catch (err: any) {
-          setError(err?.response?.data?.message || "Error al actualizar la contraseña.");
-        }
+            await updatePassword({
+                antiguaContra: actual,
+                contra: nueva,
+            });
+        
+            toast.success("Contraseña actualizada exitosamente.");
+            setActual("");
+            setNueva("");
+            setConfirmar("");
+        
+            setTimeout(() => {
+                onClose();
+            }, 1500);
+            } catch (err: any) {
+                toast.error(err?.response?.data?.message || "Error al actualizar la contraseña.");
+            }
     }; 
         
     
@@ -60,8 +61,8 @@ export function CambiarContraModal ({ onClose }: CambiarContraProps) {
                 <h2 className="text-3xl font-bold mb-6 mt-6 text-center">Actualizar Contraseña</h2>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                {error && <p className="text-red-600 text-center font-semibold">{error}</p>}
-                {exito && <p className="text-green-600 text-center font-semibold">{exito}</p>}
+                {/*{error && <p className="text-red-600 text-center font-semibold">{error}</p>}*/}
+                {/*{exito && <p className="text-green-600 text-center font-semibold">{exito}</p>}*/}
 
                     <div>
                         <label className="block mb-1 text-lg font-medium">Contraseña Actual</label>
@@ -117,6 +118,21 @@ export function CambiarContraModal ({ onClose }: CambiarContraProps) {
 
                 </form>
             </div>
+
+            <Toaster    //ESTILOS DE LAS NOTIFICACIONES
+                position="top-center"
+                reverseOrder={false}
+                toastOptions={{
+                duration: 3000,  //Duración de la notificación
+                style: {
+                    background: '#3B2B26',
+                    color: '#fff',
+                    fontFamily: 'Montserrat',
+                    fontWeight: 600
+                },
+                }}
+            />
+
         </div>
     )
 }

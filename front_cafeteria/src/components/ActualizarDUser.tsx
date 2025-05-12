@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { updateUser } from "../services/userService";
+import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
 
 interface CambiarDatosProps {
     onClose: ()=> void;
@@ -9,17 +10,17 @@ export function CambiarDatosModal ({ onClose }: CambiarDatosProps) {
     const [nombre, setNombre] = useState("");
     const [apellido, setApellido] = useState("");
     const [user, setUser] = useState("");
-    const [error, setError] = useState("");
-    const [exito, setExito] = useState("");
+    //const [error, setError] = useState("");       REEMPLAZE A LOS TOAST CON NOTIFICACIONES
+    //const [exito, setExito] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError("");
-        setExito("");
+        //setError("");
+        //setExito("");
     
         if (!nombre || !apellido || !user) {
-          setError("Todos los campos son obligatorios.");
-          return;
+            toast.error("Todos los campos son obligatorios.");
+            return;
         }
     
         try {    
@@ -31,7 +32,7 @@ export function CambiarDatosModal ({ onClose }: CambiarDatosProps) {
     
             localStorage.setItem("usuario", JSON.stringify(response.usuarioActualizado));
 
-            setExito("Usuario actualizado exitosamente.");
+            toast.success("Usuario actualizado exitosamente.");
             setNombre("");
             setApellido("");
             setUser("");
@@ -40,7 +41,8 @@ export function CambiarDatosModal ({ onClose }: CambiarDatosProps) {
                 onClose();
             }, 1500);
         } catch (err: any) {
-          setError(err?.response?.data?.message || "Error al actualizar usuario.");
+            //setError(err?.response?.data?.message || "Error al actualizar usuario.");
+            toast.error(err?.response?.data?.message || "Error al actualizar usuario.");
         }
     }; 
         
@@ -57,8 +59,8 @@ export function CambiarDatosModal ({ onClose }: CambiarDatosProps) {
                 <h2 className="text-3xl font-bold mb-6 mt-6 text-center">Actualizar Datos de Usuario</h2>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {error && <p className="text-red-600 text-center font-semibold">{error}</p>}
-                    {exito && <p className="text-green-600 text-center font-semibold">{exito}</p>}
+                    {/*{error && <p className="text-red-600 text-center font-semibold">{error}</p>}*/}
+                    {/*{exito && <p className="text-green-600 text-center font-semibold">{exito}</p>}*/}
                     {/*Nombre*/}
                     <div>
                         <label className="block mb-1 text-lg font-medium">Nombre</label>
@@ -118,6 +120,21 @@ export function CambiarDatosModal ({ onClose }: CambiarDatosProps) {
 
                 </form>
             </div>
+
+            <Toaster    //ESTILOS DE LAS NOTIFICACIONES
+                position="top-center"
+                reverseOrder={false}
+                toastOptions={{
+                duration: 3000,  //Duración de la notificación
+                style: {
+                    background: '#3B2B26',
+                    color: '#fff',
+                    fontFamily: 'Montserrat',
+                    fontWeight: 600
+                },
+                }}
+            />
+
         </div>
     )
 }
