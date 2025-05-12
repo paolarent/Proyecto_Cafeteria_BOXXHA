@@ -3,6 +3,7 @@ import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 import NavBar from "../components/NavBar"
 import { useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
+import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
 
 import { useState } from "react";
 import { loginUser } from "../services/authService";
@@ -33,13 +34,15 @@ const LoginView = () => {
     setErrores(nuevosErrores);
 
     if (nuevosErrores.identificador || nuevosErrores.contra) {
-        setError("Por favor llena todos los campos");
+        //setError("Por favor llena todos los campos");
+        toast.error("Por favor llena todos los campos");
         return;
     }
 
     try {
         const data = await loginUser(identificador, contra);
-        setMensaje(data.message);
+        //setMensaje(data.message);
+        toast.success(data.message);
 
         // Guarda el token en localStorage para mantener al usuario logueado, el usuario para mostrarlo en el dropdown menu
         localStorage.setItem("token", data.token);
@@ -51,7 +54,8 @@ const LoginView = () => {
         }, 1000);  // 1 segundo
   
     }   catch (err: any) {
-            setError(err.message);
+            //setError(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -153,6 +157,19 @@ const LoginView = () => {
                     </section>
                 </main>
             </motion.div>
+            
+            <Toaster    //ESTILOS DE LAS NOTIFICACIONES
+                position="top-center"
+                reverseOrder={false}
+                toastOptions={{
+                duration: 3000,  // Duración de la notificación
+                style: {
+                background: '#3B2B26',
+                color: '#fff',
+                fontFamily: 'Montserrat',
+                },
+            }}
+            />
         </div>
     );
 };
