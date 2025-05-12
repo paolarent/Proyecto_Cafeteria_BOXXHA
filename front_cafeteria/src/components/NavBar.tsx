@@ -222,6 +222,7 @@ const NavBar: React.FC = () => {
 
 
                         <button 
+                            onClick={handleIrAMenu}
                             className="hover:text-[#A1C99C] block"
                         >Menú</button>
 

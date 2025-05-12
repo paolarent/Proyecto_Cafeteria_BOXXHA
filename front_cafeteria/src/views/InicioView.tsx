@@ -48,8 +48,8 @@ const InicioView = () => {
                 </motion.div>
             </div>
             
-            <main className="flex flex-1 bg-[#f1e6df] pb-12">
-                <section className="w-1/2 flex flex-col items-center justify-center space-y-10">
+            <main className="flex flex-col-reverse md:flex-row bg-[#f1e6df] pb-12 px-4 items-center">
+                <section className="w-full md:w-1/2 flex flex-col items-center justify-center space-y-6 text-center">
                     <div className="text-center">
                         <p className="font-Montserrat font-medium text-5xl">¡Bienvenido!</p>
                         <p className="font-Montserrat font-medium text-5xl">Llegaste a tu lugar feliz.</p>
@@ -70,8 +70,8 @@ const InicioView = () => {
                     </div>
                 </section>
                 
-                <section className="w-1/2 flex items-center justify-center mt-10">
-                <div className="relative w-[400px] h-[450px] mx-auto">
+                <section className="w-full md:w-1/2 flex items-center justify-center my-6 md:mt-10">
+                <div className="relative w-[80%] max-w-[400px] h-auto max-h-[450px] aspect-[4/5] mx-auto">
                     <img
                         src={fondoCafe}
                         alt="Fondo de patron Boxxha"
@@ -99,7 +99,7 @@ const InicioView = () => {
                 />
 
                 <div className="relative z-10">
-                    <div className="grid grid-cols-4 gap-10 justify-items-center">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 justify-items-center">
                         {/*Bebidas Calientes*/}
                         <div onClick={() => navigate("/bebidas_calientes")} className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
                             <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
