@@ -1,18 +1,24 @@
-import React from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React from 'react';
+import { toast, Toaster } from 'react-hot-toast';
 
-const Pruebas = ()=> { 
+const Pruebas = () => {
 
-    const notify = () => toast('Wow so easy !');
+  const handleToast = () => {
+    toast.success('¡Notificación de prueba exitosa!');
+  };
 
-    return (
-        <div className="grid place-items-center h-dvh bg-zinc-900/15">
-        <button onClick={notify}>Notify !</button>
-        <ToastContainer aria-label={undefined} />
-        </div>
-    );
-}
+  return (
+    <div>
+      <h1>Prueba de Notificación</h1>
+      <button onClick={handleToast}>Mostrar Notificación</button>
+      
+      {/* Asegúrate de colocar el Toaster en un lugar visible */}
+      <Toaster />
+    </div>
+  );
+};
 
 export default Pruebas;
+
+
 

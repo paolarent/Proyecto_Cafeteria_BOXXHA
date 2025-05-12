@@ -90,7 +90,7 @@ const ExtrasView = () => {
                 />
                 {/* Sección donde se encuentran el listado de extras y botones +/- */}
                 <section className="relative w-full flex flex-col items-center space-y-6">
-                    <div className="bg-[#535251] bg-opacity-60 rounded-2xl p-2">
+                    <div className="bg-[#535251] bg-opacity-60 rounded-2xl p-4">
                         <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 
                         rounded-2xl shadow-md">¿Desea agregar <span className="font-medium"> Extras</span>?</h2>
                     </div>
