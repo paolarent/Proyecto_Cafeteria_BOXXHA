@@ -15,17 +15,17 @@ const LoginView = () => {
     const [contra, setContra] = useState("");
     const [error, setError] = useState("");
     const [mensaje, setMensaje] = useState("");
-  
+
     const [errores, setErrores] = useState({
         identificador: false,
         contra: false,
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
-      setError("");
-      setMensaje("");
-  
+        e.preventDefault();
+        setError("");
+        setMensaje("");
+
     const nuevosErrores = {
         identificador: identificador.trim() === "", //Si alguno de los campos esta vacio salta un error
         contra: contra.trim() === "",
@@ -52,7 +52,7 @@ const LoginView = () => {
         setTimeout(() => {
             navigate("/");  // Redirigir después de un tiempo
         }, 1000);  // 1 segundo
-  
+
     }   catch (err: any) {
             //setError(err.message);
             toast.error(err.message);
@@ -73,10 +73,13 @@ const LoginView = () => {
                 className="flex-grow flex flex-col"
             >
                 
-                <main className="flex flex-1 bg-[#B0CEAC]">
+                {/*<main className="flex flex-1 bg-[#B0CEAC]">*/}
+                <main className="flex flex-1 flex-col md:flex-row bg-[#B0CEAC]">
+
                     {/* Sección izquierda: Formulario */}
-                    <section className="w-1/2 flex items-center justify-center">
-                        <div className="bg-white p-8 rounded-xl shadow-md w-[90%] max-w-md">
+                    {/*<section className="w-1/2 flex items-center justify-center">*/}
+                    <section className="w-full md:w-1/2 flex items-center justify-center">
+                        <div className="bg-white p-8 rounded-xl shadow-md w-[90%] max-w-md my-6 md:my-0">
                             <h2 className="text-4xl font-Montserrat font-bold text-[#453126] mb-6 text-center">Iniciar sesión</h2>
                             <form className="space-y-4" onSubmit={handleSubmit}>
                                 <div>
@@ -127,7 +130,7 @@ const LoginView = () => {
                     </section>
                 
                     <section
-                        className="w-1/2 flex items-center justify-center relative bg-[#B0CEAC] rounded-l-[100px] overflow-hidden"
+                        className="w-full md:w-1/2 flex items-center justify-center relative bg-[#B0CEAC] rounded-none md:rounded-l-[100px] overflow-hidden"
                         style={{
                             backgroundImage: `url(${fondoCafe})`,
                             backgroundSize: "cover", 
@@ -142,7 +145,9 @@ const LoginView = () => {
                         />
 
                         {/* Contenido por encima de la capa del patron */}
-                        <div className="relative z-10 text-center p-8 rounded-3xl bg-[#B0CEAC] shadow-md opacity-95 w-[420px] h-[410px]">
+                        {/*<div className="relative z-10 text-center p-8 rounded-3xl bg-[#B0CEAC] shadow-md opacity-95 w-[420px] h-[410px]">*/}
+                        <div className="relative z-10 text-center p-8 rounded-3xl bg-[#B0CEAC] shadow-md opacity-95 w-420px md:w-full max-w-[420px] max-h-[410px] aspect-[4/5] my-6 md:my-0">
+
                             <div className="bg-white rounded-xl px-10 py-2 shadow-md inline-block mb-4">
                                 <img src={logob} alt="Logo BOXXHA" className="h-[70px] mx-auto mb-2" />
                             </div>
