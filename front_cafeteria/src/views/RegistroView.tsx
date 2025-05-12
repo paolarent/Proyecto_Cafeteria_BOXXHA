@@ -3,6 +3,7 @@ import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 import NavBar from "../components/NavBar"
 import { useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
+import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
 
 // Importar el servicio de autenticación y useState
 import { registrarUsuario } from "../services/authService";
@@ -57,7 +58,7 @@ const RegistroView = () => {
         setErrores(nuevosErrores);
 
         if (Object.values(nuevosErrores).some((msg) => msg !== "")) {
-            alert("Por favor corrige los errores.");
+            toast.error("Por favor corrige los errores.");
             setErrores(nuevosErrores);
             return;
         }
@@ -73,10 +74,10 @@ const RegistroView = () => {
 
         try {
             await registrarUsuario(payload);
-            alert("Registro exitoso");
+            toast.success("Registro exitoso");
             navigate("/login");
         } catch (error: any) {
-            alert(error.message);
+            toast.error(error.message);
         }
     };
 
@@ -87,17 +88,18 @@ const RegistroView = () => {
             </header>
 
             <motion.div
-                initial={{ x: '-100%', opacity: 0 }}  // Inicia desde la izquierda
-                animate={{ x: 0, opacity: 1 }}        // Se mueve al centro y se vuelve visible
-                exit={{ x: '100%', opacity: 0 }}      // Se mueve hacia la derecha y desaparece
+                initial={{ x: '-100%', opacity: 0 }}  //Inicia desde la izquierda
+                animate={{ x: 0, opacity: 1 }}        //Se mueve al centro y se vuelve visible
+                exit={{ x: '100%', opacity: 0 }}      //Se mueve hacia la derecha y desaparece
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="flex-grow flex flex-col"
             >
             
-                <main className="flex flex-1 bg-[#B0CEAC]">
+                <main className="flex flex-1 flex-col md:flex-row bg-[#B0CEAC]">
                     {/* Misma logica, 2 secciones pero inverso */}
                     <section
-                        className="w-1/2 flex items-center justify-center relative bg-[#B0CEAC] rounded-r-[100px] overflow-hidden"
+                        //className="w-1/2 flex items-center justify-center relative bg-[#B0CEAC] rounded-r-[100px] overflow-hidden"
+                        className="w-full md:w-1/2 flex items-center justify-center relative bg-[#B0CEAC] rounded-none md:rounded-r-[100px] overflow-hidden"
                         style={{
                             backgroundImage: `url(${fondoCafe})`,
                             backgroundSize: "cover", 
@@ -112,7 +114,8 @@ const RegistroView = () => {
                         />
 
                         {/* Contenido por encima de la capa del patron */}
-                        <div className="relative z-10 text-center p-8 rounded-3xl bg-[#B0CEAC] shadow-md opacity-95 w-[420px] h-[410px]">
+                        {/*<div className="relative z-10 text-center p-8 rounded-3xl bg-[#B0CEAC] shadow-md opacity-95 w-[420px] h-[410px]">*/}
+                        <div className="relative z-10 text-center p-8 rounded-3xl bg-[#B0CEAC] shadow-md opacity-95 w-420px md:w-full max-w-[420px] max-h-[410px] aspect-[4/5] my-6 md:my-0">
                             <div className="bg-white rounded-xl px-10 py-2 shadow-md inline-block mb-4">
                                 <img src={logob} alt="Logo BOXXHA" className="h-[70px] mx-auto mb-2" />
                             </div>
@@ -126,8 +129,9 @@ const RegistroView = () => {
                         </div>
                     </section>
 
-                    <section className="w-1/2 flex items-center justify-center">
-                        <div className="bg-white p-6 rounded-xl shadow-md w-[450px] h-[530px]">
+                    {/*<section className="w-1/2 flex items-center justify-center">*/}
+                    <section className="w-full md:w-1/2 flex items-center justify-center">
+                        <div className="bg-white p-8 rounded-xl shadow-md w-[90%] max-w-md my-6 md:my-0">
                             <h2 className="text-4xl font-Montserrat font-bold text-[#453126] mb-2 text-center">Registrarse</h2>
                             <form className="space-y-4" onSubmit={handleSubmit}>
                                 {/* Parte de seleccionar forma de registro y su input-text */}
@@ -239,6 +243,21 @@ const RegistroView = () => {
                     </section>
                 </main>
             </motion.div>
+
+            <Toaster    //ESTILOS DE LAS NOTIFICACIONES
+                position="top-center"
+                reverseOrder={false}
+                toastOptions={{
+                duration: 3000,  //Duración de la notificación
+                style: {
+                    background: '#3B2B26',
+                    color: '#fff',
+                    fontFamily: 'Montserrat',
+                    fontWeight: 600
+                },
+                }}
+            />
+
         </div>
     );
 };
