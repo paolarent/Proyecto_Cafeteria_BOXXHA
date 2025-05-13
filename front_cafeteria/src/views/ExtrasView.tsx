@@ -132,9 +132,9 @@ const ExtrasView = () => {
                     {/* ---------------------------------------------------------------------------------------------------- */}
 
                     {/* Botones laterales - solo en pantallas grandes */}
-                    <div className="hidden lg:flex justify-between items-center w-full px-40 absolute top-1/2 left-0 right-0 transform -translate-y-1/2 z-20">
+                    <div className="hidden lg:flex justify-between px-40 absolute top-1/2 left-0 right-0 transform -translate-y-1/2 z-20 pointer-events-none">
                         {/* Botón Regresar */}
-                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg hover:scale-110 hover:bg-[#f2ddc9] transition-transform duration-300">
+                        <div className="pointer-events-auto bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg hover:scale-110 hover:bg-[#f2ddc9] transition-transform duration-300">
                             <button onClick={handleRegresar}>
                             <img
                                 src={BotonRegresar}
@@ -146,7 +146,7 @@ const ExtrasView = () => {
                         </div>
 
                         {/* Botón Continuar */}
-                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
+                        <div className="pointer-events-auto bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
                             <button onClick={handleContinuar}>
                                 <img
                                     src={BotonContinuar}
