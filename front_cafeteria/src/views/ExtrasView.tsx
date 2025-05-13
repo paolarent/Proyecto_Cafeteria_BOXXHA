@@ -77,7 +77,7 @@ const ExtrasView = () => {
 
     
     return (
-        <div className="relative h-screen overflow-hidden flex flex-col">
+        <div className="relative h-screen overflow-y-auto overflow-x-hidden flex flex-col">
             <header className="sticky top-0 z-50">
                 <NavBar />
             </header>
@@ -89,14 +89,14 @@ const ExtrasView = () => {
                     alt="Fondo de café"
                 />
                 {/* Sección donde se encuentran el listado de extras y botones +/- */}
-                <section className="relative w-full flex flex-col items-center space-y-6">
-                    <div className="bg-[#535251] bg-opacity-60 rounded-2xl p-4">
-                        <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 
+                <section className="relative w-full flex flex-col items-center space-y-6 pt-4">
+                    <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
+                        <h2 className="font-Montserrat font-regular text-3xl md:text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 
                         rounded-2xl shadow-md">¿Desea agregar <span className="font-medium"> Extras</span>?</h2>
                     </div>
 
-                    <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
-                        <p className="text-white text-lg text-center font-medium px-4 py-2 bg-[#63493a] rounded-xl shadow-md">
+                    <div className="flex flex-col w-full md:w-[38rem] bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
+                        <p className="text-white texl-md md:text-xl text-center font-medium px-4 py-2 bg-[#3B2B26] rounded-xl shadow-md">
                         NOTA: Si agrega más de 3 extras, se aplicará un cargo adicional de $5.
                         </p>
 
@@ -111,7 +111,7 @@ const ExtrasView = () => {
                                     <span className="font-Montserrat font-black text-3xl text-[#34251d]"> - </span>
                                 </button>
                                 <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black">
-                                    <span className="font-Montserrat font-semibold text-2xl text-[#34251d] px-4 py-2 text-center w-full">
+                                    <span className="font-Montserrat font-semibold text-lg md:text-2xl text-[#34251d] px-4 py-2 text-center w-full">
                                         {extra.nombre} 
                                         {(cantidades[extra.id_extra] ?? 0) > 0 && (
                                             <span className="text-gray-500 ml-2 font-normal">+{cantidades[extra.id_extra]}</span>
@@ -129,21 +129,23 @@ const ExtrasView = () => {
                         ))}
                     </div>
 
-                    {/* Botones laterales de navegación */}
-                    <div className="absolute top-1/2 left-0 z-20 transform -translate-y-1/2 px-40">
-                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
+                    {/* ---------------------------------------------------------------------------------------------------- */}
+
+                    {/* Botones laterales - solo en pantallas grandes */}
+                    <div className="hidden lg:flex justify-between items-center w-full px-40 absolute top-1/2 left-0 right-0 transform -translate-y-1/2 z-20">
+                        {/* Botón Regresar */}
+                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg hover:scale-110 hover:bg-[#f2ddc9] transition-transform duration-300">
                             <button onClick={handleRegresar}>
-                                <img
-                                    src={BotonRegresar}
-                                    alt="Botón Regresar"
-                                    title="Regresar"
-                                    className="w-[80px] h-auto"
-                                />
+                            <img
+                                src={BotonRegresar}
+                                alt="Botón Regresar"
+                                title="Regresar"
+                                className="w-[80px] h-auto"
+                            />
                             </button>
                         </div>
-                    </div>
 
-                    <div className="absolute top-1/2 right-0 z-20 transform -translate-y-1/2 px-40">
+                        {/* Botón Continuar */}
                         <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
                             <button onClick={handleContinuar}>
                                 <img
@@ -155,9 +157,36 @@ const ExtrasView = () => {
                             </button>
                         </div>
                     </div>
+
+                    {/* Botones abajo - solo en pantallas pequeñas y medianas */}
+                    <div className="flex lg:hidden justify-center items-center gap-10 pt-1 z-10">
+                        {/* Botón Regresar */}
+                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg hover:scale-110 hover:bg-[#f2ddc9] transition-transform duration-300">
+                            <button onClick={handleRegresar}>
+                            <img
+                                src={BotonRegresar}
+                                alt="Botón Regresar"
+                                title="Regresar"
+                                className="w-[70px] h-auto"
+                            />
+                            </button>
+                        </div>
+
+                        {/* Botón Continuar */}
+                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
+                            <button onClick={handleContinuar}>
+                                <img
+                                    src={BotonContinuar}
+                                    alt="Botón Continuar"
+                                    title="Continuar"
+                                    className="w-[70px] h-auto"
+                                />
+                            </button>
+                        </div>
+                    </div>
+
                 </section>
             </main>
-
             {showModalCarrito && (
                 <ModalCarrito 
                     isOpen={showModalCarrito} 
