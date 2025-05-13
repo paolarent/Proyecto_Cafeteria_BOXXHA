@@ -16,7 +16,7 @@ const PedidoTamañoView = () => {
     const navigate = useNavigate();
     const i = Number(index);
     const pedidoActual = pedidos[i];
-  
+
     const nombreBebida = pedidoActual?.nombre?.toLowerCase();
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState<number | null>(null);
 
@@ -52,13 +52,13 @@ const PedidoTamañoView = () => {
     };
     
     return (
-        <div className="relative h-screen overflow-hidden flex flex-col">
+        <div className="relative h-screen overflow-y-auto overflow-x-hidden flex flex-col">
             <header className="sticky top-0 z-50">
                 <NavBar />
             </header>
             
             {/* Contenedor Padre Father */}
-            <main className="flex-1 relative ">
+            <main className="flex-1 relative">
                 {/*Imagen de fondo estatica*/ }
                 <img 
                     src={fondoCafe} 
@@ -68,19 +68,19 @@ const PedidoTamañoView = () => {
             
                 {/*Con la propiedad relative z-10 me aseguro que sea un fondo estatico*/ }
                 {/*Con la layout flex puedo colocar los elementos en cualquier posición dentro del contenedor */}
-                <section className="relative w-full flex flex-col items-center space-y-10 pt-20">
+                <section className="relative w-full flex flex-col items-center space-y-10 pt-10 md:pt-20">
                     <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
-                        <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 rounded-2xl shadow-md">
+                        <h2 className="font-Montserrat font-regular text-4xl md:text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 rounded-2xl shadow-md">
                         Seleccione el <span className="font-medium">Tamaño</span>
                         </h2>
                     </div>
                     
-                    <div className="flex flex-col md:flex-row gap-20 pt-2 justify-center items-center p-4 ">
+                    <div className="flex flex-col md:flex-row gap-10 md:gap-20 pt-2 justify-center items-center p-4 ">
                             
                         <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
                             <button
                                 onClick={() => handleSeleccionarTamano(1)} // ID para 12 OZ
-                                className={`flex flex-col justify-center pt-6 pb-4 w-[230px] h-[230px] rounded-2xl border-2 border-black
+                                className={`flex flex-col justify-end pt-4 pb-2 w-56 h-56 md:w-56 md:h-56 rounded-2xl border-2 border-black
                                     ${tamanoSeleccionado === 1  ? 'bg-[#B0CEAC] shadow-xl scale-105' : 'bg-white border-black shadow-md'} 
                                     hover:scale-105 transition-transform duration-300`}  
                                 >
@@ -92,7 +92,7 @@ const PedidoTamañoView = () => {
                         <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
                             <button
                                 onClick={() => handleSeleccionarTamano(2)} // ID para 16 OZ para cambiar otra vez al borde: border-black border-8
-                                className={`flex flex-col justify-center pt-6 pb-4 w-[230px] h-[230px] rounded-2xl border-2 border-black
+                                className={`flex flex-col justify-end pt-4 pb-2 w-56 h-56 sm:w-56 sm:h-56 rounded-2xl border-2 border-black
                                     ${tamanoSeleccionado === 2  ? 'bg-[#B0CEAC] shadow-xl scale-105' : 'bg-white border-black shadow-md'} 
                                     hover:scale-105 transition-transform duration-300`}  
                                 >   
@@ -103,9 +103,10 @@ const PedidoTamañoView = () => {
                     
                     </div>
 
-                    {/* Botones laterales de navegación */}
-                    <div className="absolute top-1/2 left-0 z-20 transform -translate-y-1/2 px-40">
-                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
+                    {/* Botones laterales - solo en pantallas grandes */}
+                    <div className="hidden lg:flex justify-between items-center w-full px-40 absolute top-1/2 left-0 right-0 transform -translate-y-1/2 z-20">
+                        {/* Botón Regresar */}
+                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg hover:scale-110 hover:bg-[#f2ddc9] transition-transform duration-300">
                             <button onClick={handleRegresar}>
                             <img
                                 src={BotonRegresar}
@@ -115,24 +116,55 @@ const PedidoTamañoView = () => {
                             />
                             </button>
                         </div>
-                    </div>
 
-                    <div className="absolute top-1/2 right-0 z-20 transform -translate-y-1/2 px-40">
+                        {/* Botón Continuar */}
                         <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
-                            <button 
+                            <button
                             onClick={handleSiguientePaso}
-                            disabled = {!tamanoSeleccionado}
+                            disabled={!tamanoSeleccionado}
                             className={`w-[80px] h-auto transition-opacity duration-300 ${
-                                !tamanoSeleccionado ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'
-                                }`   
-                            }
+                                !tamanoSeleccionado ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
                             >
-                                <img
+                            <img
                                 src={BotonContinuar}
                                 alt="Botón Continuar"
                                 title="Continuar"
                                 className="w-[80px] h-auto"
-                                />
+                            />
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Botones abajo - solo en pantallas pequeñas y medianas */}
+                    <div className="flex lg:hidden justify-center items-center gap-10 pt-1 z-10">
+                        {/* Botón Regresar */}
+                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg hover:scale-110 hover:bg-[#f2ddc9] transition-transform duration-300">
+                            <button onClick={handleRegresar}>
+                            <img
+                                src={BotonRegresar}
+                                alt="Botón Regresar"
+                                title="Regresar"
+                                className="w-[70px] h-auto"
+                            />
+                            </button>
+                        </div>
+
+                        {/* Botón Continuar */}
+                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
+                            <button
+                            onClick={handleSiguientePaso}
+                            disabled={!tamanoSeleccionado}
+                            className={`w-[70px] h-auto transition-opacity duration-300 ${
+                                !tamanoSeleccionado ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                            >
+                            <img
+                                src={BotonContinuar}
+                                alt="Botón Continuar"
+                                title="Continuar"
+                                className="w-full h-auto"
+                            />
                             </button>
                         </div>
                     </div>
