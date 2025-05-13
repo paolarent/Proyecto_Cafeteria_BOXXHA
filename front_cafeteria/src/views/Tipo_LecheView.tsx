@@ -68,10 +68,12 @@ const Tipo_LecheView = () => {
 
                         {/* Título con fondo oscuro y opacidad */}
                         <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
-                            <h2 className="font-Montserrat font-regular text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 rounded-2xl shadow-md">
+                            <h2 className="font-Montserrat font-regular text-4xl md:text-5xl text-center text-[#34251d] bg-[#ffffff] px-6 py-3 rounded-2xl shadow-md">
                             Seleccione el tipo de <span className="font-medium">Leche</span>
                             </h2>
                         </div>
+
+                        {/* ------------------------------------------------------------------------------------------------- */}
 
                         {/* Contenedor para los botones, alineados a los lados del título */}
                         <div className="absolute top-1/2 -left-96 z-20 transform -translate-y-1/2 px-40">
@@ -93,7 +95,7 @@ const Tipo_LecheView = () => {
                             onClick={handleSiguientePaso}
                             disabled = {pedidoActual?.id_leche === undefined}
                             className={`w-[80px] h-auto transition-opacity duration-300 ${
-                                pedidoActual?.id_leche === undefined ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'
+                                pedidoActual?.id_leche === undefined ? 'opacity-50 cursor-not-allowed' : ''
                                 }`   
                             }>
                                 <img
@@ -108,6 +110,7 @@ const Tipo_LecheView = () => {
 
                     </div>
                     
+                    {/* ------------------------------------------------------------------------------------------------- */}
 
                      {/* Contenedor para las leches estáticas */}
                     <div className="flex flex-wrap justify-center gap-10 w-full px-8">
@@ -128,6 +131,41 @@ const Tipo_LecheView = () => {
                         </div>
                         ))}
                     </div>
+
+
+                    {/* Botones abajo - solo en pantallas pequeñas y medianas */}
+                    <div className="flex lg:hidden justify-center items-center gap-10 pt-4 z-10">
+                        {/* Botón Regresar */}
+                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg hover:scale-110 hover:bg-[#f2ddc9] transition-transform duration-300">
+                            <button onClick={handleRegresar}>
+                            <img
+                                src={BotonRegresar}
+                                alt="Botón Regresar"
+                                title="Regresar"
+                                className="w-[70px] h-auto"
+                            />
+                            </button>
+                        </div>
+
+                        {/* Botón Continuar */}
+                        <div className="bg-[#B0CEAC] bg-opacity-90 rounded-full p-4 shadow-lg transition-transform duration-300 hover:scale-110 hover:bg-[#f2ddc9]">
+                            <button
+                            onClick={handleSiguientePaso}
+                            disabled = {pedidoActual?.id_leche === undefined}
+                            className={`w-[70px] h-auto transition-opacity duration-300 ${
+                                pedidoActual?.id_leche === undefined ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                            >
+                            <img
+                                src={BotonContinuar}
+                                alt="Botón Continuar"
+                                title="Continuar"
+                                className="w-full h-auto"
+                            />
+                            </button>
+                        </div>
+                    </div>
+
                     </section>
                 </main>
                 </div>
