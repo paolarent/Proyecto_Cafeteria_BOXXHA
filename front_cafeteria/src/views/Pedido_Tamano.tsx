@@ -75,7 +75,7 @@ const PedidoTamañoView = () => {
                         </h2>
                     </div>
                     
-                    <div className="flex flex-col md:flex-row gap-10 md:gap-20 pt-2 justify-center items-center p-4 ">
+                    <div className="flex flex-col md:flex-row gap-10 md:gap-20 pt-2 justify-center items-center p-4">
                             
                         <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
                             <button
@@ -91,7 +91,7 @@ const PedidoTamañoView = () => {
                         
                         <div className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
                             <button
-                                onClick={() => handleSeleccionarTamano(2)} // ID para 16 OZ para cambiar otra vez al borde: border-black border-8
+                                onClick={() => handleSeleccionarTamano(2)} //ID para 16 OZ para cambiar otra vez al borde: border-black border-8
                                 className={`flex flex-col justify-end pt-4 pb-2 w-56 h-56 sm:w-56 sm:h-56 rounded-2xl border-2 border-black
                                     ${tamanoSeleccionado === 2  ? 'bg-[#B0CEAC] shadow-xl scale-105' : 'bg-white border-black shadow-md'} 
                                     hover:scale-105 transition-transform duration-300`}  
