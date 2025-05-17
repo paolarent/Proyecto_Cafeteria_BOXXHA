@@ -129,30 +129,31 @@ const NavBar: React.FC = () => {
 
                     <li><button onClick={handleIrAMenu} className="text-lg hover:[color:#A1C99C] transition">Menú</button></li>
                     
-                    <li><button 
-                    onClick={handlePerfilClick}>
-                    <img src={icon_user} alt="Usuario" className="h-7 hover:scale-110 transition" />
-                    </button>
-                    {isUserMenuOpen && user && (
-                        <div className="absolute right-0 z-50">
-                            {/* Barra de navegación superior */}
-                            <UserMenu
-                                user={user}
-                                onClose={() => setIsUserMenuOpen(false)}
-                                onLogout={logOut}
-                                
-                                onUpdateContra={() => {
-                                    setIsUserMenuOpen(false); // Cierra el dropdown
-                                    setMostrarModalContra(true); // Abre el modal contra
-                                }}
+                    <li>
+                        <button 
+                            onClick={handlePerfilClick}>
+                            <img src={icon_user} alt="Usuario" className="h-7 hover:scale-110 transition" />
+                        </button>
 
-                                onUpdateDatos={() => {
-                                    setIsUserMenuOpen(false); // Cierra el dropdown
-                                    setMostrarModalDatosA(true); // Abre el modal datos
-                                }}
-                            />
+                        {isUserMenuOpen && user && (
+                            <div className="absolute right-0 z-50">
+                                {/* Barra de navegación superior */}
+                                <UserMenu
+                                    user={user}
+                                    onClose={() => setIsUserMenuOpen(false)}
+                                    onLogout={logOut}
+                                    
+                                    onUpdateContra={() => {
+                                        setIsUserMenuOpen(false); // Cierra el dropdown
+                                        setMostrarModalContra(true); // Abre el modal contra
+                                    }}
 
-                        </div>
+                                    onUpdateDatos={() => {
+                                        setIsUserMenuOpen(false); // Cierra el dropdown
+                                        setMostrarModalDatosA(true); // Abre el modal datos
+                                    }}
+                                />
+                            </div>
                         )}
                     </li>
                     
@@ -227,9 +228,34 @@ const NavBar: React.FC = () => {
                         >Menú</button>
 
                         <div className="flex justify-between pt-4 border-t">
-                            <button onClick={() => { navigate("/login"); setIsMenuOpen(false); }}>
+
+                            <button 
+                                onClick={handlePerfilClick}>
                                 <img src={icon_user} alt="Usuario" className="h-7 hover:scale-110 transition" />
                             </button>
+                            
+                            {isUserMenuOpen && user && (
+                                <div className="absolute right-0 z-50">
+                                    {/* Barra de navegación superior */}
+                                    <UserMenu
+                                        user={user}
+                                        onClose={() => setIsUserMenuOpen(false)}
+                                        onLogout={logOut}
+                                        
+                                        onUpdateContra={() => {
+                                            setIsUserMenuOpen(false); // Cierra el dropdown
+                                            setMostrarModalContra(true); // Abre el modal contra
+                                        }}
+
+                                        onUpdateDatos={() => {
+                                            setIsUserMenuOpen(false); // Cierra el dropdown
+                                            setMostrarModalDatosA(true); // Abre el modal datos
+                                        }}
+                                    />
+                                </div>
+                            )}
+
+                            {/* --------------------------------------------------------------------- */}
                             <button>
                                 <img src={icon_like} alt="Favorito" className="h-7 hover:scale-110 transition" />
                             </button>
