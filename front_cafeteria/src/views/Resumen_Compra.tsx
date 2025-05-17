@@ -8,17 +8,6 @@ import { usePedido } from "../contexts/PedidoContext";
 import { useCatalagos } from "../contexts/CatalagosContext"; // Usamos el hook para acceder a los catálogos
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 
-// To do en este doc
-// Diseño 
-/*
-    -Boton realizar pago
-    -Maybe agregar otro metodo de pago (Monedero electronico si lo llegamos a agregar)
-    -Rediseñar el resumen compra (
-        Hacerlo tipo ticket de compra literalmente que ese sea el diseño
-        Seguir con el mismo diseño de los botones al realizar un pedido
-        )
-*/
-
 const tarjeta = {
     nombreTitular:"",
     numTarjeta:"",
@@ -63,17 +52,16 @@ const Resumen_CompraView = () => {
     },[pedidos]);
 
     return (
-        <div className=" h-full w-full flex flex-col">
+        <div className=" h-full w-full flex flex-col overflow-x-hidden">
             <header className="sticky top-0 z-50">
                 <NavBar />
             </header>
             
-            <main className="flex flex-row flex-1 h-full relative">
+            <main className="flex flex-col md:flex-row flex-1 h-full relative">
                 {/*Sección izquierda para el resumen de compra */}
-                <section className="relative flex flex-col w-1/2 bg-[#F7F7F7] p-12"
+                <section className="relative flex flex-col w-full lg:w-1/2 bg-[#F7F7F7] lg:py-12 lg:p-12 py-8 p-4"
                         style={{
                             backgroundImage: `url(${fondoCafe})`,
-                            //backgroundSize: "cover", 
                             backgroundPosition: "top",
                             backgroundRepeat: "repeat",
                         }}
@@ -84,8 +72,8 @@ const Resumen_CompraView = () => {
                         style={{ backgroundColor: "#f8e9df", opacity: 0.60 }}
                         />
 
-                    <div className="relative z-10 sticky font-Montserrat top-20 w-full shadow-xl bg-white rounded-2xl gap-4 p-8">
-                        <h2 className=" font-bold text-3xl text-left text-[#34251d] pb-6">Resumen compra</h2>
+                    <div className="relative z-10 sticky font-Montserrat top-20 w-full lg:w-104 shadow-xl bg-[#ededef] rounded-2xl gap-4 p-8">
+                        <h2 className=" font-bold text-2xl lg:text-4xl text-center text-[#34251d] pb-6">RESUMEN DEL PEDIDO</h2>
                         <div className="flex flex-col gap-y-4">
                             {pedidos.map((pedido, index) => {
                                 const regular = pedido.regular === undefined
@@ -120,70 +108,107 @@ const Resumen_CompraView = () => {
                                 );
                             })}
                         </div>
+
+                        {/* DIV PARA EL SUBTOTAL Y EL TOTAL */}
+                        <div className="w-full bg-white text-[#1f1f1f] border-y-4 border-dashed border-[#a3a3a3] px-4 py-2 font-medium text-sm mt-6">
+                            <div className="flex justify-between text-lg font-semibold">
+                                <p><span>Subtotal </span>
+                                ({pedidos.length} Productos)</p> 
+                                <span>$1,523.00</span>
+                            </div>
+
+                            <div className="flex justify-between mt-2 text-medium text-black text-lg">
+                                <span>Servicio Pick-Up</span>
+                                <span className="text-green-600 font-semibold">Sin costo</span>
+                            </div>
+
+                            <div className="flex justify-between mt-8 text-xl font-bold">
+                                <span>TOTAL DE PEDIDO:</span>
+                                <span>$1,523.00</span>
+                            </div>
+                        </div>
+
                     </div>
                 </section>
 
 
                 {/*Sección derecha para los formularios */}
-                <section className="flex flex-col w-1/2 bg-[#B0CEAC] p-12 gap-14">
-                    {/*Seccion de formulario METODO DE PAGO */}
-                    <div className="flex flex-col bg-white w-104 shadow-xl h-auto rounded-2xl mx-auto p-10">
-                        <h2 className="font-Montserrat font-bold text-3xl text-left text-[#34251d] pb-6"> Método de pago</h2>
-                            <select onChange={(e) => setMetodo(e.target.value)}className="font-Montserrat font-regular text-left text-[#34251d] w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold">
-                                <option>Efectivo</option>
-                                <option>Tarjeta Mastercard/Visa</option>
+                <section className="flex flex-col w-full lg:w-1/2 bg-[#B0CEAC] lg:py-12 lg:p-12 lg:gap-16 py-8 p-4 gap-8">
+                    
+                    {/* Sección de formulario MÉTODO DE PAGO */}
+                    <div className="flex flex-col bg-white w-full max-w-3xl shadow-xl h-auto rounded-2xl mx-auto p-6 sm:p-10">
+                        <h2 className="font-Montserrat font-bold text-2xl sm:text-3xl lg:text-4xl text-left text-[#34251d] pb-6">
+                            MÉTODO DE PAGO
+                        </h2>
+
+                        <select
+                            onChange={(e) => setMetodo(e.target.value)}
+                            className="font-Montserrat text-[#34251d] w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold"
+                        >
+                            <option>Efectivo</option>
+                            <option>Tarjeta Mastercard/Visa</option>
                         </select>
+
                         {metodo === "Tarjeta Mastercard/Visa" && (
-                            <div className="flex flex-col min-w-full pt-4 gap-4 font-Montserrat mx-auto"> 
-                                <div>
-                                    <h2 className="font-semibold text-xl text-left text-[#34251d]">Numero de la tarjeta</h2>
-                                    <input
-                                            type="text"
-                                            className="font-regular w-full mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
-                                            placeholder="xxxx-xxxx-xxxx-xxxx"
-                                    />
-                                </div>
-                                {/*Sección para la fecha de vencimiento y codigo cvv */}
-                                <div className="w-full flex flex-row font-Montserrat">
-                                    <div className="Relative flex flex-col">
-                                        <h2 className="font-semibold text-xl text-left text-[#34251d]">Fecha de Vencimiento</h2>
-                                        <input
-                                                type="text"
-                                                className="font-regular w-40 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
-                                                placeholder="01/26"
-                                        />
-                                    </div>
+                        <div className="flex flex-col w-full pt-6 gap-6 font-Montserrat">
+                            <div>
+                                <h2 className="font-semibold text-lg sm:text-xl text-left text-[#34251d]">
+                                Número de la tarjeta
+                                </h2>
+                                <input
+                                type="text"
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                placeholder="xxxx-xxxx-xxxx-xxxx"
+                                />
+                            </div>
 
-                                    <div className="Relative flex flex-col ml-auto">
-                                        <h2 className="font-semibold text-xl text-left text-[#34251d]">Código CVV</h2>
-                                        <input
-                                                type="text"
-                                                className="font-regular w-40 mt-0 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
-                                                placeholder="cvv"
-                                        />
-                                    </div>
-                                </div> 
-
-                                <div>
-                                    <h2 className="font-semibold text-xl text-left text-[#34251d]">Nombre del titular</h2>
+                            {/* Fecha de vencimiento y código CVV */}
+                            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                                <div className="flex flex-col flex-1">
+                                    <h2 className="font-semibold text-lg sm:text-xl text-left text-[#34251d]">
+                                        Fecha de Vencimiento
+                                    </h2>
                                     <input
-                                            type="text"
-                                            className=" font-regular w-full mt-0 px-3 py-2  border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
-                                            placeholder="José Romulo Sosa Ortíz"
+                                        type="text"
+                                        className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        placeholder="01/26"
                                     />
                                 </div>
 
-                                <div className="flex justify-start gap-20 mt-4">
-                                {/*Quizás aqui agregar el boton Guardar Tarjeta*/}
-                                    <button className="px-6 py-3 bg-[#311808] text-lg text-white rounded hover:bg-[#716865] font-bold
-                                    transform transition-transform duration-300 hover:scale-105">
-                                    Realizar pago</button>
-
-                                    <button className="px-6 py-3 bg-[#311808] text-lg text-white rounded hover:bg-[#716865] font-bold
-                                    transform transition-transform duration-300 hover:scale-105">
-                                    Guardar Tarjeta</button>
+                                <div className="flex flex-col flex-1">
+                                    <h2 className="font-semibold text-lg sm:text-xl text-left text-[#34251d]">
+                                        Código CVV
+                                    </h2>
+                                    <input
+                                        type="text"
+                                        className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        placeholder="CVV"
+                                    />
                                 </div>
                             </div>
+
+                            <div>
+                                <h2 className="font-semibold text-lg sm:text-xl text-left text-[#34251d]">
+                                Nombre del titular
+                                </h2>
+                                <input
+                                type="text"
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                placeholder="José Rómulo Sosa Ortíz"
+                                />
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row justify-between items-center w-full mt-4 gap-4">
+                                <button className="w-full sm:w-auto px-4 py-3 lg:px-6 sm:py-3 bg-[#311808] text-white text-md sm:text-base lg:text-lg rounded hover:bg-[#716865] font-bold transform transition-transform duration-300 hover:scale-105">
+                                    Realizar pago
+                                </button>
+
+                                <button className="w-full sm:w-auto px-4 py-3 lg:px-6 sm:py-3 bg-[#311808] text-white text-md sm:text-base lg:text-lg rounded hover:bg-[#716865] font-bold transform transition-transform duration-300 hover:scale-105">
+                                    Guardar tarjeta
+                                </button>
+                            </div>
+
+                        </div>
                         )}
                     </div>
 
@@ -192,12 +217,12 @@ const Resumen_CompraView = () => {
                     <div className="bg-white w-full h-auto shadow-xl rounded-2xl justify-left p-8">
                         {/*Contenedor de la dirección escrita o leyenda */}
                         <div className="relative flex flex-col justify-left w-full">
-                            <p className="font-Montserrat font-bold text-3xl text-left text-[#34251d] pb-2 "> 
-                                Entrega
+                            <p className="font-Montserrat font-bold text-2xl lg:text-4xl text-left text-[#34251d] pb-2"> 
+                                ENTREGA
                             </p>
                             <p className="font-Montserrat font-semibold text-xl text-left text-[#34251d] pb-2"> 
-                                Recoge tu pedido en
-                                Blvd. Macapule 2589, Viñedos, 81228 Los Mochis, Sin.
+                                Recoge tu pedido en: <br />
+                                <span className="font-bold"> Blvd. Macapule 2589, Viñedos, 81228 Los Mochis, Sin.</span>
                             </p>
                         </div>
                         <div className="flex flex-col w-full">

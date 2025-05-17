@@ -46,39 +46,39 @@ const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo,
 
             {/*Contenedor del detalle */}
             <div className="flex flex-col justify-between min-h-[200px] relative flex-grow">
-                <p className="font-Montserrat font-bold text-lg text-left text-[#34251d]">{nombre?.toUpperCase()}</p>
-                <p className="font-Montserrat font-regular text-md text-left text-[#34251d]"> 
+                <p className="font-Montserrat font-bold text-md lg:text-lg text-left text-[#34251d]">{nombre?.toUpperCase()}</p>
+                <p className="font-Montserrat font-regular text-xs lg:text-base text-left text-[#34251d]"> 
                     <span className="font-semibold">Tipo: </span>{tipo}
                 </p>
-                <p className="font-Montserrat font-regular text-md text-left text-[#34251d]"> 
+                <p className="font-Montserrat font-regular text-xs lg:text-base text-left text-[#34251d]"> 
                     <span className="font-semibold">Sabor: </span>{sabor}
                 </p>
 
                 {/*Condicionales para que solo se impriman los campos utilizados */}
                 {regular !== "No definido" &&(
-                    <p className="font-Montserrat font-regular text-md text-left text-[#34251d]">
+                    <p className="font-Montserrat font-regular text-xs lg:text-base text-left text-[#34251d]">
                     <span className="font-semibold">Grano: </span>{regular} 
                     </p>
                 )}
 
                 {tamano !== "No definido" &&(
-                    <p className="font-Montserrat font-regular text-md text-left text-[#34251d]">
+                    <p className="font-Montserrat font-regular text-xs lg:text-base text-left text-[#34251d]">
                     <span className="font-semibold">Tamaño: </span>{formatearTamano(tamano)} 
                     </p>
                 )}
                 
                 {leche !== "No definido" &&(
-                    <p className="font-Montserrat font-regular text-md text-left text-[#34251d]">
+                    <p className="font-Montserrat font-regular text-xs lg:text-base text-left text-[#34251d]">
                     <span className="font-semibold">Leche: </span>{leche}
                     </p>
                 )}
                 
                 {extras && extras.length > 0  &&(
                     <>
-                    <p className="font-Montserrat font-semibold text-md text-left text-[#34251d]">Extras</p>
+                    <p className="font-Montserrat font-semibold text-sm lg:text-base text-left text-[#34251d]">Extras</p>
                     <ul>
                         {extras?.map((extra, index) => (
-                            <li className="font-Montserrat font-regular text-md text-left text-[#34251d]" key={index}>
+                            <li className="font-Montserrat font-regular text-xs lg:text-base text-left text-[#34251d]" key={index}>
                                 <span>+ {extra.cantidad} {extra.nombre}</span>
                                 <span> ${(extra.precio * extra.cantidad).toFixed(2)}</span>
                             </li>
@@ -89,7 +89,7 @@ const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo,
 
                 {/* Total del producto */} 
                 <div className="flex justify-end pr-4 pt-2">
-                    <p className="font-Montserrat font-bold text-lg text-[#34251d]">
+                    <p className="font-Montserrat font-bold text-md lg:text-lg text-[#34251d]">
                         Total: ${calcularTotal(precioBase, extras)}
                     </p>
                 </div>

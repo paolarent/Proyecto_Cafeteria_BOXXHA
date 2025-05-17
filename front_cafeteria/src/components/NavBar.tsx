@@ -259,9 +259,11 @@ const NavBar: React.FC = () => {
                             <button>
                                 <img src={icon_like} alt="Favorito" className="h-7 hover:scale-110 transition" />
                             </button>
-                            <button>
+
+                            <button onClick={() => setShowModalCarrito(true)}>
                                 <img src={icon_carrito} alt="Carrito" className="h-7 hover:scale-110 transition" />
                             </button>
+        
                         </div>
                     </div>
                 </>

@@ -53,16 +53,14 @@ const ModalCarrito: React.FC<Carrito> = ({ isOpen, onClose }) => {
     
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div
-                className="relative bg-white rounded-xl shadow-lg flex"
-                style={{ width: '900px', height: '600px', overflow: 'hidden' }}
-            >
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+            <div className="relative bg-white rounded-xl shadow-lg flex flex-col md:flex-row w-[95vw] h-[90vh] md:w-[900px] md:h-[600px] overflow-y-auto">
                 
                 {/* COLUMNA IZQUIERDA - 2/3 */}
-                <div className="w-1/2 h-full overflow-y-auto p-6 bg-[#B0CEAC]"> 
+                <div className="w-full md:w-1/2 h-1/2 md:h-full overflow-y-auto p-6 bg-[#B0CEAC]">
+
                     <h2 className="font-bold text-3xl mb-4">CARRITO  
-                        <span className="font-semibold text-2xl"> ({pedidos.length} productos)</span>
+                        <span className="font-semibold lg:text-2xl text-xl"> ({pedidos.length} productos)</span>
                     </h2>
                     
                     <div className="flex flex-col gap-4">
@@ -107,7 +105,8 @@ const ModalCarrito: React.FC<Carrito> = ({ isOpen, onClose }) => {
                 </div>
 
                 {/* COLUMNA DERECHA FIJA - 1/3 */}
-                <div className="w-1/2 h-auto p-6 relative pt-10">
+                <div className="w-full md:w-1/2 h-1/2 md:h-auto p-6 relative pt-10">
+
                     {/* Botón para cerrar el modal*/}
                     <button
                         onClick={onClose}
