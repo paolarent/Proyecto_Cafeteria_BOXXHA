@@ -4,7 +4,7 @@ import { toast, Toaster } from 'react-hot-toast';
 const Pruebas = () => {
 
   const handleToast = () => {
-    toast.error('¡Notificación de prueba exitosa!');
+    toast.error('HOLA ALEX');
   };
 
   return (
