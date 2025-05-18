@@ -148,7 +148,7 @@ const Resumen_CompraView = () => {
 
                         <select
                             onChange={(e) => setMetodo(e.target.value)}
-                            className="font-Montserrat text-[#34251d] w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold"
+                            className="font-Montserrat text-[#34251d] w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold text-lg"
                         >
                             <option>-- Seleccione un método de pago --</option>
                             <option>Efectivo</option>
