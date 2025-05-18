@@ -51,6 +51,10 @@ const Resumen_CompraView = () => {
         marcarCompleto();
     },[pedidos]);
 
+    const handleEnviarPedido = () => {
+        // Enviamos el pedido al backend
+    }
+    
     return (
         <div className=" h-full w-full flex flex-col overflow-x-hidden">
             <header className="sticky top-0 z-50">
@@ -72,7 +76,7 @@ const Resumen_CompraView = () => {
                         style={{ backgroundColor: "#f8e9df", opacity: 0.60 }}
                         />
 
-                    <div className="relative z-10 sticky font-Montserrat top-20 w-full lg:w-104 shadow-xl bg-[#ededef] rounded-2xl gap-4 p-8">
+                    <div className="relative z-10 sticky font-Montserrat top-20 w-full lg:w-104 shadow-xl bg-[#d8d7d7] rounded-2xl gap-4 p-8">
                         <h2 className=" font-bold text-2xl lg:text-4xl text-center text-[#34251d] pb-6">RESUMEN DEL PEDIDO</h2>
                         <div className="flex flex-col gap-y-4">
                             {pedidos.map((pedido, index) => {
@@ -84,7 +88,7 @@ const Resumen_CompraView = () => {
 
                                 const tamanoNombre = tamanos.find(t => t.id === pedido.id_tamano)?.nombre || "No definido";
                                 const lecheNombre = leches.find(t => t.id === pedido.id_leche)?.nombre || "No definido";
-
+                                
                                 const extrasNombre = pedido.extras?.map(extra => {
                                     const detalle = extras.find(e => e.id === extra.id);
                                     return {
@@ -104,6 +108,7 @@ const Resumen_CompraView = () => {
                                         tamano={tamanoNombre}
                                         leche={lecheNombre}
                                         extras={extrasNombre}
+                                        total={pedido.total}
                                     />
                                 );
                             })}
@@ -114,7 +119,7 @@ const Resumen_CompraView = () => {
                             <div className="flex justify-between text-lg font-semibold">
                                 <p><span>Subtotal </span>
                                 ({pedidos.length} Productos)</p> 
-                                <span>$1,523.00</span>
+                                <span>${calcularTotal(pedidos)}</span>
                             </div>
 
                             <div className="flex justify-between mt-2 text-medium text-black text-lg">
@@ -124,7 +129,7 @@ const Resumen_CompraView = () => {
 
                             <div className="flex justify-between mt-8 text-xl font-bold">
                                 <span>TOTAL DE PEDIDO:</span>
-                                <span>$1,523.00</span>
+                                <span>${calcularTotal(pedidos)}</span>
                             </div>
                         </div>
 
@@ -145,9 +150,18 @@ const Resumen_CompraView = () => {
                             onChange={(e) => setMetodo(e.target.value)}
                             className="font-Montserrat text-[#34251d] w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold"
                         >
+                            <option>-- Seleccione un método de pago --</option>
                             <option>Efectivo</option>
                             <option>Tarjeta Mastercard/Visa</option>
                         </select>
+                        
+                        {metodo === "Efectivo" && (
+                            <div className="flex flex-col sm:flex-row justify-between items-center w-full mt-4 gap-4">
+                                <button className="w-full sm:w-auto px-4 py-3 lg:px-6 sm:py-3 bg-[#311808] text-white text-md sm:text-base lg:text-lg rounded hover:bg-[#716865] font-bold transform transition-transform duration-300 hover:scale-105 mt-4">
+                                    Enviar pedido
+                                </button>
+                            </div>
+                        )}
 
                         {metodo === "Tarjeta Mastercard/Visa" && (
                         <div className="flex flex-col w-full pt-6 gap-6 font-Montserrat">
@@ -239,5 +253,14 @@ const Resumen_CompraView = () => {
         </div>
     );
 };
+
+const calcularTotal = (pedidos: any) => {
+    let total = 0;
+    pedidos.forEach((pedido: any) => {
+        total += pedido.total;
+    });
+    return total.toFixed(2);
+};
+
 
 export default Resumen_CompraView;

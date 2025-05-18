@@ -11,7 +11,7 @@ type Pedido = {
     id_leche?: number;
     extras?: { id: number; cantidad: number }[];
     completo?: boolean;
-    total?: number;
+    total: number;
 };
 
 type PedidoContextType = {

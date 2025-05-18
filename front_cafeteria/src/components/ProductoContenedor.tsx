@@ -6,11 +6,11 @@ type ProductoContenedorProps = {
     regular? : string;
     tamano?: string;
     leche?: string;
-    precioBase?: number;
     extras?: { id: number; nombre: string; cantidad: number }[];
+    total: number;
 };
 
-const ProductoContenedor: React.FC<ProductoContenedorProps> = ({ nombre, tipo, sabor, regular, tamano, leche, extras, precioBase }) => {
+const ProductoContenedor: React.FC<ProductoContenedorProps> = ({ nombre, tipo, sabor, regular, tamano, leche, extras, total }) => {
     return (
         <div className="w-full bg-white text-[#1f1f1f] border-y-4 border-dashed border-[#a3a3a3] px-4 py-2 font-medium text-sm">
 
@@ -65,7 +65,7 @@ const ProductoContenedor: React.FC<ProductoContenedorProps> = ({ nombre, tipo, s
                 {/* Total del producto */} 
                 <div className="flex justify-end pr-4 pt-2">
                     <p className="font-Montserrat font-bold text-lg lg:text-xl text-[#34251d]">
-                        Total: ${calcularTotal(precioBase)}
+                        Total: ${total.toFixed(2)}
                     </p>
                 </div>
                 
@@ -79,14 +79,6 @@ const formatearTamano = (tamano: any) => {
     if (!match) return tamano; // Return original if no match
     const [, unidad, numero] = match;
     return `${numero} ${unidad.toUpperCase()}`; // Return formatted string
-};
-
-const calcularTotal = (
-    precioBase: number = 0,
-    extras?: { precio: number; cantidad: number }[]
-) => {
-    const totalExtras = extras?.reduce((acc, extra) => acc + (extra.precio * extra.cantidad), 0) || 0;
-    return (precioBase + totalExtras).toFixed(2);
 };
 
 export default ProductoContenedor;

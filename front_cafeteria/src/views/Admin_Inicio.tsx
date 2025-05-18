@@ -15,10 +15,14 @@ import { useState } from "react";
         - Listado clientes con más pedidos
     Logout
     Volver al inicio */
+
+
+
 // Ruta /admin_inicio
 const Admin_Inicio = () => {
     const[Opcion, setOpcion] = useState('');
-    const Usuario = "Jorge"
+    const rawUser = localStorage.getItem("usuario");
+    const Usuario = rawUser?.replace(/^"(.*)"$/, '$1');
     return(
     // Fondo Cafe
     <div className="flex flex-col h-full w-full bg-[#947666] opacity-95">

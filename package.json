@@ -3,7 +3,8 @@
     "concurrently": "^9.1.2"
   },
   "scripts": {
-    "dev": "concurrently \"cd backend && npm run dev\" \"cd front_cafeteria && npm run dev\""
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd front_cafeteria && npm run dev\"",
+    "studio": "cd backend && npx prisma studio"
   },
   "dependencies": {
     "react": "^19.1.0",

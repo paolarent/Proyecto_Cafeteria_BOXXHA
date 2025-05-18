@@ -6,11 +6,11 @@ type ProductoContenedor2Props = {
     regular? : string;
     tamano?: string;
     leche?: string;
-    precioBase?: number;
     extras?: { id: number; nombre: string; cantidad: number; precio: number }[];
+    total?: number;
 };
 
-const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo, sabor, regular, tamano, leche, extras, precioBase }) => {
+const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo, sabor, regular, tamano, leche, extras, total }) => {
     return (
         <div className="flex flex-row w-full min-h-max bg-[#e1e1e2] justify-left gap-2 rounded-2xl p-4">
             {/*Contenedor de la imagen */}
@@ -90,7 +90,7 @@ const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo,
                 {/* Total del producto */} 
                 <div className="flex justify-end pr-4 pt-2">
                     <p className="font-Montserrat font-bold text-md lg:text-lg text-[#34251d]">
-                        Total: ${calcularTotal(precioBase, extras)}
+                        Total: ${calcularTotal(total, extras)}
                     </p>
                 </div>
                 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import logom from "../assets/logo_menu.png";
 import icon_user from "../assets/icon_usuario.png";
-import icon_like from "../assets/icon_like.png";
+import icon_QR from "../assets/icon_QR.png";
 import icon_carrito from "../assets/icon_carrito.png";
 import AboutUsModal from "../components/ModalAU";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ import { CambiarDatosModal } from "../components/ActualizarDUser";
 import { usePedido } from '../contexts/PedidoContext';
 import ModalConfirm from "../components/ModalConfirm";
 import ModalCarrito from "../components/Carrito";
+import ModalQR from "../components/ModalCodigos";
 
 const NavBar: React.FC = () => {
     const navigate = useNavigate();
@@ -28,6 +29,7 @@ const NavBar: React.FC = () => {
     const { pedidoActualIncompleto, indexActualIncompleto, eliminarPedido} = usePedido();
     const [MostrarModalConfirm, setMostrarModalConfirm] = useState(false);
     const [showModalCarrito, setShowModalCarrito] = useState(false);    //para controlar el modal que es el carrito
+    const [showModalQR, setShowModalQR] = useState(false);
 
     {/* PARA EVITAR PEDIDOS INCOMPLETOS */}
     const handleIrAInicio = () => {
@@ -158,8 +160,8 @@ const NavBar: React.FC = () => {
                     </li>
                     
                     <li className="relative">
-                        <button>
-                            <img src={icon_like} alt="Favorito" className="h-7 hover:scale-110 transition" />
+                        <button onClick={() => setShowModalQR(true)}>
+                            <img src={icon_QR} alt="Favorito" className="h-7 hover:scale-110 transition" />
                         </button>
                     </li>
                     
@@ -256,8 +258,8 @@ const NavBar: React.FC = () => {
                             )}
 
                             {/* --------------------------------------------------------------------- */}
-                            <button>
-                                <img src={icon_like} alt="Favorito" className="h-7 hover:scale-110 transition" />
+                            <button onClick={() => setShowModalQR(true)}>
+                                <img src={icon_QR} alt="Favorito" className="h-7 hover:scale-110 transition" />
                             </button>
 
                             <button onClick={() => setShowModalCarrito(true)}>
@@ -292,6 +294,13 @@ const NavBar: React.FC = () => {
                 <ModalCarrito 
                     isOpen={showModalCarrito} 
                     onClose={() => setShowModalCarrito(false)} 
+                />
+            )}
+
+            {showModalQR && (
+                <ModalQR
+                    isOpen={showModalQR} 
+                    onClose={() => setShowModalQR(false)} 
                 />
             )}
             

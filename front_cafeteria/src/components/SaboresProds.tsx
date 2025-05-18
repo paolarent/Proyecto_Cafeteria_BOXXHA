@@ -53,15 +53,17 @@ const SaboresProducto: React.FC = () => {
             console.log("ID del producto con prefijo:", idProducto);
             const sabor = response.sabor; // Accede al sabor del producto
             console.log("Sabor del producto:", sabor); // Verifica el sabor en consola
+            const precio = response.precio_base; // Accede al precio del producto
+            console.log("Precio del producto:", precio); // Verifica el precio en consola
 
             // Guarda el ID en el contexto
             if (tipoLower === "postre") {
-                actualizarPedido(i,{ id_postre: idProducto , sabor: sabor, id_tamano: 3}); //id_tamano = 3 pq es pza
+                actualizarPedido(i,{ id_postre: idProducto , sabor: sabor, id_tamano: 3, total: precio}); //id_tamano = 3 pq es pza
             } else if (nombreLower === "espresso") {
-                actualizarPedido(i,{ id_bebida: idProducto, sabor: sabor , id_tamano: 4});
+                actualizarPedido(i,{ id_bebida: idProducto, sabor: sabor , id_tamano: 4, total: precio}); //id_tamano = 4 pq es espresso
             }
             else {
-                actualizarPedido(i,{ id_bebida: idProducto, sabor: sabor });
+                actualizarPedido(i,{ id_bebida: idProducto, sabor: sabor, total: precio}); 
             }
     
         } catch (error) {

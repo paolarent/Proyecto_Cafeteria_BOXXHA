@@ -21,14 +21,24 @@ const PedidoTamañoView = () => {
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState<number | null>(null);
 
     const handleSeleccionarTamano = (id_tamano: number) => {
+        const anteriorTamano = pedidoActual.id_tamano;
+        const extraAnterior = anteriorTamano === 2 ? 5 : 0;
+        const extraNuevo = id_tamano === 2 ? 5 : 0;
+
+        const nuevoTotal = pedidoActual.total - extraAnterior + extraNuevo;
+
         setTamanoSeleccionado(id_tamano);
-        actualizarPedido(i,{ id_tamano }); // Actualiza el contexto
+        actualizarPedido(i, { id_tamano, total: nuevoTotal });
     };
 
     const handleRegresar = () => {
-        actualizarPedido(i,{ id_tamano: undefined });
+        const costoTamano = tamanoSeleccionado === 2 ? 5 : 0;
+        const nuevoTotal = pedidoActual.total - costoTamano;
+
+        actualizarPedido(i, { id_tamano: undefined, total: nuevoTotal });
         navigate(-1); 
-    };    
+    };
+
 
     // Redirección condicional según el nombre
     const handleSiguientePaso = () => {
@@ -96,6 +106,14 @@ const PedidoTamañoView = () => {
                                     ${tamanoSeleccionado === 2  ? 'bg-[#B0CEAC] shadow-xl scale-105' : 'bg-white border-black shadow-md'} 
                                     hover:scale-105 transition-transform duration-300`}  
                                 >   
+                                {/* Condicional para mostrar "+5" */}
+                                {tamanoSeleccionado === 2 && (
+                                    <span className="absolute top-2 right-2 bg-green-600 text-white text-xl font-bold w-10 h-10 rounded-full shadow-lg flex 
+                                                    items-center justify-center pr-1">
+                                        +5
+                                    </span>
+
+                                )}
                                 <img src={IconoCafe16OZ} className="rounded-[20px] w-[100px] h-[140px] mx-auto pt-4" />
                                 <span className="font-Montserrat text-2xl font-semibold text-[#34251d] pt-4 pb-2">16 OZ</span>
                             </button>

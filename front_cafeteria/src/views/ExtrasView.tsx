@@ -63,6 +63,35 @@ const ExtrasView = () => {
         actualizarPedido(i,{ extras: [] }); // Limpia los extras del pedido
         navigate(-1); // Regresa a la vista anterior
     };
+
+    const calcularTotalExtras = () => {
+        let total = 0;
+        let extrasGratis = 3;
+
+        extras.forEach((extra) => {
+            const cantidad = cantidades[extra.id_extra] || 0;
+
+            if (cantidad > 0) {
+                if (extra.precio > 0) {
+                    // Cobramos normalmente los extras que si tienen costo
+                    total += extra.precio * cantidad;
+                } else {
+                    // Si el extra es gratis, lo contamos como un extra gratis
+                    if (cantidad <= extrasGratis) {
+                        extrasGratis -= cantidad;
+                    } else {
+                        // Cobrar $5 por cada extra gratis adicional
+                        const extrasAdicionales = cantidad - extrasGratis;
+                        total += extrasAdicionales * 5; // Costo adicional por extras gratis
+                        extrasGratis = 0; // Ya no quedan extras gratis
+                    }
+                }
+            }
+        });
+        return total;
+    };
+        
+
     const handleContinuar = () => {
         const seleccionados = extras
         .filter((extra) => cantidades[extra.id_extra] > 0) // Filtra los extras seleccionados
@@ -70,8 +99,9 @@ const ExtrasView = () => {
             id: extra.id_extra,
             cantidad: cantidades[extra.id_extra],
         }));
-
-        actualizarPedido(i,{ extras: seleccionados }); // Actualiza el pedido en el contexto
+        const totalExtras = calcularTotalExtras(); // Calcula el total de los extras seleccionados
+        const totalPedido = pedidoActual.total + totalExtras; // Suma el total de los extras al total del pedido
+        actualizarPedido(i,{ extras: seleccionados, total: totalPedido }); // Actualiza el pedido en el contexto
         setShowModalCarrito(true);  //se abre el carrito despues de agregar un producto
     };
 

@@ -94,6 +94,7 @@ const ModalCarrito: React.FC<Carrito> = ({ isOpen, onClose }) => {
                                         tamano={tamanoNombre}
                                         leche={lecheNombre}
                                         extras={extrasNombre?.map(extra => ({ ...extra, precio: 0 }))}
+                                        total={pedido.total}
                                     />
                                 );
                             })
@@ -123,7 +124,7 @@ const ModalCarrito: React.FC<Carrito> = ({ isOpen, onClose }) => {
                             <div className="flex justify-between text-lg font-semibold">
                                 <p><span>Subtotal </span>
                                 ({pedidos.length} Productos)</p> 
-                                <span>$1,523.00</span>
+                                <span>${calcularTotal(pedidos)}</span>
                             </div>
 
                             <div className="flex justify-between mt-2 text-medium text-black text-lg">
@@ -135,7 +136,7 @@ const ModalCarrito: React.FC<Carrito> = ({ isOpen, onClose }) => {
 
                             <div className="flex justify-between text-lg font-bold pb-8">
                                 <span>TOTAL DE PEDIDO:</span>
-                                <span>$1,523.00</span>
+                                <span>${calcularTotal(pedidos)}</span>
                             </div>
 
                             {/* Botón que ira al resumen-pago */}
@@ -176,6 +177,14 @@ const ModalCarrito: React.FC<Carrito> = ({ isOpen, onClose }) => {
             </div>
         </div>
     );
+};
+
+const calcularTotal = (pedidos: any) => {
+    let total = 0;
+    pedidos.forEach((pedido: any) => {
+        total += pedido.total;
+    });
+    return total.toFixed(2);
 };
 
 export default ModalCarrito;

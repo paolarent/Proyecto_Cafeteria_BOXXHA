@@ -33,15 +33,33 @@ const Tipo_LecheView = () => {
     const i = Number(index);
     const pedidoActual = pedidos[i];
 
-    const handleLecheSeleccionada = (id_leche: number) => {
-        actualizarPedido(i,{ id_leche: id_leche });
+    const handleLecheSeleccionada = (id_leche: number, nuevoExtra: number) => {
+        // Busca el precio anterior de la leche seleccionada (si existe)
+        const lecheAnterior = leches.find(l => l.id === pedidoActual.id_leche);
+        const extraAnterior = lecheAnterior ? lecheAnterior.precio : 0;
+
+        // Calcula el nuevo total: resta el anterior y suma el nuevo
+        const nuevoTotal = pedidoActual.total - extraAnterior + nuevoExtra;
+
+        actualizarPedido(i, {
+            id_leche,
+            total: nuevoTotal,
+        });
+
+        console.log("Total actualizado:", nuevoTotal);
     };
-    
+
     const handleSiguientePaso = () => {
         navigate(`/extras/${i}`);
     }
+    
     const handleRegresar = () => {
-        actualizarPedido(i,{ id_leche: undefined });
+        const lecheAnterior = leches.find(l => l.id === pedidoActual.id_leche);
+        const extraAnterior = lecheAnterior ? lecheAnterior.precio : 0;
+
+        // Calcula el nuevo total: resta el anterior y suma el nuevo
+        const nuevoTotal = pedidoActual.total - extraAnterior ;
+        actualizarPedido(i,{ id_leche: undefined, total: nuevoTotal });
         navigate(-1);
     }
 
@@ -117,11 +135,21 @@ const Tipo_LecheView = () => {
                         {leches.map((leche) => (
                         <div key={leche.id} className="flex flex-col relative bg-[#535251] p-4 bg-opacity-60 rounded-3xl">
                             <button
-                            onClick={() => handleLecheSeleccionada(leche.id)}
+                            onClick={() => handleLecheSeleccionada(leche.id, leche.precio)}
                             className={`flex flex-col justify-center pt-6 pb-4 w-[230px] h-[230px] rounded-2xl border-2 border-black
                                 ${pedidoActual?.id_leche === leche.id ? 'bg-[#B0CEAC] shadow-xl scale-105' : 'bg-white border-black shadow-md'} 
                                 hover:scale-105 transition-transform duration-300`}
                             >
+
+                            {/* Condicional para mostrar "+10" */}
+                            {pedidoActual.id_leche === leche.id && leche.id !== 1 && (
+                                <span className="absolute top-2 right-2 bg-green-600 text-white text-lg font-bold w-10 h-10 rounded-full shadow-lg flex 
+                                                items-center justify-center">
+                                    +10
+                                </span>
+
+                            )}
+
                             <img
                                 src={lecheImagenes[leche.nombre]}
                                 className="rounded-[20px] w-[160px] h-[160px] m-auto"
