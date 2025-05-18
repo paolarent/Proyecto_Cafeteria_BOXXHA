@@ -20,7 +20,8 @@ const InicioView = () => {
     {/* ATAJO DE FRAPPES */}
     type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
     const irASabores = (tipo: TipoBebida, nombre: string) => {
-        const index = agregarPedido({ tipo, nombre, completo: false });
+        const total = 0;
+        const index = agregarPedido({ tipo, nombre, completo: false, total: total });
         navigate(`/sabores/${tipo}/${nombre}/${index}`);
     };
 
