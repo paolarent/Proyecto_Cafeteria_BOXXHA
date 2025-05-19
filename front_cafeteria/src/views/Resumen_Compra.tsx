@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { usePedido } from "../contexts/PedidoContext";
 import { useCatalagos } from "../contexts/CatalagosContext"; // Usamos el hook para acceder a los catálogos
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
+import React, { ChangeEvent } from "react";
 
 import VisaIcon from "../assets/visa.svg";
 import MastercardIcon from "../assets/mastercard.svg";
@@ -15,19 +16,11 @@ import AmericanEIcon from "../assets/american_express.svg";
 import { enviarPedidos } from "../services/pedidoService";
 import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
 
-
-{/*const tarjeta = {
-    nombreTitular:"",
-    numTarjeta:"",
-    fechaVencimiento:"",
-    cvv:""
-};*/}
-
 {/* Ruta /resumen */}
 const Resumen_CompraView = () => {
     const { tamanos, leches, extras } = useCatalagos(); // Accedemos a los catálogos
     
-    const [metodo, setMetodo] = useState('efectivo');
+    const [metodo, setMetodo] = useState("");
     const [mensaje, setMensaje] = useState("");
     const navigate = useNavigate();
     const { pedidos, actualizarPedido, resetPedidos } = usePedido();
@@ -106,6 +99,26 @@ const Resumen_CompraView = () => {
         }        
     };
 
+    const FechaExpiracionValida = (fecha: string): boolean => {
+        //Validar formato MM/AA
+        const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+        if (!regex.test(fecha)) return false;
+
+        const [mesStr, anioStr] = fecha.split("/");
+        const mes = parseInt(mesStr, 10);
+        const anio = parseInt("20" + anioStr, 10); //convierte '25' => 2025
+
+        //Fecha actual
+        const ahora = new Date();
+        const mesActual = ahora.getMonth() + 1; // getMonth() es 0-indexado
+        const anioActual = ahora.getFullYear();
+
+        //Comparar fechas
+        if (anio < anioActual) return false;
+        if (anio === anioActual && mes < mesActual) return false;
+
+        return true;
+    };
 
     //Función para formatear número con espacios cada 4 caracteres (ajustar para American express, por alguna razon es diferente)
     const formatoTarjeta = (value: string): string => {
@@ -154,12 +167,22 @@ const Resumen_CompraView = () => {
     };
 
     const handleRealizarPagoTarjeta = () => {
+        if (
+            !numTarjeta.trim() &&
+            !fechaVencimiento.trim() &&
+            !cvv.trim() &&
+            !nombreTitular.trim()
+        ) {
+            toast.error("Por favor, complete los campos para realizar el pago");
+            return;
+        }
+
         if (!isValid) {
             toast.error("Número de tarjeta inválido");
             return;
         }
-        if (!fechaVencimiento.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) {
-            toast.error("Fecha de vencimiento inválida (MM/AA)");
+        if (!FechaExpiracionValida(fechaVencimiento)) {
+            toast.error("Fecha de vencimiento inválida o expirada (MM/AA)");
             return;
         }
         if (!cvv.match(/^\d{3,4}$/)) {
@@ -176,7 +199,28 @@ const Resumen_CompraView = () => {
         //Después enviar pedido y resetear igual que con efectivo si aplica
         handleEnviarPedido();
     };
-    
+
+    const getCardIcon = () => {
+        if (!numTarjeta) return null; //Si está vacío el input, no muestra nada
+
+        if (cardType === "visa") return VisaIcon;
+        if (cardType === "mastercard") return MastercardIcon;
+        if (cardType === "amex") return AmericanEIcon;
+        return null;
+    };
+
+    const handleMetodoChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        const valor = e.target.value;
+        setMetodo(valor);
+
+        if (valor === "tarjeta") {
+            setNumTarjeta("");
+            setFechaVencimiento("");
+            setCvv("");
+            setNombreTitular("");
+        }
+    };
+
     return (
         <div className="h-full w-full flex flex-col overflow-x-hidden">
             <header className="sticky top-0 z-50">
@@ -264,18 +308,18 @@ const Resumen_CompraView = () => {
                 <section className="flex flex-col w-full lg:w-1/2 bg-[#B0CEAC] lg:py-12 lg:p-12 lg:gap-16 py-8 p-4 gap-8">
                     
                     {/* Sección de formulario MÉTODO DE PAGO */}
-                    <div className="flex flex-col bg-white w-full max-w-3xl shadow-xl h-auto rounded-2xl mx-auto p-6 sm:p-10">
+                    <div className="flex flex-col bg-white sm:w-full lg:w-[520px] max-w-3xl shadow-xl h-auto rounded-2xl mx-auto p-6 sm:p-10">
                         <h2 className="font-Montserrat font-bold text-2xl sm:text-3xl lg:text-4xl text-left text-[#34251d] pb-6">
                             MÉTODO DE PAGO
                         </h2>
 
                         <select
-                            onChange={(e) => setMetodo(e.target.value)}
+                            onChange={handleMetodoChange}
                             className="font-Montserrat text-[#34251d] w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold text-lg"
                         >
                             <option value="">-- Seleccione un método de pago --</option>
                             <option value="efectivo">Efectivo 💵</option>
-                            <option value="tarjeta">Tarjeta 💳</option>
+                            <option value="tarjeta">Tarjeta Crédito/Débito 💳</option>
                         </select>
                         
                         {metodo === "efectivo" && (
@@ -294,16 +338,24 @@ const Resumen_CompraView = () => {
                                 Número de tarjeta
                                 </h2>
 
-                                <input
+                                <div className="relative mt-1">
+                                    <input
                                     type="text"
                                     value={numTarjeta}
                                     onChange={handleNumTarjetaChange}
                                     placeholder="xxxx xxxx xxxx xxxx"
                                     maxLength={19}
-                                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
-                                />
-                            </div>
-
+                                    className="w-full pr-12 pl-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                    />
+                                    {getCardIcon() && (
+                                    <img
+                                        src={getCardIcon() as string}
+                                        alt={cardType || ""}
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 h-10"
+                                    />
+                                    )}
+                                </div>
+                            </div> 
                             {/* Fecha de vencimiento y código CVV */}
                             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                                 <div className="flex flex-col flex-1">

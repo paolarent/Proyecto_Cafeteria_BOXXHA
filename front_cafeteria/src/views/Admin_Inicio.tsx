@@ -109,6 +109,27 @@ const Admin_Inicio = () => {
                             </button>
                         </div>
                     )}
+
+                    {/*Boton clientes para checar nuestro clientes */}
+                    { Opcion === 'Clientes' ? (
+                        // Elemento al ser seleccionado
+                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#c49475] border-l-[#814721] border-l-4 ">
+                            <div className="w-10 h-10 bg-gray-500"></div>
+                            <button
+                            onClick={() => setOpcion('Clientes')} 
+                            className="w-full h-full text-left font-bold text-[#34251d]"> Volver al inicio 
+                            </button>
+                        </div>
+                    ) : (
+                        // Elemento al no ser seleccionado      
+                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
+                            <div className="w-10 h-10 bg-gray-500"></div>
+                            <button
+                            onClick={() => setOpcion('Clientes')} 
+                            className="w-full h-full text-left font-bold text-[#34251d]"> Volver al inicio 
+                            </button>
+                        </div>
+                    )}
                 </div>
                 
                 
@@ -229,7 +250,7 @@ const Admin_Inicio = () => {
                     </div>
                 )}
 
-                {Opcion === 'Clientes' && (
+                {Opcion === 'Empleados' && (
                     <div className="flex flex-col w-full h-full bg-red-200">
 
                     </div>

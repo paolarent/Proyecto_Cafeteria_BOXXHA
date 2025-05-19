@@ -53,11 +53,33 @@ const ProductoContenedor: React.FC<ProductoContenedorProps> = ({ nombre, tipo, s
                     <>
                     <p className="font-Montserrat font-bold text-lg lg:text-xl text-left text-[#34251d] pb-2">Extras</p>
                     <ul>
-                        {extras?.map((extra, index) => (
-                            <li className="font-Montserrat font-regular text-lg lg:text-xl text-left text-[#34251d] pb-2" key={index}>
-                                + {extra.cantidad} {extra.nombre} {extra.precio > 0 ? `($${(extra.precio * extra.cantidad).toFixed(2)})` : ''}
-                            </li>
-                        ))}
+                        {extras?.map((extra, index) => {
+                                // Total de unidades gratuitas hasta ahora
+                                let cantidadGratisPrevias = 0;
+                                let unidadesCobradas = 0;
+                                let precioExtra = 0;
+
+                                // Calcular la cantidad total gratuita acumulada antes de este extra
+                                for (let i = 0; i < index; i++) {
+                                    const e = extras[i];
+                                    if (e.precio === 0) {
+                                        cantidadGratisPrevias += e.cantidad;
+                                    }
+                                }
+
+                                if (extra.precio === 0) {
+                                    const gratisRestantes = Math.max(0, 3 - cantidadGratisPrevias);
+                                    unidadesCobradas = Math.max(0, extra.cantidad - gratisRestantes);
+                                    precioExtra = unidadesCobradas * 5;
+                                } else {
+                                    precioExtra = extra.precio * extra.cantidad;
+                                }
+                                return (
+                                    <li className="font-Montserrat font-regular text-lg lg:text-xl text-left text-[#34251d] pb-2" key={index}>
+                                        + {extra.cantidad} {extra.nombre} ${precioExtra.toFixed(2)}
+                                    </li>
+                                );
+                        })}
                     </ul>
                     </>
                 )}
