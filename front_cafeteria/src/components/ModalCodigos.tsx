@@ -40,7 +40,7 @@ const ModalQR: React.FC<ModalCodigo> = ({ isOpen, onClose }) => {
                                         setTimeout(scrollToMenu, 300);
                                         onClose();
                                     }}  
-                            className="px-6 py-3 bg-[#311808] text-lg text-white rounded hover:bg-[#716865] font-bold
+                            className="px-4 py-2 lg:px-6 lg:py-3 bg-[#311808] text-lg text-white rounded hover:bg-[#716865] font-bold
                             transform transition-transform duration-300 hover:scale-105 mt-8 shadow-lg"
                         >
                             Comenzar a Pedir
