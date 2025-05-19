@@ -36,7 +36,7 @@ const MenuPostresView = () => {
 
     type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
     const irASabores = (tipo: TipoBebida, nombre: string) => {
-        const index = agregarPedido({ tipo, nombre,  completo: false });
+        const index = agregarPedido({ tipo, nombre,  completo: false, total: 0 });
         navigate(`/sabores/${tipo}/${nombre}/${index}`);
     };
 

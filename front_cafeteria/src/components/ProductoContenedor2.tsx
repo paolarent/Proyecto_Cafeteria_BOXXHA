@@ -1,3 +1,6 @@
+import { getImagenCarrito } from "../data/imagenesCarrito";
+import { usePedido } from '../contexts/PedidoContext'; 
+import { Pedido } from "../contexts/PedidoContext";
 
 type ProductoContenedor2Props = {
     nombre?: string;
@@ -6,11 +9,60 @@ type ProductoContenedor2Props = {
     regular? : string;
     tamano?: string;
     leche?: string;
+    id_bebida?: number;
+    id_tamano?: number;
+    id_leche?: number;
     extras?: { id: number; nombre: string; cantidad: number; precio: number }[];
     total: number;
 };
 
-const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo, sabor, regular, tamano, leche, extras, total }) => {
+const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo, sabor, regular, tamano, leche, id_bebida, id_tamano, id_leche, extras, total }) => {
+    const tiposValidos = ['caliente', 'frio', 'frappe', 'postre'] as const;
+
+    const tipoSeguro = tiposValidos.includes(tipo as any) ? tipo as Pedido['tipo'] : undefined;
+    const { agregarPedido, eliminarUnaCoincidencia } = usePedido();
+
+    const handleIncrementar= () => {
+        const nuevoPedido: Pedido = {
+            nombre,
+            tipo: tipoSeguro,
+            sabor,
+            completo: true,
+            total,
+            id_bebida,
+            id_tamano,
+            id_leche,
+            regular: regular === "Regular" ? true : regular === "Descafeinado" ? false : undefined,
+            extras: extras?.map(extra => ({
+            id: extra.id,
+            cantidad: extra.cantidad,
+            precio: extra.precio
+            }))
+        };
+
+        agregarPedido(nuevoPedido);
+    };
+
+    const handleDecrementar = () => {
+        const pedidoParcial: Partial<Pedido> = {
+            nombre,
+            tipo: tipoSeguro,
+            sabor,
+            total,
+            id_bebida,
+            id_tamano,
+            id_leche,
+            regular: regular === "Regular" ? true : regular === "Descafeinado" ? false : undefined,
+            extras: extras?.map(extra => ({
+                id: extra.id,
+                cantidad: extra.cantidad,
+                precio: extra.precio
+            })), 
+            completo: true
+        };
+        eliminarUnaCoincidencia(pedidoParcial);
+    }
+
     return (
         <div className="flex flex-row w-full min-h-max bg-[#e1e1e2] justify-left gap-2 rounded-2xl p-4">
             {/*Contenedor de la imagen */}
@@ -18,12 +70,18 @@ const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo,
                 
                 {/* Imagen simulada */}
                 <div className="w-28 h-28 bg-gray-600 rounded-2xl flex items-center justify-center m-2">
-                    <p className="text-white">Imagen</p>
+                    {/*<p className="text-white">Imagen</p>*/}
+                    <img
+                        src={getImagenCarrito(tipo, nombre)}
+                        alt={nombre}
+                        className="w-28 h-28 rounded-2xl object-cover m-2 border-2 border-black"
+                    />
                 </div>
 
                 {/* Botones + - y cantidad */}
                 <div className="m-2 flex items-center justify-center gap-2">
                     <button 
+                        onClick={handleDecrementar}
                         className="w-10 h-10 rounded-3xl bg-white shadow-md border-2 border-black
                         hover:scale-105 transition-transform hover:bg-[#dfc3a8] duration-300"
                     >
@@ -35,6 +93,7 @@ const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo,
                     </div>
 
                     <button 
+                        onClick={handleIncrementar}
                         className="w-10 h-10 rounded-3xl bg-white shadow-md border-2 border-black 
                         hover:scale-105 transition-transform hover:bg-[#B0CEAC] duration-300"
                     >
@@ -48,7 +107,7 @@ const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo,
             <div className="flex flex-col justify-between min-h-[200px] relative flex-grow">
                 <p className="font-Montserrat font-bold text-md lg:text-lg text-left text-[#34251d]">{nombre?.toUpperCase()}</p>
                 <p className="font-Montserrat font-regular text-xs lg:text-base text-left text-[#34251d]"> 
-                    <span className="font-semibold">Tipo: </span>{tipo}
+                    <span className="font-semibold">Tipo: </span>{capitalizarPrimeraLetra(tipo)}
                 </p>
                 <p className="font-Montserrat font-regular text-xs lg:text-base text-left text-[#34251d]"> 
                     <span className="font-semibold">Sabor: </span>{sabor}
@@ -99,14 +158,10 @@ const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo,
     );
 };
 
-const calcularTotal = (
-    precioBase: number = 0,
-    extras?: { precio: number; cantidad: number }[]
-) => {
-    const totalExtras = extras?.reduce((acc, extra) => acc + (extra.precio * extra.cantidad), 0) || 0;
-    return (precioBase + totalExtras).toFixed(2);
-};
-
+function capitalizarPrimeraLetra(palabra?: string): string {
+    if (!palabra) return "";
+    return palabra.charAt(0).toUpperCase() + palabra.slice(1).toLowerCase();
+}
 
 const formatearTamano = (tamano: any) => {
     const match = tamano.match(/([a-zA-Z]+)(\d+)/i);

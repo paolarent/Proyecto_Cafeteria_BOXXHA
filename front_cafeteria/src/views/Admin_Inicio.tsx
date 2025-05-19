@@ -26,6 +26,9 @@ const Admin_Inicio = () => {
     const Ventas = "10,574.00";
     const Pedidos = 123;
     const totalProductos = 234;
+    const ordenes = [
+    { id: "001", usuario: "Ana",  total: 55, fecha: "2025-05-17", estado: "Completado" }
+    ];
     return(
     // Fondo Cafe
     <div className="flex flex-col h-full w-full bg-[#9C6644] opacity-95">
@@ -119,10 +122,9 @@ const Admin_Inicio = () => {
                             <div className="flex flex-col">
                                 <p className="font-bold text-3xl text-[#34251d]">Dashboard</p>
                             </div>
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col gap-2">
                                 <p className="font-bold text-md text-[#34251d] opacity-90"> En las ultimas 24 horas </p>
                                 <div className="flex flex-row gap-2">
-                                    {/*elemento con ventas totales */}
                                     <div className="flex flex-row w-1/3 h-auto shadow-xl bg-[#7F5539] rounded-2xl text-left p-6">
                                         <div className="flex flex-row min-w-full w-1/2 h-full gap-4 font-semibold">
                                             <div className="flex flex-col text-left gap-1">
@@ -156,10 +158,39 @@ const Admin_Inicio = () => {
                                 </div>    
                             </div>{/*Fin de la fila de datos */}
                         </div>
-                        <div className="flex flex-col min-w-full h-full gap-2">
+                        <div className="flex flex-col min-w-full h-full pt-6 gap-2">
                             <p className="font-bold text-md text-[#34251d] opacity-90"> Ultimas ordenes </p>
-                            <div className="flex flex-col h-2/3 min-w-full shadow-xl bg-white">
-
+                            <div className="flex flex-col overflow-x-auto h-2/3 min-w-full shadow-xl bg-white">
+                                <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                                <thead className="bg-[#7F5539] text-white sticky top-0">
+                                    <tr>
+                                    <th className="py-2 px-4 text-left">No. Pedido</th>
+                                    <th className="py-2 px-4 text-left">Cliente</th>
+                                    <th className="py-2 px-4 text-left">Total</th>
+                                    <th className="py-2 px-4 text-left">Fecha</th>
+                                    <th className="py-2 px-4 text-left">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {ordenes.map((orden) => (
+                                    <tr key={orden.id} className="border-b hover:bg-gray-100">
+                                        <td className="py-2 px-4">{orden.id}</td>
+                                        <td className="py-2 px-4">{orden.usuario}</td>
+                                        <td className="py-2 px-4">${orden.total}</td>
+                                        <td className="py-2 px-4">{orden.fecha}</td>
+                                        <td className="py-2 px-4">
+                                        <span className={`
+                                            px-2 py-1 rounded-full text-xs font-semibold
+                                            ${orden.estado === "Completado" ? "bg-green-200 text-green-800" : ""}
+                                            ${orden.estado === "Pendiente" ? "bg-yellow-200 text-yellow-800" : ""}
+                                        `}>
+                                            {orden.estado}
+                                        </span>
+                                        </td>
+                                    </tr>
+                                    ))}
+                                </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

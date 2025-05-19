@@ -94,6 +94,9 @@ const ModalCarrito: React.FC<Carrito> = ({ isOpen, onClose }) => {
                                         regular={regular}
                                         tamano={tamanoNombre}
                                         leche={lecheNombre}
+                                        id_bebida={pedido.id_bebida}
+                                        id_tamano={pedido.id_tamano}
+                                        id_leche={pedido.id_leche}
                                         extras={extrasNombre?.map(extra => ({ ...extra, precio: extra.precio}))}
                                         total={pedido.total}
                                     />
@@ -143,9 +146,12 @@ const ModalCarrito: React.FC<Carrito> = ({ isOpen, onClose }) => {
                             {/* Botón que ira al resumen-pago */}
                             <button 
                                 onClick={ () => navigate("/resumen") }// Navega a la vista de resumen
-                                className="bg-[#311808] text-white text-xl font-bold py-3 rounded-2xl w-full hover:bg-[#B0CEAC] hover:text-black
-                                transform transition-transform duration-300 hover:scale-105">
-
+                                disabled={pedidos.length === 0} // Deshabilitar si no hay productos
+                                className={`text-xl font-bold py-3 rounded-2xl w-full transform transition-transform duration-300 
+                                ${pedidos.length === 0 ? "bg-gray-400 cursor-not-allowed" // Que se vea gris y no se pueda hacer click
+                                    : "bg-[#311808] text-white text-xl font-bold py-3 rounded-2xl w-full hover:bg-[#B0CEAC] hover:text-black transform transition-transform duration-300 hover:scale-105"
+                                }`}
+                            >
                                 Ir a Pagar
                             </button>
                         </div>

@@ -22,6 +22,7 @@ type PedidoContextType = {
     resetPedidos: () => void;
     pedidoActualIncompleto: Pedido | null;
     indexActualIncompleto : number;
+    eliminarUnaCoincidencia: (parcial: Partial<Pedido>) => void;
 };
 
 const PedidoContext = createContext<PedidoContextType | undefined>(undefined);
@@ -75,8 +76,34 @@ export const PedidoProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     
     const indexActualIncompleto = pedidos.findIndex(pedido => !pedido.completo);
 
+    const eliminarUnaCoincidencia = (parcial: Partial<Pedido>) => {
+        // Actualizamos el estado de los pedidos
+        setPedidos((prev) => {
+            // Buscamos el índice del primer pedido que coincida exactamente con las propiedades
+            const index = prev.findIndex(p =>
+                p.tipo === parcial.tipo &&  
+                p.nombre === parcial.nombre &&
+                p.sabor === parcial.sabor &&
+                p.id_tamano === parcial.id_tamano &&
+                p.id_leche === parcial.id_leche &&
+                JSON.stringify(p.extras || []) ===  //compara los extras
+                JSON.stringify(parcial.extras || []) //usamos JSON.stringify para comparar arrays de objetos
+            );
+
+            // Si no encontramos coincidencia, devolvemos el estado anterior (lista original)
+            if (index === -1) return prev;
+
+            // Si encontramos coincidencia, creamos una copia del estado anterior y eliminamos el pedido en el índice encontrado
+            const copia = [...prev];
+            copia.splice(index, 1); // eliminamos solo un elemento
+            
+            // Actualizamos el estado con la nueva lista
+            return copia;
+        });
+    };
+
     return (
-        <PedidoContext.Provider value={{ pedidos, agregarPedido, actualizarPedido, eliminarPedido, resetPedidos, pedidoActualIncompleto, indexActualIncompleto }}>
+        <PedidoContext.Provider value={{ pedidos, agregarPedido, actualizarPedido, eliminarPedido, resetPedidos, pedidoActualIncompleto, indexActualIncompleto, eliminarUnaCoincidencia }}>
             {children}
         </PedidoContext.Provider>
     );

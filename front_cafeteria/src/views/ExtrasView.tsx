@@ -6,7 +6,6 @@ import BotonContinuar from "../assets/continuar.png";
 import { getExtras } from "../services/productService"; // tu fetch
 import { usePedido } from "../contexts/PedidoContext";
 import { useNavigate, useParams } from "react-router-dom";
-import ModalCarrito from "../components/Carrito";
 
 const ExtrasView = () => {
     const [extras, setExtras] = useState<{ id_extra: number; nombre: string; precio_extra: number }[]>([]);
@@ -17,8 +16,6 @@ const ExtrasView = () => {
     const navigate = useNavigate();
     const i = Number(index);
     const pedidoActual = pedidos[i];
-
-    const [showModalCarrito, setShowModalCarrito] = useState(false);    //para controlar el modal que es el carrito
 
     useEffect(() => {
         if (!pedidoActual) {
@@ -104,7 +101,8 @@ const ExtrasView = () => {
         const totalExtras = calcularTotalExtras(); // Calcula el total de los extras seleccionados
         const totalPedido = pedidoActual.total + totalExtras; // Suma el total de los extras al total del pedido
         actualizarPedido(i,{ extras: seleccionados, total: totalPedido }); // Actualiza el pedido en el contexto
-        setShowModalCarrito(true);  //se abre el carrito despues de agregar un producto
+        localStorage.setItem("mostrar_carrito", "true");
+        navigate("/"); // Navega vista inicio
     };
 
     
@@ -145,8 +143,12 @@ const ExtrasView = () => {
                                 <div className="flex flex-col relative min-w-max w-96 bg-white rounded-2xl justify-center items-center border-2 border-black">
                                     <span className="font-Montserrat font-semibold text-lg md:text-2xl text-[#34251d] px-4 py-2 text-center w-full">
                                         {extra.nombre} 
+                                        {(extra.precio_extra ?? 0) > 0 && (
+                                            <span className="text-gray-500 ml-2 font-normal">+${extra.precio_extra}</span>
+                                        )}
+                                        
                                         {(cantidades[extra.id_extra] ?? 0) > 0 && (
-                                            <span className="text-gray-500 ml-2 font-normal">+{cantidades[extra.id_extra]}</span>
+                                            <span className="text-green-800 ml-2 font-normal">+{cantidades[extra.id_extra]}</span>
                                         )}
                                     </span>
                                 </div>
@@ -219,13 +221,6 @@ const ExtrasView = () => {
 
                 </section>
             </main>
-            {showModalCarrito && (
-                <ModalCarrito 
-                    isOpen={showModalCarrito} 
-                    onClose={() => setShowModalCarrito(false)} 
-                />
-            )}
-            
         </div>
     );
 };

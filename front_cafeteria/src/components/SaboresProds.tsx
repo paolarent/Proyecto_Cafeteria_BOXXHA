@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import NavBar from "../components/NavBar";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -10,7 +9,6 @@ import  imagenesSabores  from "../data/imagenesSabores"; //Importamos los datos 
 
 import { getSabor } from "../services/productService"; 
 import { usePedido } from '../contexts/PedidoContext';
-import ModalCarrito from "../components/Carrito";
 
 const SaboresProducto: React.FC = () => {
     const { tipo, nombre } = useParams(); //Usamos useParams para obtener los parámetros de la URL de la ruta
@@ -18,7 +16,6 @@ const SaboresProducto: React.FC = () => {
     const {index} = useParams();
     const i = Number(index);
     const { actualizarPedido } = usePedido(); //Para capturar el pedido
-    const [showModalCarrito, setShowModalCarrito] = useState(false);    //para controlar el modal que es el carrito
 
     //Verificamos si los valores de tipo y nombre existen en los datos
     const sabores = saboresPorTipoYNombreProducto[tipo as string]?.[nombre?.toLowerCase() || ""] || [];
@@ -75,9 +72,11 @@ const SaboresProducto: React.FC = () => {
         if (nombreLower === "espresso" && sabor === "Cortado") {
             navigate(`/tipo_leche/${i}`); // espresso cortado va a leche
         } else if (nombreLower === "espresso") {
-            setShowModalCarrito(true); //cualquier otro espresso van al carrito
+            localStorage.setItem("mostrar_carrito", "true");
+            navigate("/"); // Navega vista inicio
         } else if (tipoLower === "postre") {
-            setShowModalCarrito(true);  //los postres tambien van al carrito
+            localStorage.setItem("mostrar_carrito", "true");
+            navigate("/"); // Navega vista inicio
         } else {
             navigate(`/pedido_tamano/${i}`);
         }
@@ -141,13 +140,6 @@ const SaboresProducto: React.FC = () => {
                     </div>
                 </section>
             </main>
-
-            {showModalCarrito && (
-                <ModalCarrito 
-                    isOpen={showModalCarrito} 
-                    onClose={() => setShowModalCarrito(false)} 
-                />
-            )}
         </div>
     );
 };

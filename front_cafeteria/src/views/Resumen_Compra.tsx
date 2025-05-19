@@ -8,15 +8,20 @@ import { usePedido } from "../contexts/PedidoContext";
 import { useCatalagos } from "../contexts/CatalagosContext"; // Usamos el hook para acceder a los catálogos
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 
+import VisaIcon from "../assets/visa.svg";
+import MastercardIcon from "../assets/mastercard.svg";
+import AmericanEIcon from "../assets/american_express.svg";
+
 import { enviarPedidos } from "../services/pedidoService";
 import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
 
-const tarjeta = {
+
+{/*const tarjeta = {
     nombreTitular:"",
     numTarjeta:"",
     fechaVencimiento:"",
     cvv:""
-};
+};*/}
 
 {/* Ruta /resumen */}
 const Resumen_CompraView = () => {
@@ -25,8 +30,16 @@ const Resumen_CompraView = () => {
     const [metodo, setMetodo] = useState('efectivo');
     const [mensaje, setMensaje] = useState("");
     const navigate = useNavigate();
-    const { pedidos, actualizarPedido } = usePedido();
-    const { resetPedidos } = usePedido();
+    const { pedidos, actualizarPedido, resetPedidos } = usePedido();
+
+    //Estados para la tarjeta
+    const [nombreTitular, setNombreTitular] = useState("");
+    const [numTarjeta, setNumTarjeta] = useState("");
+    const [fechaVencimiento, setFechaVencimiento] = useState("");
+    const [cvv, setCvv] = useState("");
+    type CardType = "visa" | "mastercard" | "amex" | null;
+    const [cardType, setCardType] = useState<CardType>(null);
+    const [isValid, setIsValid] = useState(false);
 
     useEffect(() => {
         const fetchResumen = async () => {
@@ -89,11 +102,83 @@ const Resumen_CompraView = () => {
 
         } catch (error) {
             console.error("Error al enviar el pedido:", error);
+            toast.error("Error al enviar el pedido");
         }        
+    };
+
+
+    //Función para formatear número con espacios cada 4 caracteres (ajustar para American express, por alguna razon es diferente)
+    const formatoTarjeta = (value: string): string => {
+        //Solo números
+        const digits = value.replace(/\D/g, "");
+
+        if (digits.startsWith("3")) {
+        //American Express formato: 4-6-5 (ej: 3782 822463 10005)
+        const part1 = digits.slice(0, 4);
+        const part2 = digits.slice(4, 10);
+        const part3 = digits.slice(10, 15);
+        return [part1, part2, part3].filter(Boolean).join(" ");
+        } else {
+        //Visa y Mastercard: grupos de 4
+        return digits.match(/.{1,4}/g)?.join(" ") || "";
+        }
+    };
+
+    const handleNumTarjetaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    //Formatear con espacios
+    value = formatoTarjeta(value);
+    setNumTarjeta(value);
+
+    const firstDigit = value.replace(/\D/g, "").charAt(0);
+    setCardType(
+        firstDigit === "4"
+            ? "visa"
+            : firstDigit === "5"
+            ? "mastercard"
+            : firstDigit === "3"
+            ? "amex"
+            : null
+    );
+    
+    const digitsCount = value.replace(/\D/g, "").length;
+        if (
+        (firstDigit === "4" && digitsCount === 16) ||
+        (firstDigit === "5" && digitsCount === 16) ||
+        (firstDigit === "3" && digitsCount === 15)
+        ) {
+        setIsValid(true);
+        } else {
+        setIsValid(false);
+        }
+    };
+
+    const handleRealizarPagoTarjeta = () => {
+        if (!isValid) {
+            toast.error("Número de tarjeta inválido");
+            return;
+        }
+        if (!fechaVencimiento.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) {
+            toast.error("Fecha de vencimiento inválida (MM/AA)");
+            return;
+        }
+        if (!cvv.match(/^\d{3,4}$/)) {
+            toast.error("CVV inválido");
+            return;
+        }
+        if (!nombreTitular.trim()) {
+            toast.error("El nombre del titular es requerido");
+            return;
+        }
+
+        toast.success("Pago con tarjeta realizado correctamente");
+
+        //Después enviar pedido y resetear igual que con efectivo si aplica
+        handleEnviarPedido();
     };
     
     return (
-        <div className=" h-full w-full flex flex-col overflow-x-hidden">
+        <div className="h-full w-full flex flex-col overflow-x-hidden">
             <header className="sticky top-0 z-50">
                 <NavBar />
             </header>
@@ -188,30 +273,34 @@ const Resumen_CompraView = () => {
                             onChange={(e) => setMetodo(e.target.value)}
                             className="font-Montserrat text-[#34251d] w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26] font-semibold text-lg"
                         >
-                            <option>-- Seleccione un método de pago --</option>
-                            <option>Efectivo</option>
-                            <option>Tarjeta Mastercard/Visa</option>
+                            <option value="">-- Seleccione un método de pago --</option>
+                            <option value="efectivo">Efectivo 💵</option>
+                            <option value="tarjeta">Tarjeta 💳</option>
                         </select>
                         
-                        {metodo === "Efectivo" && (
+                        {metodo === "efectivo" && (
                             <div className="flex flex-col sm:flex-row justify-between items-center w-full mt-4 gap-4">
                                 <button onClick = {handleEnviarPedido}
                                 className="w-full sm:w-auto px-4 py-3 lg:px-6 sm:py-3 bg-[#311808] text-white text-md sm:text-base lg:text-lg rounded hover:bg-[#716865] font-bold transform transition-transform duration-300 hover:scale-105 mt-4">
-                                    Enviar pedido
+                                    Realizar pedido
                                 </button>
                             </div>
                         )}
 
-                        {metodo === "Tarjeta Mastercard/Visa" && (
+                        {metodo === "tarjeta" && (
                         <div className="flex flex-col w-full pt-6 gap-6 font-Montserrat">
                             <div>
                                 <h2 className="font-semibold text-lg sm:text-xl text-left text-[#34251d]">
-                                Número de la tarjeta
+                                Número de tarjeta
                                 </h2>
+
                                 <input
-                                type="text"
-                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
-                                placeholder="xxxx-xxxx-xxxx-xxxx"
+                                    type="text"
+                                    value={numTarjeta}
+                                    onChange={handleNumTarjetaChange}
+                                    placeholder="xxxx xxxx xxxx xxxx"
+                                    maxLength={19}
+                                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                 />
                             </div>
 
@@ -223,8 +312,11 @@ const Resumen_CompraView = () => {
                                     </h2>
                                     <input
                                         type="text"
+                                        value={fechaVencimiento}
+                                        onChange={(e) => setFechaVencimiento(e.target.value)}
+                                        maxLength={5}
                                         className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
-                                        placeholder="01/26"
+                                        placeholder="MM/AA"
                                     />
                                 </div>
 
@@ -234,6 +326,9 @@ const Resumen_CompraView = () => {
                                     </h2>
                                     <input
                                         type="text"
+                                        value={cvv}
+                                        onChange={(e) => setCvv(e.target.value)}
+                                        maxLength={4}
                                         className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                         placeholder="CVV"
                                     />
@@ -246,13 +341,16 @@ const Resumen_CompraView = () => {
                                 </h2>
                                 <input
                                 type="text"
+                                value={nombreTitular}
+                                onChange={(e) => setNombreTitular(e.target.value)}
                                 className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                 placeholder="José Rómulo Sosa Ortíz"
                                 />
                             </div>
 
                             <div className="flex flex-col sm:flex-row justify-between items-center w-full mt-4 gap-4">
-                                <button className="w-full sm:w-auto px-4 py-3 lg:px-6 sm:py-3 bg-[#311808] text-white text-md sm:text-base lg:text-lg rounded hover:bg-[#716865] font-bold transform transition-transform duration-300 hover:scale-105">
+                                <button onClick={handleRealizarPagoTarjeta}
+                                    className="w-full sm:w-auto px-4 py-3 lg:px-6 sm:py-3 bg-[#311808] text-white text-md sm:text-base lg:text-lg rounded hover:bg-[#716865] font-bold transform transition-transform duration-300 hover:scale-105">
                                     Realizar pago
                                 </button>
 

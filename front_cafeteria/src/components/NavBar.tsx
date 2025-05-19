@@ -68,6 +68,14 @@ const NavBar: React.FC = () => {
         setMostrarModalConfirm(false); // Solo cerrar el modal sin hacer nada
     };
 
+    const handleModalCarrito = () => {
+        if (pedidoActualIncompleto) {
+            setMostrarModalConfirm(true); // Abrir modal de confirmación
+        } else {
+            setShowModalCarrito(true); // No hay pedido incompleto, va directo
+        }
+    };
+
     const user = JSON.parse(localStorage.getItem("usuario") || '""'); //Recuperar el usuario almacenado sin las comillas
 
     //Esto sirve para saber si hay un usuario que haya ingresado sesion, si si le muestra sus datos, si no lo dirige a /login
@@ -170,7 +178,7 @@ const NavBar: React.FC = () => {
                     
                     {/**<li><button ><img src={icon_like} alt="Favorito" className="h-7 hover:scale-110 transition" /></button></li>*/}
                     <li>
-                        <button onClick={() => setShowModalCarrito(true)}>
+                        <button onClick={() => handleModalCarrito()}>
                             <img src={icon_carrito} alt="Carrito" className="h-7 hover:scale-110 transition" />
                         </button>
                     </li>

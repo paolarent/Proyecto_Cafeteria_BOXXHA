@@ -13,12 +13,15 @@ import postre from "../assets/postres.jpg";
 import beb_calientes from "../assets/beb_calientes.jpeg";
 import { usePedido } from '../contexts/PedidoContext'; 
 import ModalQR from "../components/ModalCodigos";
+import ModalCarrito from "../components/Carrito";
 
 const InicioView = () => {
     const navigate = useNavigate();
     const { scrollToMenu, menuRef, inicioRef } = useMenuContext();
     const { agregarPedido } = usePedido();
-   const [showModalCodigo, setShowModalCodigo] = useState(false);    //para controlar el modal del codigo
+    const [showModalCodigo, setShowModalCodigo] = useState(false);    //para controlar el modal del codigo
+
+    const [showModalCarrito, setShowModalCarrito] = useState(false);    //para controlar el modal que es el carrito
 
     {/* ATAJO DE FRAPPES */}
     type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
@@ -33,6 +36,14 @@ const InicioView = () => {
         if (debeMostrar === "true") {
             setShowModalCodigo(true);
             localStorage.removeItem("mostrar_modal_qr");
+        }
+    }, []);
+
+    useEffect(() => {
+        const debeMostrarCarrito = localStorage.getItem("mostrar_carrito");
+        if (debeMostrarCarrito === "true") {
+            setShowModalCarrito(true);
+            localStorage.removeItem("mostrar_carrito");
         }
     }, []);
 
@@ -174,6 +185,14 @@ const InicioView = () => {
                     onClose={() => setShowModalCodigo(false)} 
                 />
             )}
+
+            {showModalCarrito && (
+                <ModalCarrito 
+                    isOpen={showModalCarrito} 
+                    onClose={() => setShowModalCarrito(false)} 
+                />
+            )}
+
         </div>
     ); 
 };
