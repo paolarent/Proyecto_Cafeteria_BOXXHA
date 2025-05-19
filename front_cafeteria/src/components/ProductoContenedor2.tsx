@@ -7,7 +7,7 @@ type ProductoContenedor2Props = {
     tamano?: string;
     leche?: string;
     extras?: { id: number; nombre: string; cantidad: number; precio: number }[];
-    total?: number;
+    total: number;
 };
 
 const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo, sabor, regular, tamano, leche, extras, total }) => {
@@ -90,7 +90,7 @@ const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo,
                 {/* Total del producto */} 
                 <div className="flex justify-end pr-4 pt-2">
                     <p className="font-Montserrat font-bold text-md lg:text-lg text-[#34251d]">
-                        Total: ${calcularTotal(total, extras)}
+                        Total: ${total.toFixed(2)}
                     </p>
                 </div>
                 

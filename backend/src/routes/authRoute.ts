@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { login, register } from "../controllers/authController";
+import { auth } from '../middlewares/auth';
 
 const router = Router();
 
@@ -10,6 +11,10 @@ const router = Router();
 router.post("/login", login); // Ruta para el login
 // http://25.4.40.124:3000/authRoute/register
 router.post("/register", register); // Ruta para el registro
+
+router.get('/verify', auth, (req, res) => {
+  res.status(200).json({ message: 'Token válido'});
+});
 
 export { router };
 

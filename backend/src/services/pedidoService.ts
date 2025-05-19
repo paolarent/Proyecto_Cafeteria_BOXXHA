@@ -1,5 +1,6 @@
 import { prisma } from '../lib/prisma';
 import { pedido, pedido_status } from '@prisma/client';
+import { generarCodigoUnico } from './codigoService';
 
 interface ExtraInput {
   id: number;
@@ -19,15 +20,15 @@ interface DetallePedidoInput {
 }
 
 interface PedidoInput {
-  id_usuario: number;
-  codigo_conf: string;
   total: number;
   detalle_pedido: DetallePedidoInput[];
 }
 
-export const crearPedido = async (input: PedidoInput) => {
-  const { id_usuario, codigo_conf, total, detalle_pedido } = input;
-
+export const crearPedido = async (input: PedidoInput, id_usuario: number) => {
+  const { total, detalle_pedido } = input;
+  // Generar código único
+  const codigo_conf = await generarCodigoUnico();
+  
   // 1. Crear pedido
   const pedido = await prisma.pedido.create({
     data: { id_usuario, status: pedido_status.pendiente, codigo_conf, total },

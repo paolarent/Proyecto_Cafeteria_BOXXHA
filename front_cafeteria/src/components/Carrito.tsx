@@ -80,7 +80,8 @@ const ModalCarrito: React.FC<Carrito> = ({ isOpen, onClose }) => {
                                     return {
                                         id: extra.id,
                                         nombre: detalle?.nombre || "No definido",
-                                        cantidad: extra.cantidad
+                                        cantidad: extra.cantidad,
+                                        precio: extra.precio
                                     };
                                 });
 
@@ -93,7 +94,7 @@ const ModalCarrito: React.FC<Carrito> = ({ isOpen, onClose }) => {
                                         regular={regular}
                                         tamano={tamanoNombre}
                                         leche={lecheNombre}
-                                        extras={extrasNombre?.map(extra => ({ ...extra, precio: 0 }))}
+                                        extras={extrasNombre?.map(extra => ({ ...extra, precio: extra.precio}))}
                                         total={pedido.total}
                                     />
                                 );

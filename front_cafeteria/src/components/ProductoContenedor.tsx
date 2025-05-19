@@ -6,7 +6,7 @@ type ProductoContenedorProps = {
     regular? : string;
     tamano?: string;
     leche?: string;
-    extras?: { id: number; nombre: string; cantidad: number }[];
+    extras?: { id: number; nombre: string; cantidad: number, precio: number }[];
     total: number;
 };
 
@@ -55,7 +55,7 @@ const ProductoContenedor: React.FC<ProductoContenedorProps> = ({ nombre, tipo, s
                     <ul>
                         {extras?.map((extra, index) => (
                             <li className="font-Montserrat font-regular text-lg lg:text-xl text-left text-[#34251d] pb-2" key={index}>
-                                + {extra.cantidad} {extra.nombre}
+                                + {extra.cantidad} {extra.nombre} {extra.precio > 0 ? `($${(extra.precio * extra.cantidad).toFixed(2)})` : ''}
                             </li>
                         ))}
                     </ul>

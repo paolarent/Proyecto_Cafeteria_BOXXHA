@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-type Pedido = {
+export type Pedido = {
     tipo?: 'caliente' | 'frio' | 'frappe' | 'postre';
     nombre?: string;
     id_bebida?: number;
@@ -9,7 +9,7 @@ type Pedido = {
     id_tamano?: number;
     regular?: boolean;
     id_leche?: number;
-    extras?: { id: number; cantidad: number }[];
+    extras?: { id: number; cantidad: number; precio: number }[];
     completo?: boolean;
     total: number;
 };

@@ -6,16 +6,19 @@ import Footer from "../components/Footer";
 import { motion } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 import { useMenuContext } from '../contexts/ScrollContexto';
+import { useEffect, useState } from "react";
 import beb_frias from "../assets/beb_frias.png";
 import frappe from "../assets/frappe.png";
 import postre from "../assets/postres.jpg";
 import beb_calientes from "../assets/beb_calientes.jpeg";
 import { usePedido } from '../contexts/PedidoContext'; 
+import ModalQR from "../components/ModalCodigos";
 
 const InicioView = () => {
     const navigate = useNavigate();
     const { scrollToMenu, menuRef, inicioRef } = useMenuContext();
     const { agregarPedido } = usePedido();
+   const [showModalCodigo, setShowModalCodigo] = useState(false);    //para controlar el modal del codigo
 
     {/* ATAJO DE FRAPPES */}
     type TipoBebida = 'caliente' | 'frio' | 'frappe' | 'postre' ;
@@ -24,6 +27,14 @@ const InicioView = () => {
         const index = agregarPedido({ tipo, nombre, completo: false, total: total });
         navigate(`/sabores/${tipo}/${nombre}/${index}`);
     };
+
+    useEffect(() => {
+        const debeMostrar = localStorage.getItem("mostrar_modal_qr");
+        if (debeMostrar === "true") {
+            setShowModalCodigo(true);
+            localStorage.removeItem("mostrar_modal_qr");
+        }
+    }, []);
 
     return (
         <div className="h-screen overflow-y-scroll snap-y snap-mandatory">
@@ -157,6 +168,12 @@ const InicioView = () => {
 
             </section>
                 <Footer />
+            {showModalCodigo && (
+                <ModalQR
+                    isOpen={showModalCodigo} 
+                    onClose={() => setShowModalCodigo(false)} 
+                />
+            )}
         </div>
     ); 
 };

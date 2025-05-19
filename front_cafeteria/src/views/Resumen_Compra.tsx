@@ -8,6 +8,9 @@ import { usePedido } from "../contexts/PedidoContext";
 import { useCatalagos } from "../contexts/CatalagosContext"; // Usamos el hook para acceder a los catálogos
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 
+import { enviarPedidos } from "../services/pedidoService";
+import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
+
 const tarjeta = {
     nombreTitular:"",
     numTarjeta:"",
@@ -23,6 +26,7 @@ const Resumen_CompraView = () => {
     const [mensaje, setMensaje] = useState("");
     const navigate = useNavigate();
     const { pedidos, actualizarPedido } = usePedido();
+    const { resetPedidos } = usePedido();
 
     useEffect(() => {
         const fetchResumen = async () => {
@@ -33,7 +37,7 @@ const Resumen_CompraView = () => {
             console.error("Error al obtener resumen:", error);
             setMensaje("No autorizado. Redirigiendo...");
             // Aquí podemos redirigir cuando no tengan acceso, ejemplo ERROR: 401 NO AUTORIZADO
-            //navigate("/401Error");
+            navigate("/401Error");
         }
         };
 
@@ -51,9 +55,42 @@ const Resumen_CompraView = () => {
         marcarCompleto();
     },[pedidos]);
 
-    const handleEnviarPedido = () => {
-        // Enviamos el pedido al backend
-    }
+    const handleEnviarPedido = async () => {
+        try {
+            const response = await enviarPedidos(pedidos);
+            if (response.success) {
+                toast.success(response.data.message);
+            } else {
+                toast.error("Error al enviar el pedido"); 
+            }
+            const id_pqr = response.data.pedido.id_pedido; 
+            const codigo = response.data.pedido.codigo_conf;
+
+            // Obtener los pedidos previos (si hay)
+            const pedidosQR = JSON.parse(localStorage.getItem("pedidos_confirmados") || "[]");
+            const nombreCliente = localStorage.getItem("usuario");
+            // Agregar el nuevo pedido
+            pedidosQR.push({
+                id_pqr,
+                codigo,
+                nombreCliente, 
+            });
+
+            // Guardar la lista actualizada
+            localStorage.setItem("pedidos_confirmados", JSON.stringify(pedidosQR));
+
+            localStorage.setItem("mostrar_modal_qr", "true");
+            resetPedidos(); // Limpiar el pedido después de enviarlo
+
+            // Esperar poquito antes de redirigir
+            setTimeout(() => {
+                navigate("/");
+            }, 1000);
+
+        } catch (error) {
+            console.error("Error al enviar el pedido:", error);
+        }        
+    };
     
     return (
         <div className=" h-full w-full flex flex-col overflow-x-hidden">
@@ -94,7 +131,8 @@ const Resumen_CompraView = () => {
                                     return {
                                         id: extra.id,
                                         nombre: detalle?.nombre || "No definido",
-                                        cantidad: extra.cantidad
+                                        cantidad: extra.cantidad,
+                                        precio: extra.precio
                                     };
                                 });
 
@@ -157,7 +195,8 @@ const Resumen_CompraView = () => {
                         
                         {metodo === "Efectivo" && (
                             <div className="flex flex-col sm:flex-row justify-between items-center w-full mt-4 gap-4">
-                                <button className="w-full sm:w-auto px-4 py-3 lg:px-6 sm:py-3 bg-[#311808] text-white text-md sm:text-base lg:text-lg rounded hover:bg-[#716865] font-bold transform transition-transform duration-300 hover:scale-105 mt-4">
+                                <button onClick = {handleEnviarPedido}
+                                className="w-full sm:w-auto px-4 py-3 lg:px-6 sm:py-3 bg-[#311808] text-white text-md sm:text-base lg:text-lg rounded hover:bg-[#716865] font-bold transform transition-transform duration-300 hover:scale-105 mt-4">
                                     Enviar pedido
                                 </button>
                             </div>
@@ -250,6 +289,21 @@ const Resumen_CompraView = () => {
                 </section>
             </main>
             <Footer />
+
+            <Toaster    //ESTILOS DE LAS NOTIFICACIONES
+                position="top-center"
+                reverseOrder={false}
+                toastOptions={{
+                duration: 3000,  //Duración de la notificación
+                style: {
+                    background: '#3B2B26',
+                    color: '#fff',
+                    fontFamily: 'Montserrat',
+                    fontWeight: 600
+                },
+                }}
+            />
+
         </div>
     );
 };

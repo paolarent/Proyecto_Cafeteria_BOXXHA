@@ -9,7 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ModalCarrito from "../components/Carrito";
 
 const ExtrasView = () => {
-    const [extras, setExtras] = useState<{ id_extra: number; nombre: string; precio: number }[]>([]);
+    const [extras, setExtras] = useState<{ id_extra: number; nombre: string; precio_extra: number }[]>([]);
     const [cantidades, setCantidades] = useState<{ [id: number]: number }>({});
     
     const { pedidos, actualizarPedido } = usePedido(); // Hook para acceder al contexto del pedido
@@ -72,9 +72,10 @@ const ExtrasView = () => {
             const cantidad = cantidades[extra.id_extra] || 0;
 
             if (cantidad > 0) {
-                if (extra.precio > 0) {
+                if (extra.precio_extra > 0) {
                     // Cobramos normalmente los extras que si tienen costo
-                    total += extra.precio * cantidad;
+                    total += extra.precio_extra * cantidad;
+                    console.log("Extra con costo:", extra.nombre, "Cantidad:", cantidad, "Precio:", extra.precio_extra);
                 } else {
                     // Si el extra es gratis, lo contamos como un extra gratis
                     if (cantidad <= extrasGratis) {
@@ -98,6 +99,7 @@ const ExtrasView = () => {
         .map((extra) => ({
             id: extra.id_extra,
             cantidad: cantidades[extra.id_extra],
+            precio: extra.precio_extra
         }));
         const totalExtras = calcularTotalExtras(); // Calcula el total de los extras seleccionados
         const totalPedido = pedidoActual.total + totalExtras; // Suma el total de los extras al total del pedido

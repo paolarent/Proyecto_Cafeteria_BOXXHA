@@ -84,6 +84,9 @@ const NavBar: React.FC = () => {
     const logOut = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("usuario");
+        localStorage.removeItem("ultimo_id_pedido");
+        localStorage.removeItem("ultimo_codigo_conf");
+        localStorage.removeItem("pedidos_confirmados");
         resetPedidos();
         setIsUserMenuOpen(false);
         navigate("/");

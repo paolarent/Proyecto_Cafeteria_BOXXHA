@@ -21,11 +21,14 @@ import { useState } from "react";
 // Ruta /admin_inicio
 const Admin_Inicio = () => {
     const[Opcion, setOpcion] = useState('');
-    const rawUser = localStorage.getItem("usuario");
-    const Usuario = rawUser?.replace(/^"(.*)"$/, '$1');
+    const rawUser = localStorage.getItem("usuario"); 
+    const Usuario = rawUser?.replace(/^"(.*)"$/, '$1'); // Retirar la comillas del usuario
+    const Ventas = "10,574.00";
+    const Pedidos = 123;
+    const totalProductos = 234;
     return(
     // Fondo Cafe
-    <div className="flex flex-col h-full w-full bg-[#947666] opacity-95">
+    <div className="flex flex-col h-full w-full bg-[#9C6644] opacity-95">
         <main className="flex flex-row gap-10 p-10">
             {/*Sección izquierda de las herramientas */}
             <div className="flex flex-col gap-2 w-1/4 h-screen  items-left ">
@@ -38,11 +41,12 @@ const Admin_Inicio = () => {
                 </div>
                 
                 
-                {/*Contenedor de las Opciones*/}
+                {/*Contenedor de las Opciones aplicando interpolación de clases*/}
                 <div className="font-Montserrat flex flex-col p-4 w-full h-full items-left shadow-2xl bg-white justify-left text-left gap-4 ">
                     {/*Boton Dashboard */}
                     { Opcion === 'Dashboard' ? (
-                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white bg-[#a3968c] border-l-4 border-l-[#311808]">
+                        // Elemento al ser seleccionado
+                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#c49475] border-l-4 border-l-[#814721]">
                             <div className="w-10 h-10 bg-gray-500"></div>
                             <button
                             onClick={() => setOpcion('Dashboard')} 
@@ -50,7 +54,8 @@ const Admin_Inicio = () => {
                             </button>
                         </div>
                     ) : (
-                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#a3968c] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#311808] border-l-4 border-l-transparent">
+                        // Elemento al no ser seleccionado
+                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
                             <div className="w-10 h-10 bg-gray-500"></div>
                             <button
                             onClick={() => setOpcion('Dashboard')} 
@@ -62,7 +67,8 @@ const Admin_Inicio = () => {
 
                     {/*Boton Productos */}
                     { Opcion === 'Productos' ? (
-                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white bg-[#a3968c] border-l-4 border-l-[#311808]">
+                        // Elemento al ser seleccionado     
+                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#c49475] border-l-4 border-l-[#814721]">
                             <div className="w-10 h-10 bg-gray-500"></div>
                             <button
                             onClick={() => setOpcion('Productos')} 
@@ -70,7 +76,8 @@ const Admin_Inicio = () => {
                             </button>
                         </div>
                     ) : (
-                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#a3968c] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#311808] border-l-4 border-l-transparent">
+                        // Elemento al no ser seleccionado
+                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
                             <div className="w-10 h-10 bg-gray-500"></div>
                             <button
                             onClick={() => setOpcion('Productos')} 
@@ -81,7 +88,8 @@ const Admin_Inicio = () => {
                      
                     {/*Boton clientes para checar nuestro clientes */}
                     { Opcion === 'Clientes' ? (
-                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white bg-[#a3968c] border-l-4 border-l-[#311808]">
+                        // Elemento al ser seleccionado
+                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#c49475] border-l-[#814721] border-l-4 ">
                             <div className="w-10 h-10 bg-gray-500"></div>
                             <button
                             onClick={() => setOpcion('Clientes')} 
@@ -89,7 +97,8 @@ const Admin_Inicio = () => {
                             </button>
                         </div>
                     ) : (
-                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#a3968c] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#311808] border-l-4 border-l-transparent">
+                        // Elemento al no ser seleccionado      
+                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
                             <div className="w-10 h-10 bg-gray-500"></div>
                             <button
                             onClick={() => setOpcion('Clientes')} 
@@ -102,14 +111,57 @@ const Admin_Inicio = () => {
                 
             </div>
             
-            {/*Sección derecha, se encontrara los form*/}
-            <div className="flex flex-col w-3/4 h-screen items-center shadow-xl bg-white p-8 ">
+            {/*Sección derecha, se encontrarán los form*/}
+            <div className="font-Montserrat flex flex-col w-3/4 h-screen items-center shadow-xl bg-white p-8 ">
                 { Opcion === 'Dashboard' && (
-                    <div className="flex flex-row w-full h-1/3"> 
-                        <div className="w-1/2 shadow-xl"> 
+                    <div className="flex flex-col w-full h-full">
+                        <div className="flex flex-col w-full h-1/3 gap-6"> 
+                            <div className="flex flex-col">
+                                <p className="font-bold text-3xl text-[#34251d]">Dashboard</p>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <p className="font-bold text-md text-[#34251d] opacity-90"> En las ultimas 24 horas </p>
+                                <div className="flex flex-row gap-2">
+                                    {/*elemento con ventas totales */}
+                                    <div className="flex flex-row w-1/3 h-auto shadow-xl bg-[#7F5539] rounded-2xl text-left p-6">
+                                        <div className="flex flex-row min-w-full w-1/2 h-full gap-4 font-semibold">
+                                            <div className="flex flex-col text-left gap-1">
+                                                <p className="text-md text-white"> Total ventas </p>
+                                                <p className="text-2xl text-white font-bold"> ${Ventas} </p>
+                                            </div> 
+
+                                        </div>                           
+                                    </div>
+
+
+                                    <div className="flex flex-row w-1/3 h-auto shadow-xl bg-[#7F5539] rounded-2xl text-left p-6">
+                                        <div className="flex flex-row min-w-full w-1/2 h-full gap-4 font-semibold">
+                                            <div className="flex flex-col text-left gap-1">
+                                                <p className="text-md text-white"> Total pedidos </p>
+                                                <p className="text-2xl text-white font-bold"> {Pedidos} </p>
+                                            </div> 
+
+                                        </div>                           
+                                    </div>
+
+                                    <div className="flex flex-row w-1/3 h-auto shadow-xl bg-[#7F5539] rounded-2xl text-left p-6">
+                                        <div className="flex flex-row min-w-full w-1/2 h-full gap-4 font-semibold">
+                                            <div className="flex flex-col text-left gap-1">
+                                                <p className="text-md text-white"> Productos vendidos </p>
+                                                <p className="text-2xl text-white font-bold"> {totalProductos} </p>
+                                            </div> 
+
+                                        </div>                           
+                                    </div>
+                                </div>    
+                            </div>{/*Fin de la fila de datos */}
                         </div>
-                        <div className="w-1/2 shadow-xl"> 
-                        </div>                              
+                        <div className="flex flex-col min-w-full h-full gap-2">
+                            <p className="font-bold text-md text-[#34251d] opacity-90"> Ultimas ordenes </p>
+                            <div className="flex flex-col h-2/3 min-w-full shadow-xl bg-white">
+
+                            </div>
+                        </div>
                     </div>
                 )}
 
