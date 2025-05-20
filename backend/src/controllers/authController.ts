@@ -1,7 +1,7 @@
 // src/controllers/authController.ts
 import { Request, Response } from 'express';
 import { handleHttp } from '../utils/error.handle';
-import { registerUser, loginUser } from "../services/authService";
+import { registerUser, loginUser } from '../services/authService';
 
 const register = async (req: Request, res: Response) => {
     try {

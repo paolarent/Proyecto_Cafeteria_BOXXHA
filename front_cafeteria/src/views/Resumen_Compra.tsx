@@ -28,8 +28,8 @@ const Resumen_CompraView = () => {
     //Estados para la tarjeta
     const [nombreTitular, setNombreTitular] = useState("");
     const [numTarjeta, setNumTarjeta] = useState("");
-    const [fechaVencimiento, setFechaVencimiento] = useState("");
-    const [cvv, setCvv] = useState("");
+    const [fechaVencimiento, setFechaVencimiento] = useState<string>('');
+    const [cvv, setCvv] = useState<string>('');
     type CardType = "visa" | "mastercard" | "amex" | null;
     const [cardType, setCardType] = useState<CardType>(null);
     const [isValid, setIsValid] = useState<boolean | null>(null);
@@ -82,13 +82,13 @@ const Resumen_CompraView = () => {
                 nombreCliente, 
             });
 
-            // Guardar la lista actualizada
+            //Guardar la lista actualizada
             localStorage.setItem("pedidos_confirmados", JSON.stringify(pedidosQR));
 
             localStorage.setItem("mostrar_modal_qr", "true");
-            resetPedidos(); // Limpiar el pedido después de enviarlo
+            resetPedidos(); //Limpiar el pedido después de enviarlo
 
-            // Esperar poquito antes de redirigir
+            //Esperar poquito antes de redirigir
             setTimeout(() => {
                 navigate("/");
             }, 1000);
@@ -118,6 +118,18 @@ const Resumen_CompraView = () => {
         if (anio === anioActual && mes < mesActual) return false;
 
         return true;
+    };
+
+    const nombreTitularValido = (nombre: string): boolean => {
+        // Divide el texto por espacios
+        const palabras = nombre.trim().split(/\s+/);
+        
+        // Requiere al menos 2 palabras
+        if (palabras.length < 2) return false;
+
+        // Cada palabra debe tener al menos 2 letras (solo letras Unicode)
+        const regex = /^\p{L}{2,}$/u;
+        return palabras.every(palabra => regex.test(palabra));
     };
 
     //Función para formatear número con espacios cada 4 caracteres (ajustar para American express, por alguna razon es diferente)
@@ -188,7 +200,7 @@ const Resumen_CompraView = () => {
             toast.error("CVV inválido");
             return;
         }
-        if (!nombreTitular.match(/^[\p{L}\s]+$/u) || !nombreTitular.match(/^\p{L}{2,}\s+\p{L}{2,}$/u)) {
+        if (!nombreTitularValido(nombreTitular)) {
             toast.error("El nombre de titular no tiene el formato correcto");
             return;
         }
@@ -343,10 +355,18 @@ const Resumen_CompraView = () => {
                                         type="text"
                                         value={numTarjeta}
                                         onChange={handleNumTarjetaChange}
-                                        placeholder="xxxx xxxx xxxx xxxx"
+                                        placeholder="XXXX XXXX XXXX XXXX"
                                         maxLength={19}
-                                        className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
-                                        ${isValid === false ? 'border-red-500 border-2' : isValid === true ? 'border-green-500 border-2' : 'border-gray-300 border-2'}`}
+                                        className={`w-full px-3 py-2 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                        ${
+                                            !numTarjeta
+                                            ? 'border border-gray-300'
+                                            : isValid === true
+                                            ? 'border-2 border-green-500'
+                                            : isValid === false
+                                            ? 'border-2 border-red-500'
+                                            : 'border border-gray-300'
+                                        }`}
                                     />
                                     
                                     {getCardIcon() && (
@@ -365,28 +385,46 @@ const Resumen_CompraView = () => {
                                     <h2 className="font-semibold text-lg sm:text-xl text-left text-[#34251d]">
                                         Fecha de Vencimiento
                                     </h2>
+
                                     <input
                                         type="text"
                                         value={fechaVencimiento}
                                         onChange={(e) => setFechaVencimiento(e.target.value)}
                                         maxLength={5}
-                                        className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                         placeholder="MM/AA"
+                                        className={`w-full mt-1 px-3 py-2 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                        ${
+                                        !fechaVencimiento
+                                            ? 'border border-gray-300'
+                                            : FechaExpiracionValida(fechaVencimiento)
+                                            ? 'border-2 border-green-500'
+                                            : 'border-2 border-red-500'
+                                        }`}
                                     />
+
                                 </div>
 
                                 <div className="flex flex-col flex-1">
                                     <h2 className="font-semibold text-lg sm:text-xl text-left text-[#34251d]">
                                         Código CVV
                                     </h2>
+
                                     <input
                                         type="text"
                                         value={cvv}
                                         onChange={(e) => setCvv(e.target.value)}
                                         maxLength={4}
-                                        className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                         placeholder="CVV"
+                                        className={`w-full mt-1 px-3 py-2 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                        ${
+                                        !cvv
+                                            ? 'border border-gray-300'
+                                            : /^\d{3,4}$/.test(cvv)
+                                            ? 'border-2 border-green-500'
+                                            : 'border-2 border-red-500'
+                                        }`}
                                     />
+
                                 </div>
                             </div>
 
@@ -394,13 +432,22 @@ const Resumen_CompraView = () => {
                                 <h2 className="font-semibold text-lg sm:text-xl text-left text-[#34251d]">
                                 Nombre del titular
                                 </h2>
+
                                 <input
-                                type="text"
-                                value={nombreTitular}
-                                onChange={(e) => setNombreTitular(e.target.value)}
-                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
-                                placeholder="José Rómulo Sosa Ortíz"
+                                    type="text"
+                                    value={nombreTitular}
+                                    onChange={(e) => setNombreTitular(e.target.value)}
+                                    placeholder="José Rómulo Sosa Ortíz"
+                                    className={`w-full mt-1 px-3 py-2 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                    ${
+                                    !nombreTitular
+                                        ? 'border border-gray-300'
+                                        : nombreTitularValido(nombreTitular)
+                                        ? 'border-2 border-green-500'
+                                        : 'border-2 border-red-500'
+                                    }`}
                                 />
+
                             </div>
 
                             <div className="flex flex-col sm:flex-row justify-between items-center w-full mt-4 gap-4">
