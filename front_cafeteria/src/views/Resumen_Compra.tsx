@@ -32,7 +32,7 @@ const Resumen_CompraView = () => {
     const [cvv, setCvv] = useState("");
     type CardType = "visa" | "mastercard" | "amex" | null;
     const [cardType, setCardType] = useState<CardType>(null);
-    const [isValid, setIsValid] = useState(false);
+    const [isValid, setIsValid] = useState<boolean | null>(null);
 
     useEffect(() => {
         const fetchResumen = async () => {
@@ -158,8 +158,7 @@ const Resumen_CompraView = () => {
         if (
         (firstDigit === "4" && digitsCount === 16) ||
         (firstDigit === "5" && digitsCount === 16) ||
-        (firstDigit === "3" && digitsCount === 15)
-        ) {
+        (firstDigit === "3" && digitsCount === 15) ) {
         setIsValid(true);
         } else {
         setIsValid(false);
@@ -189,8 +188,8 @@ const Resumen_CompraView = () => {
             toast.error("CVV inválido");
             return;
         }
-        if (!nombreTitular.trim()) {
-            toast.error("El nombre del titular es requerido");
+        if (!nombreTitular.match(/^[\p{L}\s]+$/u) || !nombreTitular.match(/^\p{L}{2,}\s+\p{L}{2,}$/u)) {
+            toast.error("El nombre de titular no tiene el formato correcto");
             return;
         }
 
@@ -339,14 +338,17 @@ const Resumen_CompraView = () => {
                                 </h2>
 
                                 <div className="relative mt-1">
+
                                     <input
-                                    type="text"
-                                    value={numTarjeta}
-                                    onChange={handleNumTarjetaChange}
-                                    placeholder="xxxx xxxx xxxx xxxx"
-                                    maxLength={19}
-                                    className="w-full pr-12 pl-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        type="text"
+                                        value={numTarjeta}
+                                        onChange={handleNumTarjetaChange}
+                                        placeholder="xxxx xxxx xxxx xxxx"
+                                        maxLength={19}
+                                        className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-[#5C48481A] focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                        ${isValid === false ? 'border-red-500 border-2' : isValid === true ? 'border-green-500 border-2' : 'border-gray-300 border-2'}`}
                                     />
+                                    
                                     {getCardIcon() && (
                                     <img
                                         src={getCardIcon() as string}
@@ -355,6 +357,7 @@ const Resumen_CompraView = () => {
                                     />
                                     )}
                                 </div>
+
                             </div> 
                             {/* Fecha de vencimiento y código CVV */}
                             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">

@@ -3,6 +3,7 @@ import {prisma} from '../lib/prisma';
 // Función que retorna las 25 ultimas ordenes para ser consultadas en el 
 // Dasborad
 
+
 export const pedidosRecientes = async () => {
     return await prisma.pedido.findMany({
         // Especificamos el orden en que se consultaran los datos
@@ -35,10 +36,19 @@ export const TotalVentasHoy = async () => {
 };
 
 export const TotalPediosHoy = async () => {
-  const resul = await prisma.pedido.aggregate({
-        _count: {
-            id_pedido: true,
+    const inicioDelDia = new Date();
+    inicioDelDia.setHours(0, 0, 0, 0); // Hoy a las 00:00
+
+    const ahora = new Date(); // Fecha y hora actual
+    
+    const resul = await prisma.pedido.aggregate({
+        where: {
+            fecha:{
+                gte: inicioDelDia,
+                lte: ahora,
+            },
         },
-  });  
-  return resul._count.id_pedido ?? 0;
+    });  
+    return resul ?? 0;
 };
+

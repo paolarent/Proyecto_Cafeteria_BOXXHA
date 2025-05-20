@@ -1,34 +1,28 @@
 import icon_usuario from "../assets/Iconos/usuario.png";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-    /*posibles cambios.-
-    Tamaño de los botones
-    Hora y fecha
-    Dashboard
-        - Producto mas vendido
-        - Total historico pedidos
-        - Grafico de pastel, tipo de bebida producto / ventas
-    Productos
-        - CRUD de productos
-    Clientes
-        - Acceso a la información de clientes
-        - Listado clientes con más pedidos
-    Logout
-    Volver al inicio */
 
 
 
 // Ruta /admin_inicio
 const Admin_Inicio = () => {
+    const navigate = useNavigate();
+    const handleIrAInicio = () => {
+            navigate('/'); // No hay pedido incompleto, va directo
+    };      
     const[Opcion, setOpcion] = useState('');
     const rawUser = localStorage.getItem("usuario"); 
     const Usuario = rawUser?.replace(/^"(.*)"$/, '$1'); // Retirar la comillas del usuario
+    
+    // Datos estaticos para ver el diseño
     const Ventas = "10,574.00";
     const Pedidos = 123;
     const totalProductos = 234;
     const ordenes = [
     { id: "001", usuario: "Ana",  total: 55, fecha: "2025-05-17", estado: "Completado" }
     ];
+
     return(
     // Fondo Cafe
     <div className="flex flex-col h-full w-full bg-[#9C6644] opacity-95">
@@ -109,27 +103,15 @@ const Admin_Inicio = () => {
                             </button>
                         </div>
                     )}
-
-                    {/*Boton clientes para checar nuestro clientes */}
-                    { Opcion === 'Clientes' ? (
-                        // Elemento al ser seleccionado
-                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#c49475] border-l-[#814721] border-l-4 ">
-                            <div className="w-10 h-10 bg-gray-500"></div>
-                            <button
-                            onClick={() => setOpcion('Clientes')} 
-                            className="w-full h-full text-left font-bold text-[#34251d]"> Volver al inicio 
-                            </button>
-                        </div>
-                    ) : (
-                        // Elemento al no ser seleccionado      
-                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
-                            <div className="w-10 h-10 bg-gray-500"></div>
-                            <button
-                            onClick={() => setOpcion('Clientes')} 
-                            className="w-full h-full text-left font-bold text-[#34251d]"> Volver al inicio 
-                            </button>
-                        </div>
-                    )}
+                    
+                    {/*Boton clientes para volver al inicio */} 
+                    <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
+                        <div className="w-10 h-10 bg-gray-500"></div>
+                        <button
+                        onClick={handleIrAInicio} 
+                        className="w-full h-full text-left font-bold text-[#34251d]"> Volver al inicio 
+                        </button>
+                    </div>
                 </div>
                 
                 
