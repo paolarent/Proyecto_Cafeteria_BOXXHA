@@ -1,6 +1,7 @@
 import React from 'react';
 import { toast, Toaster } from 'react-hot-toast';
 import QRCode from "react-qr-code";
+import NavBarEmpleado from '../components/NavBarEmp';
 
 const Pruebas = () => {
 
@@ -10,6 +11,8 @@ const Pruebas = () => {
 
   return (
     <div>
+      <NavBarEmpleado />
+
       <h1>PRUEBAS DE FRONT</h1>
       <button className="bg-[#ee1e79] text-[#000000] rounded-xl p-2 m-8 font-bold" onClick={handleToast}>Mostrar Notificación</button>
       <br />

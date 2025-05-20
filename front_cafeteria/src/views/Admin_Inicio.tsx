@@ -1,27 +1,88 @@
 import icon_usuario from "../assets/Iconos/usuario.png";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
+import { obtenerPedidos, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy } from "../services/dashServices"
 
-
-
+interface Pedido {
+    id_pedido: number;
+    fecha: string;
+    total: number;
+    status: string;
+    usuario: {
+        nombre: string;
+    }   
+}
 
 // Ruta /admin_inicio
 const Admin_Inicio = () => {
-    const navigate = useNavigate();
-    const handleIrAInicio = () => {
-            navigate('/'); // No hay pedido incompleto, va directo
-    };      
-    const[Opcion, setOpcion] = useState('');
+    const [TotalPedidos, setTotalPedidos] = useState<number>(0); 
+    const [Ventas, setVentas] = useState<number>(0);
+    const [Productos, setProductos] = useState<number>(0);
+    const [pedidos, setPedidos] = useState<Pedido[]>([]);
+    const [Opcion, setOpcion] = useState('Dashboard');
     const rawUser = localStorage.getItem("usuario"); 
     const Usuario = rawUser?.replace(/^"(.*)"$/, '$1'); // Retirar la comillas del usuario
     
     // Datos estaticos para ver el diseño
-    const Ventas = "10,574.00";
-    const Pedidos = 123;
     const totalProductos = 234;
-    const ordenes = [
-    { id: "001", usuario: "Ana",  total: 55, fecha: "2025-05-17", estado: "Completado" }
-    ];
+
+    useEffect(() => {
+        const fetchTotal = async () => {
+            try {
+                const result = await TotalProductosHoy();
+                setProductos(result);
+            } catch (error) {
+                console.error("Error al cargar el total no. de ventas", error);
+            }
+        };
+        fetchTotal();
+    }, []); 
+
+    // Función para obtener el total de ventas del día de hoy
+    useEffect(() => {
+        const fetchTotal = async () => {
+            try {
+                const result = await TotalVentasHoy();
+                setVentas(result);
+            } catch (error) {
+                console.error("Error al cargar el total no. de ventas", error);
+            }
+        };
+        fetchTotal();
+    }, []); 
+    // Función para obtener el total de pedidos del día de hoy
+    useEffect(() => {
+        const fetchTotal = async () => {
+            try {
+                const resul = await TotalPedidosHoy();
+                setTotalPedidos(resul);
+            } catch (error) {
+            console.error("Error al cargar el total no. de Pedidos", error)
+            }
+        }
+        fetchTotal();
+    }, []);
+
+    // Función para obtener la información de los pedidos recientes en la BD
+    useEffect(() => {
+        const fetchPedidos = async () => {
+        try {
+            const data = await obtenerPedidos();
+            setPedidos(data);
+        } catch (error) {
+            console.error("Error al cargar pedidos:", error);
+        }
+        };
+
+        fetchPedidos();
+    }, []);
+
+    const navigate = useNavigate();
+    const handleIrAInicio = () => {
+            navigate('/'); // No hay pedido incompleto, va directo
+    };      
+    
+    
 
     return(
     // Fondo Cafe
@@ -113,8 +174,6 @@ const Admin_Inicio = () => {
                         </button>
                     </div>
                 </div>
-                
-                
             </div>
             
             {/*Sección derecha, se encontrarán los form*/}
@@ -132,9 +191,8 @@ const Admin_Inicio = () => {
                                         <div className="flex flex-row min-w-full w-1/2 h-full gap-4 font-semibold">
                                             <div className="flex flex-col text-left gap-1">
                                                 <p className="text-md text-white"> Total ventas </p>
-                                                <p className="text-2xl text-white font-bold"> ${Ventas} </p>
+                                                <p className="text-2xl text-white font-bold"> {Ventas?.toLocaleString("es-MX", { style: "currency", currency: "MXN" })} </p>
                                             </div> 
-
                                         </div>                           
                                     </div>
 
@@ -143,7 +201,7 @@ const Admin_Inicio = () => {
                                         <div className="flex flex-row min-w-full w-1/2 h-full gap-4 font-semibold">
                                             <div className="flex flex-col text-left gap-1">
                                                 <p className="text-md text-white"> Total pedidos </p>
-                                                <p className="text-2xl text-white font-bold"> {Pedidos} </p>
+                                                <p className="text-2xl text-white font-bold"> {TotalPedidos} </p>
                                             </div> 
 
                                         </div>                           
@@ -153,7 +211,7 @@ const Admin_Inicio = () => {
                                         <div className="flex flex-row min-w-full w-1/2 h-full gap-4 font-semibold">
                                             <div className="flex flex-col text-left gap-1">
                                                 <p className="text-md text-white"> Productos vendidos </p>
-                                                <p className="text-2xl text-white font-bold"> {totalProductos} </p>
+                                                <p className="text-2xl text-white font-bold"> {Productos} </p>
                                             </div> 
 
                                         </div>                           
@@ -175,19 +233,19 @@ const Admin_Inicio = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {ordenes.map((orden) => (
-                                    <tr key={orden.id} className="border-b hover:bg-gray-100">
-                                        <td className="py-2 px-4">{orden.id}</td>
-                                        <td className="py-2 px-4">{orden.usuario}</td>
-                                        <td className="py-2 px-4">${orden.total}</td>
-                                        <td className="py-2 px-4">{orden.fecha}</td>
+                                    {pedidos.map((pedido) => (
+                                    <tr key={pedido.id_pedido} className="border-b hover:bg-gray-100">
+                                        <td className="py-2 px-4">{pedido.id_pedido}</td>
+                                        <td className="py-2 px-4">{pedido.usuario.nombre}</td>
+                                        <td className="py-2 px-4">{pedido.total?.toLocaleString("es-MX", { style: "currency", currency: "MXN" })}</td>
+                                        <td className="py-2 px-4">{pedido.fecha}</td>
                                         <td className="py-2 px-4">
                                         <span className={`
                                             px-2 py-1 rounded-full text-xs font-semibold
-                                            ${orden.estado === "Completado" ? "bg-green-200 text-green-800" : ""}
-                                            ${orden.estado === "Pendiente" ? "bg-yellow-200 text-yellow-800" : ""}
+                                            ${pedido.status === "completado" ? "bg-green-200 text-green-800" : ""}
+                                            ${pedido.status === "pendiente" ? "bg-yellow-200 text-yellow-800" : ""}
                                         `}>
-                                            {orden.estado}
+                                            {pedido.status}
                                         </span>
                                         </td>
                                     </tr>

@@ -99,6 +99,7 @@ const LoginView = () => {
                                     }`}
                                     />
                                 </div>
+
                                 <div>
                                     <label className="block text-l text-[#453126] mb-1">Contraseña</label>
                                     <input
@@ -116,6 +117,7 @@ const LoginView = () => {
                                     }`}
                                     />
                                 </div>
+
                                 <button
                                     type="submit"
                                     className="w-full bg-[#3B2B26] font-Montserrat font-semibold text-lg text-white py-2 rounded-md hover:bg-[#555655]

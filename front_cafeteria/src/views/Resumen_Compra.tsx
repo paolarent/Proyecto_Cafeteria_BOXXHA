@@ -13,7 +13,7 @@ import VisaIcon from "../assets/visa.svg";
 import MastercardIcon from "../assets/mastercard.svg";
 import AmericanEIcon from "../assets/american_express.svg";
 
-import { enviarPedidos } from "../services/pedidoService";
+import { enviarPedidos, crearNoti } from "../services/pedidoService";
 import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
 
 {/* Ruta /resumen */}
@@ -68,6 +68,13 @@ const Resumen_CompraView = () => {
                 toast.success(response.data.message);
             } else {
                 toast.error("Error al enviar el pedido"); 
+            }
+
+            const response2 = await crearNoti(response.data.pedido.id_pedido);
+            if (response2.success) {
+                console.log(response2.data.message);
+            } else {
+                console.error("Error al crear la notificación");
             }
             const id_pqr = response.data.pedido.id_pedido; 
             const codigo = response.data.pedido.codigo_conf;

@@ -90,7 +90,7 @@ model leche {
 model notificacion {
   id_notificacion Int    @id @default(autoincrement())
   id_pedido       Int
-  mensaje         String @db.VarChar(50)
+  mensaje         String @db.VarChar(150)
   pedido          pedido @relation(fields: [id_pedido], references: [id_pedido], onDelete: NoAction, onUpdate: NoAction, map: "fk_pedido_notif")
 
   @@index([id_pedido], map: "fk_pedido_notif_idx")

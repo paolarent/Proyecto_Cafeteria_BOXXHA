@@ -88,7 +88,7 @@ const NavBar: React.FC = () => {
         }
     }
 
-    // Cerrar sesion
+    //Cerrar sesion
     const logOut = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("usuario");

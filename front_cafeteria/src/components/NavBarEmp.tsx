@@ -6,18 +6,19 @@ import icon_carrito from "../assets/icon_carrito.png";
 import AboutUsModal from "./ModalAU";
 import { useNavigate } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"; //Iconos para el menu responsive
+import ModalLogin from "../components/ModalLogin";
 
 const NavBarEmpleado = () => {
     const navigate = useNavigate();
-    const [showAboutModal, setShowAboutModal] = useState(false);    //para controlar el modal
     const [isMenuOpen, setIsMenuOpen] = useState(false);        //para controlar el menu movil
+    const [MostrarModalLogin, setMostrarModalLogin] = useState(false);
 
     return (
         <div className="w-full flex flex-col bg-white shadow-md">
             {/* Barra de navegación superior */}
             <nav className="flex justify-between items-center p-4 border-b border-gray-200">
                 <div className="flex items-center h-10 space-x-2">
-                    <button onClick={() => navigate("/")} className="flex items-center space-x-2 hover:scale-105 transition">
+                    <button onClick={() => navigate("/empleado")} className="flex items-center space-x-2 hover:scale-105 transition">
                         <img src={logom} alt="Logo" className="h-14" />
                         <span className="text-xl font-extrabold font-serif">BOXXHA CAFÉ</span>
                     </button>
@@ -32,13 +33,17 @@ const NavBarEmpleado = () => {
 
                 {/* Menú normal en escritorio, diseño original, se oculta en pantallas pequeñas y se muestra en las grandes */}
                 <ul className="hidden md:flex space-x-8 text-sm font-Montserrat font-medium text-black-700 items-center">
-                    <li><button onClick={() => navigate("/")} className="text-lg hover:[color:#A1C99C] transition">Inicio</button></li>
-                    <li><button onClick={() => setShowAboutModal(true)} className="text-lg hover:[color:#A1C99C] transition">Nosotros</button></li>
-                    <li><button className="text-lg hover:[color:#A1C99C] transition">Shop</button></li>
-                    <li><button className="text-lg hover:[color:#A1C99C] transition">Menú</button></li>
-                    <li><button onClick={() => navigate("/login")}><img src={icon_user} alt="Usuario" className="h-7 hover:scale-110 transition" /></button></li>
+                    <li><button onClick={() => navigate("/empleado")} className="text-lg hover:[color:#A1C99C] transition">Inicio</button></li>
+                    
+                    <li><button className="text-lg hover:[color:#A1C99C] transition">Nuevo Pedido</button></li>
+                    <li><button onClick={() => navigate("/nuestro_menu_emp")} className="text-lg hover:[color:#A1C99C] transition">Menú</button></li>
                     <li><button><img src={icon_notificacion} alt="Favorito" className="h-7 hover:scale-110 transition" /></button></li>
-                    <li><button><img src={icon_carrito} alt="Carrito" className="h-7 hover:scale-110 transition" /></button></li>
+                    <li>
+                        <div className="flex items-center space-x-2 cursor-pointer" onClick={() => { setMostrarModalLogin(true) }}>
+                            <img src={icon_user} alt="Usuario" className="h-7 hover:scale-110 transition" />
+                            <span className="hidden md:inline text-lg font-Montserrat font-medium text-black-700">Nombre Empleado</span>
+                        </div>
+                    </li>
                 </ul>
             </nav>
 
@@ -68,13 +73,8 @@ const NavBarEmpleado = () => {
 
                         <button 
                             className="hover:text-[#A1C99C] block"
-                            onClick={() => { navigate("/"); setIsMenuOpen(false); }}
+                            onClick={() => { navigate("/empleado"); setIsMenuOpen(false); }}
                         >Inicio</button>
-
-                        <button 
-                            className="hover:text-[#A1C99C] block"
-                            onClick={() => { setShowAboutModal(true); setIsMenuOpen(false); }}
-                        >Nosotros</button>
 
                         <button 
                             className="hover:text-[#A1C99C] block"
@@ -100,8 +100,11 @@ const NavBarEmpleado = () => {
             )}
 
             {/* Modal */}
-            {showAboutModal && (
-                <AboutUsModal isOpen={showAboutModal} onClose={() => setShowAboutModal(false)} />
+            {MostrarModalLogin && (
+                <ModalLogin
+                    isOpen={MostrarModalLogin} 
+                    onClose={() => setMostrarModalLogin(false)} 
+                />
             )}
         </div>
     );

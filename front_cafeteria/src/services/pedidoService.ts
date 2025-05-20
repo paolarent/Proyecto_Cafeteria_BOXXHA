@@ -1,6 +1,4 @@
 import axios from "axios";
-import { usePedido } from "../contexts/PedidoContext";
-
 const API_BASE_URL = "https://h2x0xj0m-3000.usw3.devtunnels.ms/pedidoRoutes";
 import { Pedido } from "../contexts/PedidoContext";
 
@@ -79,3 +77,15 @@ export const postPedido = async (
     return { success: false, error };
   }
 };
+
+export const crearNoti = async (idPedido: number) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/notificaciones`, {
+      idPedido,
+    });
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.error("Error en crearNoti:", error);
+    return { success: false, error };
+  }
+}
