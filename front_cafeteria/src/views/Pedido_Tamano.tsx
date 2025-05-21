@@ -4,7 +4,7 @@ import IconoCafe16OZ from "../assets/Iconos/Icono_16oz.png";
 import BotonRegresar from "../assets/regresar.png";
 import BotonContinuar from "../assets/continuar.png";
 
-import NavBar from "../components/NavBar";
+import LayoutConNavbar from "../components/LayoutNavBar";
 
 import { usePedido } from "../contexts/PedidoContext";
 import { useNavigate, useParams } from "react-router-dom";
@@ -63,9 +63,7 @@ const PedidoTamañoView = () => {
     
     return (
         <div className="relative h-screen overflow-y-auto overflow-x-hidden flex flex-col">
-            <header className="sticky top-0 z-50">
-                <NavBar />
-            </header>
+            <LayoutConNavbar />
             
             {/* Contenedor Padre Father */}
             <main className="flex-1 relative">

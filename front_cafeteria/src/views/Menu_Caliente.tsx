@@ -1,4 +1,3 @@
-import NavBar from "../components/NavBar";
 import { useNavigate } from "react-router-dom";
 import { getCategoria } from "../services/productService";
 import { useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import te from "../assets/te.jpeg";
 import chai from "../assets/chai.jpg";
 import americano from "../assets/americano.jpeg";
 import matchac from "../assets/matcha_cal.jpg";
+import LayoutConNavbar from "../components/LayoutNavBar";
 
 
 import { usePedido } from '../contexts/PedidoContext'; 
@@ -51,9 +51,7 @@ const MenuBebidasCalView = () => {
 
     return (
         <div className="min-h-screen flex flex-col ">
-            <header className="sticky top-0 z-50">
-                <NavBar />
-            </header>
+            <LayoutConNavbar />
 
             <main className="flex flex-1 bg-[#B0CEAC]">
                 <section className="w-full flex flex-col items-center pt-5 space-y-10 pb-10">

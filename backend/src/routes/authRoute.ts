@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, register } from "../controllers/authController";
+import { login, register, verificarTipo } from "../controllers/authController";
 import { auth } from '../middlewares/auth';
 
 const router = Router();
@@ -13,9 +13,11 @@ router.post("/login", login); // Ruta para el login
 // https://h2x0xj0m-3000.usw3.devtunnels.ms/authRoute/register
 router.post("/register", register); // Ruta para el registro
 
-router.get('/verify', auth, (req, res) => {
+router.get("/verify", auth, (req, res) => {
   res.status(200).json({ message: 'Token válido'});
 });
+
+router.get("/tipoUsuario", auth, verificarTipo);
 
 export { router };
 

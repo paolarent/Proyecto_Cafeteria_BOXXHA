@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
-import NavBar from "../components/NavBar";
+import LayoutConNavbar from "../components/LayoutNavBar";
 import BotonRegresar from "../assets/regresar.png";
 import BotonContinuar from "../assets/continuar.png";
 import { getExtras } from "../services/productService"; // tu fetch
@@ -108,9 +108,7 @@ const ExtrasView = () => {
     
     return (
         <div className="relative h-screen overflow-y-auto overflow-x-hidden flex flex-col">
-            <header className="sticky top-0 z-50">
-                <NavBar />
-            </header>
+            <LayoutConNavbar />
             
             <main className="flex-1 relative">
                 <img 

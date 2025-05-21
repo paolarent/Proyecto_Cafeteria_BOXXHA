@@ -10,7 +10,7 @@ import BotonRegresar from "../assets/regresar.png";
 import BotonContinuar from "../assets/continuar.png";
 
 {/*Importación de componentes*/}
-import NavBar from "../components/NavBar";
+import LayoutConNavbar from "../components/LayoutNavBar";
 
 import { usePedido } from "../contexts/PedidoContext";
 import { useNavigate, useParams } from "react-router-dom";
@@ -65,9 +65,7 @@ const Tipo_LecheView = () => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <header className="sticky top-0 z-50">
-                <NavBar />
-            </header>
+            <LayoutConNavbar />
             
             <main className="flex flex-1">                
                 <section className="relative w-full flex flex-col items-center space-y-4 pb-10 overflow-hidden">

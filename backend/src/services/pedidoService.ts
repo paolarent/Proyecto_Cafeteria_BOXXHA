@@ -1,5 +1,5 @@
 import { prisma } from '../lib/prisma';
-import { pedido, pedido_status } from '@prisma/client';
+import { pedido, pedido_status, pago_metodo_pago, pago_status } from '@prisma/client';
 import { generarCodigoUnico } from './codigoService';
 
 interface ExtraInput {
@@ -22,10 +22,12 @@ interface DetallePedidoInput {
 interface PedidoInput {
   total: number;
   detalle_pedido: DetallePedidoInput[];
+  metodo: string;
 }
 
 export const crearPedido = async (input: PedidoInput, id_usuario: number) => {
-  const { total, detalle_pedido } = input;
+  const { total, detalle_pedido, metodo } = input;
+  const metodo_pa = metodo === 'efectivo' ? pago_metodo_pago.efectivo : pago_metodo_pago.tarjeta;
   // Generar código único
   const codigo_conf = await generarCodigoUnico();
   
@@ -81,6 +83,17 @@ export const crearPedido = async (input: PedidoInput, id_usuario: number) => {
         });
       }
     }
+
+    // Crear el pago
+    await prisma.pago.create({
+      data: {
+        id_pedido: pedido.id_pedido,
+        metodo_pago: metodo_pa,
+        monto_pagado: total,
+        status: pago_status.exitoso,
+      },
+    });
+
   }
 
   return pedido;

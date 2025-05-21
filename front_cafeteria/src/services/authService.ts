@@ -42,3 +42,21 @@ export const loginUser = async (identificador: string, contra: string) => {
     throw new Error(error.response?.data?.error || "Error en el login");
   }
 };
+
+export const verificarTipoUsuario = async () => {
+  try{
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No se encontró token de autenticación");
+    }
+    // Verificar el tipo de usuario
+    const response = await axios.get(`${API_BASE_URL}/tipoUsuario`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error: any){
+    return {error};
+  }
+}

@@ -1,4 +1,3 @@
-import NavBar from "../components/NavBar"
 import { useNavigate } from "react-router-dom";
 import { getCategoria } from "../services/productService";
 import { useEffect, useState } from "react";
@@ -8,6 +7,7 @@ import matcha from "../assets/matcha.jpg";
 import tef from "../assets/te_frio.png";
 import americanof from "../assets/iced_americano.jpg";
 import chaif from "../assets/chai_frio.jpg";
+import LayoutConNavbar from "../components/LayoutNavBar";
 
 import { usePedido } from '../contexts/PedidoContext'; 
 
@@ -46,9 +46,7 @@ const MenuBebidasFriasView = () => {
 
     return (
         <div className="min-h-screen flex flex-col ">
-            <header className="sticky top-0 z-50">
-                <NavBar />
-            </header>
+            <LayoutConNavbar />
 
             <main className="flex flex-1 bg-[#B0CEAC]">
                 <section className="w-full flex flex-col items-center pt-5 space-y-10 pb-10">

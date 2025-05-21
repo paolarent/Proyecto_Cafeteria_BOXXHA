@@ -113,3 +113,19 @@ export const loginUser = async (identificador: string, contra: string) => {
 function generateToken(id_usuario: number){
   return jwt.sign({id_usuario}, process.env.JWT_SECRET as string, {expiresIn: "3h"});
 }
+
+export const verificarTipoUsuario = async (id: number) => {
+  if (!id){
+    throw new Error ("Falta el id del usuario");
+  }
+
+  const user = await prisma.usuario.findFirst({
+    where: {id_usuario : id}
+  });
+
+  if (!user) {
+    throw new Error("Usuario no encontrado.");
+  }
+  
+  return {user: {tipo_usuario: user.tipo_usuario}};
+}

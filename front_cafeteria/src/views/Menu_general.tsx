@@ -1,4 +1,4 @@
-import NavBar from "../components/NavBar";
+import LayoutConNavbar from "../components/LayoutNavBar";
 import Footer from "../components/Footer";
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 import frappe from "../assets/frappe.png";
@@ -21,9 +21,7 @@ const MenuBoxxha = () => {
     return(
 
         <div className="min-h-screen flex flex-col ">
-            <header className="sticky top-0 z-50">
-                <NavBar />
-            </header>
+            <LayoutConNavbar />
 
             <main className="relative flex flex-1 bg-[#B0CEAC] overflow-hidden">
                 <div

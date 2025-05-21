@@ -15,13 +15,13 @@ import ExtrasView from "../views/ExtrasView.tsx";
 import Rocas_FrappeView from "../views/Rocas_FrappeView.tsx";
 import Resumen_CompraView from "../views/Resumen_Compra.tsx";
 import Menu_General from "../views/Menu_general.tsx";
-import Menu_GeneralEmp from "../views/Menu_generalEmp.tsx";
 import Admin_Inicio from "../views/Admin_Inicio.tsx";
 import No_Autorizado from "../views/NoAutorizado.tsx";
 import PrivateRoute from "./privateRoute";
 import Prueba from "../views/Pruebas.tsx";
 import InicioEmpleado from "../views/Inicio_Empl.tsx";
 import Notis from "../views/Notis.tsx";
+import NuevoPedido from "../views/NuevoPedido.tsx";
 
 const RouterWithAnimation = () => {
   const location = useLocation();
@@ -44,12 +44,12 @@ const RouterWithAnimation = () => {
         <Route path="/estilo" element={<PrivateRoute><Rocas_FrappeView/></PrivateRoute>} />
         <Route path="/resumen" element={<PrivateRoute> <Resumen_CompraView/> </PrivateRoute>}/>
         <Route path="/nuestro_menu" element={<Menu_General/>}/>
-        <Route path="/nuestro_menu_emp" element={<Menu_GeneralEmp/>}/>
         <Route path="/admin_inicio" element={<Admin_Inicio/>}/>
         <Route path="/401Error" element={<No_Autorizado/>}/>
         <Route path="/prueba" element={<Prueba />}/>
         <Route path="/empleado" element={<InicioEmpleado />}/>
         <Route path="/notis" element={<Notis />}/>
+        <Route path="/pedido" element={<NuevoPedido />}/>
       </Routes>
     </AnimatePresence>
   );

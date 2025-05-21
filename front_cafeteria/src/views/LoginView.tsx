@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
 import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { loginUser } from "../services/authService";
 
 const LoginView = () => {
@@ -15,6 +15,7 @@ const LoginView = () => {
     const [contra, setContra] = useState("");
     const [error, setError] = useState("");
     const [mensaje, setMensaje] = useState("");
+    const [tipoUsuario, setTipoUsuario] = useState("");
 
     const [errores, setErrores] = useState({
         identificador: false,
@@ -47,17 +48,29 @@ const LoginView = () => {
         // Guarda el token en localStorage para mantener al usuario logueado, el usuario para mostrarlo en el dropdown menu
         localStorage.setItem("token", data.token);
         localStorage.setItem("usuario", JSON.stringify(data.user.usuario));
-
-        // Redireccionar despues de mostrar el mensaje
-        setTimeout(() => {
-            navigate("/");  // Redirigir después de un tiempo
-        }, 1000);  // 1 segundo
-
+        const tipoUser = data.user.tipo_usuario;
+        setTipoUsuario(tipoUser);
     }   catch (err: any) {
             //setError(err.message);
             toast.error(err.message);
         }
     };
+
+    useEffect(() => {
+    if (tipoUsuario === "empleado") {
+        setTimeout(() =>{
+            navigate("/empleado");
+        }, 1000); 
+    } else if (tipoUsuario === "admin") {
+        setTimeout(() =>{
+            navigate("/Admin_Inicio");
+        }, 1000);
+    } else if (tipoUsuario === "cliente") {
+        setTimeout(() => {
+            navigate("/");
+        }, 1000);
+    }
+    }, [tipoUsuario, navigate]);
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -83,7 +96,7 @@ const LoginView = () => {
                             <h2 className="text-4xl font-Montserrat font-bold text-[#453126] mb-6 text-center">Iniciar sesión</h2>
                             <form className="space-y-4" onSubmit={handleSubmit}>
                                 <div>
-                                    <label className="block text-l text-[#453126] mb-1">Email, Télefono o Usuario</label>
+                                    <label className="block text-lg text-[#453126] mb-1">Email, Télefono o Usuario</label>
                                     <input
                                     type="text"
                                     value={identificador}
@@ -101,7 +114,7 @@ const LoginView = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-l text-[#453126] mb-1">Contraseña</label>
+                                    <label className="block text-lg text-[#453126] mb-1">Contraseña</label>
                                     <input
                                     type="password"
                                     value={contra}
@@ -120,7 +133,7 @@ const LoginView = () => {
 
                                 <button
                                     type="submit"
-                                    className="w-full bg-[#3B2B26] font-Montserrat font-semibold text-lg text-white py-2 rounded-md hover:bg-[#555655]
+                                    className="w-full bg-[#3B2B26] font-Montserrat font-semibold text-xl text-white py-2 rounded-md hover:bg-[#555655]
                                     transform transition-transform duration-300 hover:scale-105"
                                 >
                                     Iniciar Sesión
@@ -156,7 +169,7 @@ const LoginView = () => {
                             <h2 className="text-2xl font-Montserrat font-bold text-[#000000] mt-6 mb-2">¡Hola! Bienvenid@ a</h2>
                             <h1 className="text-2xl font-Montserrat font-extrabold text-[#000000] mb-12">BOXXHA</h1>
                             <p className="text-xl font-Montserrat font-regular mb-4">¿Aún no tienes una cuenta?</p>
-                            <button onClick={() => navigate("/registro")} className="bg-[#3B2B26] font-Montserrat font-semibold text-lg text-white px-4 py-2 rounded-md hover:bg-[#555655] 
+                            <button onClick={() => navigate("/registro")} className="bg-[#3B2B26] font-Montserrat font-semibold text-xl text-white px-4 py-2 rounded-md hover:bg-[#555655] 
                                                 transform transition-transform duration-300 hover:scale-125">
                             Registrarse
                             </button>

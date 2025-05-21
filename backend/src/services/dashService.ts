@@ -82,7 +82,6 @@ export const TotalPedidosHoy = async () => {
 export const TotalProductosHoy = async () => {
     const inicioDelDia = new Date();
     inicioDelDia.setHours(0, 0, 0, 0); // Hoy a las 00:00
-
     const ahora = new Date(); // Fecha y hora actual
     
     const resul = await prisma.detalle_pedido.count({

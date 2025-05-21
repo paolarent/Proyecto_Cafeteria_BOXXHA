@@ -1,12 +1,18 @@
 import { prisma } from '../lib/prisma';
 import { io } from '../app';
+import { usuario_tipo_usuario } from '@prisma/client';
 
 export const crearNotificacion = async (idPedido: number) => {
     // Obtener el pedido con los detalles
     const pedido = await prisma.pedido.findUnique({
         where: { id_pedido: idPedido },
         include: {
-            usuario: true,
+            usuario: {
+                select: {
+                    nombre: true,
+                    tipo_usuario: true,
+                } 
+            },
             detalle_pedido:{
                 include: {
                     bebcaliente: true,
@@ -15,7 +21,6 @@ export const crearNotificacion = async (idPedido: number) => {
                     postre: true,
                     tamano: true,
                     leche: true,
-
                     detalleextra: {
                         include: {
                             extra: true
@@ -26,11 +31,18 @@ export const crearNotificacion = async (idPedido: number) => {
         }
     });
 
+        
     if (!pedido) {
         console.error(`Pedido ${idPedido} no encontrado`);
         return;
     }
-    
+
+    const cliente = usuario_tipo_usuario.cliente;
+
+    if (pedido.usuario.tipo_usuario !== cliente) {
+        throw new Error('Abortar notificación para tipo de usuario no cliente');
+    }
+
     const detalles = pedido.detalle_pedido.map((detalle) => {
         const nombreProducto = 
             detalle.bebcaliente?.nombre ||
@@ -78,7 +90,7 @@ export const crearNotificacion = async (idPedido: number) => {
     }).join(' | ');
 
         
-    const mensaje = `Nuevo pedido de ${pedido.usuario.nombre} #${idPedido}: ${detalles}`;
+    const mensaje = `Pedido #${idPedido}, Cliente: ${pedido.usuario.nombre}: ${detalles} - TOTAL: $${pedido.total}`;
 
     // Insertar la notificacion en la base de datos
     await prisma.notificacion.create({

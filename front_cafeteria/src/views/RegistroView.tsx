@@ -31,7 +31,7 @@ const RegistroView = () => {
     });
     // Cambiar el regex del telefono 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const telefonoRegex = /^([0-9]{5})+(-)+([0-9]{6})$/;
+    const telefonoRegex = /^([0-9]{3})+( )+([0-9]{3})+( )+([0-9]{4})$/;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -69,7 +69,8 @@ const RegistroView = () => {
             usuario,
             contra,
             ...(formaContacto === "email" && { email: correoTel }),
-            ...(formaContacto === "telefono" && { numero_tel: correoTel })
+            // Aqui se eliminan los espacios dentro del numero
+            ...(formaContacto === "telefono" && { numero_tel: correoTel.replace(/\s+/g, '')})
         };
 
         try {
@@ -122,7 +123,7 @@ const RegistroView = () => {
                             <h2 className="text-2xl font-Montserrat font-bold text-[#000000] mt-6 mb-2">¡Hola! Bienvenid@ a</h2>
                             <h1 className="text-2xl font-Montserrat font-extrabold text-[#000000] mb-12">BOXXHA</h1>
                             <p className="text-xl font-Montserrat font-regular mb-4">¿Ya tienes una cuenta?</p>
-                            <button onClick={() => navigate("/login")} className="bg-[#3B2B26] font-Montserrat font-semibold text-lg text-white px-4 py-2 rounded-md hover:bg-[#555655] 
+                            <button onClick={() => navigate("/login")} className="bg-[#3B2B26] font-Montserrat font-semibold text-xl text-white px-4 py-2 rounded-md hover:bg-[#555655] 
                                                 transform transition-transform duration-300 hover:scale-125">
                             Iniciar Sesión
                             </button>
@@ -233,9 +234,9 @@ const RegistroView = () => {
                                 {/* Botón */}
                                 <button
                                     type="submit"
-                                    className="w-full mt-6 mb-2 px-3 py-3 bg-[#3B2B26] font-Montserrat font-semibold text-white rounded-md hover:bg-[#555655] transition-transform duration-300 hover:scale-105"
+                                    className="w-full mt-6 mb-2 px-3 py-3 bg-[#3B2B26] font-Montserrat font-semibold text-white text-xl rounded-md hover:bg-[#555655] transition-transform duration-300 hover:scale-105"
                                 >
-                                    REGISTRARSE
+                                    Registrarse
                                 </button>
                                     
                             </form>

@@ -33,7 +33,7 @@ export const TotalVentas = async (req: Request, res: Response) => {
 
 export const TotalProductos = async (req: Request, res: Response ) => {
     try {
-        const resul = await TotalProductosHoy;
+        const resul = await TotalProductosHoy();
         res.status(200).json(resul);
     } catch (error: any) {
         res.status(500).json({error: error.message});

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getLeches, getExtras, getTamanos } from '../services/productService';
+import { verificarTipoUsuario } from '../services/authService';
 
 type CatalagoItem = {
     id: number;
@@ -11,6 +12,7 @@ type Catalagos = {
     leches: CatalagoItem[];
     extras: CatalagoItem[];
     tamanos: CatalagoItem[];
+    tipoUsuario: string | null;
 };
 
 const CatalagosContext = createContext<Catalagos | undefined>(undefined);
@@ -20,27 +22,31 @@ export const CatalagosProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         leches: [],
         extras: [],
         tamanos: [],
+        tipoUsuario: null,
     });
 
     useEffect(() => {
         const fetchCatalagos = async () => {
             try {
-                const lechesData = await getLeches();
-                const extrasData = await getExtras();
-                const tamanosData = await getTamanos();
+                const [lechesData, extrasData, tamanosData, tipoUser] = await Promise.all([
+                    getLeches(),
+                    getExtras(),
+                    getTamanos(),
+                    verificarTipoUsuario(),
+                ]);
 
                 const leches = lechesData.map((l: any) => ({
                     id: l.id_leche,
                     nombre: l.nombre,
                     precio: l.precio_leche,
                 }));
-    
+
                 const extras = extrasData.map((e: any) => ({
                     id: e.id_extra,
                     nombre: e.nombre,
                     precio: e.precio_extra,
                 }));
-    
+
                 const tamanos = tamanosData.map((t: any) => ({
                     id: t.id_tamano,
                     nombre: t.nombre,
@@ -48,9 +54,10 @@ export const CatalagosProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 }));
 
                 setCatalagos({
-                    leches: leches || [],
-                    extras: extras || [],
-                    tamanos: tamanos || [],
+                    leches,
+                    extras,
+                    tamanos,
+                    tipoUsuario: tipoUser.user.tipo_usuario,
                 });
             } catch (error) {
                 console.error('Error fetching catalagos:', error);
@@ -72,5 +79,4 @@ export const useCatalagos = () => {
         throw new Error('useCatalagos must be used within a CatalagosProvider');
     }
     return context;
-}
-
+};

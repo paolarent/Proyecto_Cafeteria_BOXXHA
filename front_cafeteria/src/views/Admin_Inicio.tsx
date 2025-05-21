@@ -2,7 +2,19 @@ import icon_usuario from "../assets/Iconos/usuario.png";
 import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { obtenerPedidos, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy } from "../services/dashServices"
+import { verificarTipoUsuario } from "../services/authService";
+import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
+import { registrarUsuario } from "../services/authService";
 
+/*
+    To do list
+    - Logica del registro (llamada correcta a la función, editar o crear una función que ingrese el tipo de usuario 'Empleado')
+    - Instalar Recharts (Meter Gráficos)
+    - Escoger graficos
+        1.Grafico de pastel tipo de productos vendidos (bebFria 24%, bebCal 30%, Frappes 27%, Postres restante%)
+        2.Producto más vendido
+        
+*/
 interface Pedido {
     id_pedido: number;
     fecha: string;
@@ -22,7 +34,94 @@ const Admin_Inicio = () => {
     const [Opcion, setOpcion] = useState('Dashboard');
     const rawUser = localStorage.getItem("usuario"); 
     const Usuario = rawUser?.replace(/^"(.*)"$/, '$1'); // Retirar la comillas del usuario
-    
+    const navigate = useNavigate();
+
+    // Estado para manejar los datos del formulario
+    const [formaContacto, setFormaContacto] = useState("");
+    const [correoTel, setCorreoTel] = useState("");
+    const [nombre, setNombre] = useState("");
+    const [apellido, setApellido] = useState("");
+    const [usuario, setUsuario] = useState("");
+    const [contra, setContra] = useState("");
+    const [confirmContra, setConfirmContra] = useState("");
+
+    const [errores, setErrores] = useState({
+        nombre: "",
+        apellido: "",
+        usuario: "",
+        correoTel: "",
+        contra: "",
+        confirmContra: "",
+    });
+    // Cambiar el regex del telefono 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const telefonoRegex = /^([0-9]{3})+( )+([0-9]{3})+( )+([0-9]{4})$/;
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        const nuevosErrores = {
+            nombre: nombre.trim() === "" ? "Campo obligatorio" : "",
+            apellido: apellido.trim() === "" ? "Campo obligatorio" : "",
+            usuario: usuario.trim() === "" ? "Campo obligatorio" : "",
+            contra: contra.trim() === "" ? "Campo obligatorio" : "",
+            correoTel:
+                formaContacto === "email" && !emailRegex.test(correoTel)
+                ? "Formato de correo inválido"
+                : formaContacto === "telefono" && !telefonoRegex.test(correoTel)
+                ? "Formato de teléfono inválido"
+                : "",
+            confirmContra: 
+                correoTel.trim() === ""
+                ? "Campo obligatorio"
+                : contra !== confirmContra 
+                ? "Las contraseñas no coinciden" 
+                : "",
+        };
+
+        setErrores(nuevosErrores);
+
+        if (Object.values(nuevosErrores).some((msg) => msg !== "")) {
+            toast.error("Por favor corrige los errores.");
+            setErrores(nuevosErrores);
+            return;
+        }
+
+        const payload = {
+            nombre,
+            apellido,
+            usuario,
+            contra,
+            ...(formaContacto === "email" && { email: correoTel }),
+            // Aqui se eliminan los espacios dentro del numero
+            ...(formaContacto === "telefono" && { numero_tel: correoTel.replace(/\s+/g, '')})
+        };
+
+        try {
+            await registrarUsuario(payload);
+            toast.success("Registro exitoso");
+            navigate("/login");
+        } catch (error: any) {
+            toast.error(error.message);
+        }
+    };
+
+    useEffect(() => {
+        const verificarUsuario = async () => {
+            try {
+                const data = await verificarTipoUsuario();
+                const tipoUsuario = data.user.tipo_usuario;
+                if (tipoUsuario !== "admin") {
+                    navigate("/");
+                }
+            } catch (error) {
+                navigate("/login");
+            }
+        };
+
+        verificarUsuario();
+    }, [navigate]);
+
     // Datos estaticos para ver el diseño
     const totalProductos = 234;
 
@@ -77,13 +176,12 @@ const Admin_Inicio = () => {
         fetchPedidos();
     }, []);
 
-    const navigate = useNavigate();
-    const handleIrAInicio = () => {
+    const handleLogout= () => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("usuario");
             navigate('/'); // No hay pedido incompleto, va directo
     };      
     
-    
-
     return(
     // Fondo Cafe
     <div className="flex flex-col h-full w-full bg-[#9C6644] opacity-95">
@@ -124,13 +222,13 @@ const Admin_Inicio = () => {
                     
 
                     {/*Boton Productos */}
-                    { Opcion === 'Productos' ? (
+                    { Opcion === 'Empleados' ? (
                         // Elemento al ser seleccionado     
                         <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#c49475] border-l-4 border-l-[#814721]">
                             <div className="w-10 h-10 bg-gray-500"></div>
                             <button
-                            onClick={() => setOpcion('Productos')} 
-                            className="w-full h-full text-left font-bold text-[#34251d]"> Productos 
+                            onClick={() => setOpcion('Empleados')} 
+                            className="w-full h-full text-left font-bold text-[#34251d]"> Empleados 
                             </button>
                         </div>
                     ) : (
@@ -138,20 +236,20 @@ const Admin_Inicio = () => {
                         <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
                             <div className="w-10 h-10 bg-gray-500"></div>
                             <button
-                            onClick={() => setOpcion('Productos')} 
-                            className="w-full h-full text-left font-bold text-[#34251d]"> Productos 
+                            onClick={() => setOpcion('Empleados')} 
+                            className="w-full h-full text-left font-bold text-[#34251d]"> Empleados 
                             </button>
                         </div>
                     )}
                      
                     {/*Boton clientes para checar nuestro clientes */}
-                    { Opcion === 'Clientes' ? (
+                    { Opcion === 'Estadisticas' ? (
                         // Elemento al ser seleccionado
                         <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#c49475] border-l-[#814721] border-l-4 ">
                             <div className="w-10 h-10 bg-gray-500"></div>
                             <button
-                            onClick={() => setOpcion('Clientes')} 
-                            className="w-full h-full text-left font-bold text-[#34251d]"> Clientes 
+                            onClick={() => setOpcion('Estadisticas')} 
+                            className="w-full h-full text-left font-bold text-[#34251d]"> Estadisticas 
                             </button>
                         </div>
                     ) : (
@@ -159,8 +257,8 @@ const Admin_Inicio = () => {
                         <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
                             <div className="w-10 h-10 bg-gray-500"></div>
                             <button
-                            onClick={() => setOpcion('Clientes')} 
-                            className="w-full h-full text-left font-bold text-[#34251d]"> Clientes 
+                            onClick={() => setOpcion('Estadisticas')} 
+                            className="w-full h-full text-left font-bold text-[#34251d]"> Estadisticas 
                             </button>
                         </div>
                     )}
@@ -169,8 +267,8 @@ const Admin_Inicio = () => {
                     <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
                         <div className="w-10 h-10 bg-gray-500"></div>
                         <button
-                        onClick={handleIrAInicio} 
-                        className="w-full h-full text-left font-bold text-[#34251d]"> Volver al inicio 
+                        onClick={handleLogout} 
+                        className="w-full h-full text-left font-bold text-[#34251d]"> Cerrar sesión
                         </button>
                     </div>
                 </div>
@@ -257,42 +355,80 @@ const Admin_Inicio = () => {
                     </div>
                 )}
 
-                {Opcion === 'Productos' && (
-                    <div className="font-Montserrat flex flex-col w-full h-full shadow-xl">
-                        <div className="w-full h-10 bg-gray-500 p-2 font-bold text-white text-center ">
-                            <p>Menu - Productos</p>
+                {Opcion === 'Empleados' && (
+                    <div className="font-Montserrat flex flex-col w-full h-auto bg-[#dde5b6] shadow-xl">
+                        <div className="w-full h-10 bg-[#6c584c] p-2 font-bold text-white text-center ">
+                            <p>PANEL ADMINISTRADOR EMPLEADOS</p>
                         </div>
                         {/*Tipo navbar */}
                         <header className="flex flex-row w-full h-auto bg-gray-300">
                             <div className="w-1/2 h-auto text-left">
-                                <button className="w-1/4 h-10 bg-gray-400 font-bold text-white">
+                                <button className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
                                     Nuevo
                                 </button>
-                                <button className="w-1/4 h-10 bg-gray-400 font-bold text-white">
+                                <button className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
                                     Editar
                                 </button>
-                                <button className="w-1/4 h-10 bg-gray-400 font-bold text-white">
+                                <button className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
                                     Eliminar
                                 </button>
-                                <button className="w-1/4 h-10 bg-gray-400 font-bold text-white">
+                                <button className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
                                     Consultar
                                 </button>
                             </div>
                             <div className="w-1/2 h-auto text-right">
-                                <button className="w-1/4 h-10 bg-gray-400 font-bold text-white">
+                                <button className="w-1/4 h-10 bg-[#adc178] font-bold text-white hover:bg-[#94a764]">
                                     Guardar
                                 </button>
-                                <button className="w-1/4 h-10 bg-gray-400 font-bold text-white">
+                                <button className="w-1/4 h-10 bg-[#972d07] font-bold text-white hover:bg-[#852908]">
                                     Cancelar
                                 </button>
                             </div>
-                        </header>    
+                        </header>   
+                        <div className="flex flex-col font-semibold w-full h-full min-h-full min-w-full p-8 gap-2">
+                                <div>
+                                    <p>No° Empleado</p>
+                                    <input className="w-1/6 rounded-md "/>
+                                </div>
+                                <div className="flex flex-row"> 
+                                    <div>
+                                        <p className="">Nombre</p>
+                                        <input className="w-1/6 rounded-md "/>
+                                    </div>
+                                    <div>
+                                        <p className="">Apellido</p>
+                                        <input className="w-1/6 rounded-md "/>
+                                    </div>
+                                </div>
+                                <div className="flex flex-row"> 
+                                    <div>
+                                        <p className="">Usuario</p>
+                                        <input className="w-1/6 rounded-md "/>
+                                    </div>
+                                    <div>
+                                        <p className="">Contraseña</p>
+                                        <input className="w-1/6 rounded-md "/>
+                                    </div>
+                                </div>
+                                
+                               <div className="flex flex-col">
+                                    <p className="">Contacto</p>
+                                    <div className="flex flex-row gap-4">
+                                    <select className="py-2 rounded-md w-1/6">
+                                        <option value="">Seleccione...</option>
+                                        <option value="correo">Telefono</option>
+                                        <option value="telefono">Correo</option>
+                                    </select>
+                                    <input className="w-1/6 rounded-md "/>
+                                    </div>
+                                </div>
+                        </div> 
                     </div>
                 )}
 
-                {Opcion === 'Empleados' && (
+                {Opcion === 'Estadisticas' && (
                     <div className="flex flex-col w-full h-full bg-red-200">
-
+                        
                     </div>
                 )}
             </div>

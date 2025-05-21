@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from "../components/NavBar";
+import LayoutConNavbar from "../components/LayoutNavBar";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
@@ -90,9 +90,7 @@ const SaboresProducto: React.FC = () => {
 
     return (
         <div className="min-h-screen flex flex-col">    
-            <header className="sticky top-0 z-50">  {/* hace que el header quede fijo en la parte superior mientras se hace scroll */}
-                <NavBar />
-            </header>
+            <LayoutConNavbar />
 
             <main className="flex flex-1">
             <section className="relative w-full flex flex-col items-center space-y-10 pb-10 overflow-hidden" 

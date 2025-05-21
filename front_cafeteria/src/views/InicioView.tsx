@@ -14,6 +14,7 @@ import beb_calientes from "../assets/beb_calientes.jpeg";
 import { usePedido } from '../contexts/PedidoContext'; 
 import ModalQR from "../components/ModalCodigos";
 import ModalCarrito from "../components/Carrito";
+import { verificarTipoUsuario } from "../services/authService";
 
 const InicioView = () => {
     const navigate = useNavigate();
@@ -30,6 +31,24 @@ const InicioView = () => {
         const index = agregarPedido({ tipo, nombre, completo: false, total: total });
         navigate(`/sabores/${tipo}/${nombre}/${index}`);
     };
+
+    useEffect(() => {
+        const verificarUsuario = async () => {
+            try {
+                const data = await verificarTipoUsuario();
+                const tipoUsuario = data.user.tipo_usuario;
+                if (tipoUsuario === "admin") {
+                    navigate("/Admin_Inicio");
+                } else if (tipoUsuario === "empleado") {
+                    navigate("/empleado");
+                } 
+            } catch (error) {
+                // No poner nada de error, ya que hay usuarios que no tienen sesion activa pero pueden ver el inicio
+            }
+        };
+
+        verificarUsuario();
+    }, [navigate]);
 
     useEffect(() => {
         const debeMostrar = localStorage.getItem("mostrar_modal_qr");
@@ -125,7 +144,7 @@ const InicioView = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 justify-items-center">
                         {/*Bebidas Calientes*/}
                         <div onClick={() => navigate("/bebidas_calientes")} className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
-                            <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
+                            <button className="w-[250px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded-xl shadow-md text-2xl opacity-90 
                                 group-hover:bg-[#424141] group-hover:text-white mb-2">
                                 Bebidas Calientes
                             </button>
@@ -143,7 +162,7 @@ const InicioView = () => {
                                 alt="bebidas frias"
                                 className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" 
                             />
-                            <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
+                            <button className="w-[250px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded-xl shadow-md text-2xl opacity-90 
                                 group-hover:bg-[#424141] group-hover:text-white">
                                 Bebidas Frias
                             </button>
@@ -151,7 +170,7 @@ const InicioView = () => {
 
                         {/*Frappés (VA DIRECTAMENTE A SABORES PQ NO HAY SUBCATEGORIA DE PRODUCTOS AQUI)*/}
                         <div onClick={() => irASabores("frappe", "frappé")} className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
-                            <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
+                            <button className="w-[250px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded-xl shadow-md text-2xl opacity-90 
                                 group-hover:bg-[#424141] group-hover:text-white mb-2">
                                 Frappés
                             </button>
@@ -169,7 +188,7 @@ const InicioView = () => {
                                 alt="postres"
                                 className="bg-[#D9D9D9] rounded-[20px] w-[300px] h-[300px] mb-2" 
                             />
-                            <button className="w-[200px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded shadow-md text-xl opacity-90 
+                            <button className="w-[250px] font-Montserrat font-bold bg-[#5C4848] text-[#ffffff] py-2 px-4 rounded-xl shadow-md text-2xl opacity-90 
                                 group-hover:bg-[#424141] group-hover:text-white">
                                 Postres
                             </button>

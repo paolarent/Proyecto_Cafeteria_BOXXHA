@@ -27,7 +27,7 @@ const ModalLogin: React.FC<ModLog> = ({ isOpen, onClose }) => {
                     <form className="space-y-4">
                         <div>
                             <label className="block text-lg text-[#453126] mb-1">
-                                Email, Télefono o Usuario
+                                Usuario
                             </label>
                             <input
                                 type="text"

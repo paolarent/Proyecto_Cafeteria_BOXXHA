@@ -22,6 +22,7 @@ type PedidoDetalleInput = {
 type PedidoCompletoInput = {
   total: number;
   detalle_pedido: PedidoDetalleInput[];
+  metodo: string;
 };
 
 // Transformar Pedido genérico a PedidoDetalleInput
@@ -43,14 +44,14 @@ function transformarPedido(pedido: Pedido): PedidoDetalleInput {
 }
 
 // Función exportada que recibe un arreglo de Pedido y los transforma antes de enviarlos
-export const enviarPedidos = async (pedidos: Pedido[]) => {
+export const enviarPedidos = async (pedidos: Pedido[], metodo: string) => {
   const pedidosTransformados = pedidos.map(transformarPedido);
-  return postPedido(pedidosTransformados);
+  return postPedido(pedidosTransformados, metodo);
 };
 
 
 export const postPedido = async (
-  pedidos: PedidoDetalleInput[]
+  pedidos: PedidoDetalleInput[], metodo: string
 ) => {
   try {
     const token = localStorage.getItem("token");
@@ -63,6 +64,7 @@ export const postPedido = async (
     const pedidoCompleto: PedidoCompletoInput = {
       total: totalGeneral,
       detalle_pedido: pedidos,
+      metodo: metodo,
     };
 
     const response = await axios.post(`${API_BASE_URL}/pedidos`, pedidoCompleto, {

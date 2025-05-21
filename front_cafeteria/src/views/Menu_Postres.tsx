@@ -1,4 +1,4 @@
-import NavBar from "../components/NavBar"
+import LayoutConNavbar from "../components/LayoutNavBar";
 import { useNavigate } from "react-router-dom";
 import { getCategoria } from "../services/productService";
 import { useEffect, useState } from "react";
@@ -42,9 +42,7 @@ const MenuPostresView = () => {
 
     return (
         <div className="min-h-screen flex flex-col ">
-            <header className="sticky top-0 z-50">
-                <NavBar />
-            </header>
+            <LayoutConNavbar />
 
             <main className="flex flex-1 bg-[#B0CEAC]">
                 <section className="w-full flex flex-col items-center space-y-10 pt-20">

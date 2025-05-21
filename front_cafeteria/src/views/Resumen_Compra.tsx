@@ -15,6 +15,7 @@ import AmericanEIcon from "../assets/american_express.svg";
 
 import { enviarPedidos, crearNoti } from "../services/pedidoService";
 import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
+import { verificarTipoUsuario } from "../services/authService";
 
 {/* Ruta /resumen */}
 const Resumen_CompraView = () => {
@@ -63,7 +64,7 @@ const Resumen_CompraView = () => {
 
     const handleEnviarPedido = async () => {
         try {
-            const response = await enviarPedidos(pedidos);
+            const response = await enviarPedidos(pedidos, metodo);
             if (response.success) {
                 toast.success(response.data.message);
             } else {
@@ -76,30 +77,42 @@ const Resumen_CompraView = () => {
             } else {
                 console.error("Error al crear la notificación");
             }
-            const id_pqr = response.data.pedido.id_pedido; 
-            const codigo = response.data.pedido.codigo_conf;
 
-            // Obtener los pedidos previos (si hay)
-            const pedidosQR = JSON.parse(localStorage.getItem("pedidos_confirmados") || "[]");
-            const nombreCliente = localStorage.getItem("usuario");
-            // Agregar el nuevo pedido
-            pedidosQR.push({
-                id_pqr,
-                codigo,
-                nombreCliente, 
-            });
+            
+            try {
+                const data = await verificarTipoUsuario();
+                const tipoUsuario = data.user.tipo_usuario;
+                if (tipoUsuario === "cliente") {
+                    const id_pqr = response.data.pedido.id_pedido; 
+                    const codigo = response.data.pedido.codigo_conf;
 
-            //Guardar la lista actualizada
-            localStorage.setItem("pedidos_confirmados", JSON.stringify(pedidosQR));
+                    // Obtener los pedidos previos (si hay)
+                    const pedidosQR = JSON.parse(localStorage.getItem("pedidos_confirmados") || "[]");
+                    const nombreCliente = localStorage.getItem("usuario");
+                    // Agregar el nuevo pedido
+                    pedidosQR.push({
+                        id_pqr,
+                        codigo,
+                        nombreCliente, 
+                    });
 
-            localStorage.setItem("mostrar_modal_qr", "true");
-            resetPedidos(); //Limpiar el pedido después de enviarlo
+                    //Guardar la lista actualizada
+                    localStorage.setItem("pedidos_confirmados", JSON.stringify(pedidosQR));
+                    localStorage.setItem("mostrar_modal_qr", "true");
+                    resetPedidos(); //Limpiar el pedido después de enviarlo
+                    //Esperar poquito antes de redirigir
+                    setTimeout(() => {
+                        navigate("/");
+                    }, 1000);
 
-            //Esperar poquito antes de redirigir
-            setTimeout(() => {
-                navigate("/");
-            }, 1000);
-
+                } else if (tipoUsuario === "empleado") {
+                    resetPedidos(); //Limpiar el pedido después de enviarlo
+                    navigate("/empleado");
+                }
+            } catch (error) {
+                // No poner nada, no es necesario
+            }
+         
         } catch (error) {
             console.error("Error al enviar el pedido:", error);
             toast.error("Error al enviar el pedido");
@@ -185,38 +198,49 @@ const Resumen_CompraView = () => {
     };
 
     const handleRealizarPagoTarjeta = () => {
-        if (
-            !numTarjeta.trim() &&
-            !fechaVencimiento.trim() &&
-            !cvv.trim() &&
-            !nombreTitular.trim()
-        ) {
-            toast.error("Por favor, complete los campos para realizar el pago");
-            return;
-        }
+    if (
+        !numTarjeta.trim() &&
+        !fechaVencimiento.trim() &&
+        !cvv.trim() &&
+        !nombreTitular.trim()
+    ) {
+        toast.error("Por favor, complete los campos para realizar el pago");
+        return;
+    }
 
-        if (!isValid) {
-            toast.error("Número de tarjeta inválido");
-            return;
-        }
-        if (!FechaExpiracionValida(fechaVencimiento)) {
-            toast.error("Fecha de vencimiento inválida o expirada (MM/AA)");
-            return;
-        }
-        if (!cvv.match(/^\d{3,4}$/)) {
-            toast.error("CVV inválido");
-            return;
-        }
-        if (!nombreTitularValido(nombreTitular)) {
-            toast.error("El nombre de titular no tiene el formato correcto");
-            return;
-        }
+    if (!isValid) {
+        toast.error("Número de tarjeta inválido");
+        return;
+    }
+    if (!FechaExpiracionValida(fechaVencimiento)) {
+        toast.error("Fecha de vencimiento inválida o expirada (MM/AA)");
+        return;
+    }
+    if (!cvv.match(/^\d{3,4}$/)) {
+        toast.error("CVV inválido");
+        return;
+    }
+    if (!nombreTitularValido(nombreTitular)) {
+        toast.error("El nombre de titular no tiene el formato correcto");
+        return;
+    }
 
-        toast.success("Pago con tarjeta realizado correctamente");
+    // Simula el pago con una promesa de 2 segundos
+    const procesarPago = () =>
+        new Promise<void>((resolve) => setTimeout(resolve, 2000));
 
-        //Después enviar pedido y resetear igual que con efectivo si aplica
-        handleEnviarPedido();
-    };
+    toast.promise(
+        procesarPago().then(() => {
+            handleEnviarPedido(); // Solo se llama después del éxito
+        }),
+        {
+            loading: "Procesando pago...",
+            success: <b>Pago con tarjeta realizado correctamente</b>,
+            error: <b>No se pudo procesar el pago</b>,
+        }
+    );
+};
+
 
     const getCardIcon = () => {
         if (!numTarjeta) return null; //Si está vacío el input, no muestra nada
