@@ -68,15 +68,15 @@ const InicioEmpleado = () => {
         <main className="relative z-10 flex items-center justify-center px-4 py-8">
             
             {/* Contenedor central */}
-            <div className="flex flex-col md:flex-row gap-20 items-center lg:mt-20 my-10">
+            <div className="flex flex-col lg:flex-row gap-16 lg:gap-20 items-center lg:mt-20 my-10">
                 {/* Opción 1 */}
                 <div  onClick={() => navigate("/pedido")} 
                     className="bg-white px-5 py-5 rounded-2xl border-4 border-black transition-transform duration-300 hover:scale-105">
-                    <div className="group flex flex-col items-center w-[250px] h-[280px] mb-6">
+                    <div className="group flex flex-col items-center w-[200px] h-[230px] lg:w-[250px] lg:h-[280px] mb-6">
                         <img
                         src={nuevo_pedido}
                         alt="Nuevo Pedido"
-                        className="rounded-[20px] w-[230px] h-[240px] mt-2 mb-1"
+                        className="rounded-[20px] w-[180px] h-[190px] lg:w-[230px] lg:h-[240px] mt-2 mb-1"
                         />
 
                         <button className="w-full font-Montserrat font-bold bg-[#B0CEAC] text-black py-3 px-4 rounded-[10px] shadow-md text-2xl">
@@ -90,11 +90,11 @@ const InicioEmpleado = () => {
                 onClick={() => navigate("/nuestro_menu")}
                 className="bg-white px-5 py-5 rounded-2xl border-4 border-black transition-transform duration-300 hover:scale-105"
                 >
-                <div className="group flex flex-col items-center w-[250px] h-[280px] mb-6">
+                <div className="group flex flex-col items-center w-[200px] h-[230px] lg:w-[250px] lg:h-[280px] mb-6">
                     <img
                     src={ver_menu}
                     alt="Ver Menú"
-                    className="rounded-[20px] w-[220px] h-[210px] mt-2 mb-6"
+                    className="rounded-[20px] w-[160px] h-[160px] lg:w-[220px] lg:h-[210px] mt-2 mb-6"
                     />
                     <button className="w-full font-Montserrat font-bold bg-[#B0CEAC] text-black py-3 px-4 rounded-[10px] shadow-md text-2xl">
                     Ver Menú
@@ -104,11 +104,11 @@ const InicioEmpleado = () => {
 
                 {/* Opción 3 */}
                 <div className="bg-white px-5 py-5 rounded-2xl border-4 border-black transition-transform duration-300 hover:scale-105">
-                    <div className="group flex flex-col items-center w-[250px] h-[280px] mb-6">
+                    <div className="group flex flex-col items-center w-[200px] h-[230px] lg:w-[250px] lg:h-[280px] mb-6">
                         <img
                         src={ver_pedidos}
                         alt="Ver Pedidos"
-                        className="rounded-[20px] w-[220px] h-[210px] mt-2 mb-6"
+                        className="rounded-[20px] w-[160px] h-[160px] lg:w-[220px] lg:h-[210px] mt-2 mb-6"
                         />
                         <button className="w-full font-Montserrat font-bold bg-[#B0CEAC] text-black py-3 px-4 rounded-[10px] shadow-md text-2xl">
                         Ver Pedidos

@@ -19,7 +19,6 @@ const ModalTerminoPed: React.FC<FinPedido> = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
     const { pedidos, actualizarPedido } = usePedido(); 
     const [mensaje, setMensaje] = useState("");
-    const { scrollToMenu } = useMenuContext();
 
     if (!isOpen) return null;
 

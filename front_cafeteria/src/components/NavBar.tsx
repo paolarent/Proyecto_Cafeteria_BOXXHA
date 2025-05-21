@@ -14,6 +14,7 @@ import { usePedido } from '../contexts/PedidoContext';
 import ModalConfirm from "../components/ModalConfirm";
 import ModalCarrito from "../components/Carrito";
 import ModalQR from "../components/ModalCodigos";
+import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación    
 
 const NavBar: React.FC = () => {
     const navigate = useNavigate();
@@ -30,6 +31,8 @@ const NavBar: React.FC = () => {
     const [MostrarModalConfirm, setMostrarModalConfirm] = useState(false);
     const [showModalCarrito, setShowModalCarrito] = useState(false);    //para controlar el modal que es el carrito
     const [showModalQR, setShowModalQR] = useState(false);
+
+    const { clearTipoUsuario } = useAuth();
 
     {/* PARA EVITAR PEDIDOS INCOMPLETOS */}
     const handleIrAInicio = () => {
@@ -96,6 +99,7 @@ const NavBar: React.FC = () => {
         localStorage.removeItem("ultimo_codigo_conf");
         localStorage.removeItem("pedidos_confirmados");
         resetPedidos();
+        clearTipoUsuario();
         setIsUserMenuOpen(false);
         navigate("/");
     }

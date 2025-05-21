@@ -7,6 +7,7 @@ import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast par
 
 import { useState, useEffect } from "react";
 import { loginUser } from "../services/authService";
+import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación    
 
 const LoginView = () => {
     const navigate = useNavigate();
@@ -15,7 +16,9 @@ const LoginView = () => {
     const [contra, setContra] = useState("");
     const [error, setError] = useState("");
     const [mensaje, setMensaje] = useState("");
-    const [tipoUsuario, setTipoUsuario] = useState("");
+    // const [tipoUsuario, setTipoUsuario] = useState("");
+
+    const { tipoUsuario, setTipoUsuario } = useAuth(); // Usamos el hook para acceder a la autenticación
 
     const [errores, setErrores] = useState({
         identificador: false,

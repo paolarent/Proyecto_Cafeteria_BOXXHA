@@ -1,4 +1,3 @@
-import fondo_in2 from "../assets/fondo_inicio2.jpg";
 import { useNavigate } from "react-router-dom";
 import NavBarEmp from "../components/NavBarEmp";
 import beb_frias from "../assets/beb_frias.png";
@@ -40,9 +39,9 @@ const NuevoPedido = () => {
             </header>
 
             <section className="relative z-10 px-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 justify-items-center">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-10 justify-items-center">
                         {/*Bebidas Calientes*/}
-                        <div onClick={() => navigate("/bebidas_calientes")} className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
+                        <div onClick={() => navigate("/bebidas_calientes")} className="group flex flex-col items-center m-8 lg:mt-40 transition-transform duration-300 hover:scale-105">
                             <img 
                                 src={beb_calientes}
                                 alt="bebidas calientes"
@@ -55,7 +54,7 @@ const NuevoPedido = () => {
                         </div>
 
                         {/*Bebidas Frias*/}
-                        <div onClick={() => navigate("/bebidas_frias")} className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105">
+                        <div onClick={() => navigate("/bebidas_frias")} className="group flex flex-col items-center m-8 lg:mt-20 transition-transform duration-300 hover:scale-105">
                             <button className="w-[300px] font-Montserrat font-bold bg-[#311808] text-[#ffffff] py-2 px-4 rounded-2xl shadow-md text-2xl 
                                 group-hover:bg-[#424141] group-hover:text-white mb-2">
                                 Bebidas Frias
@@ -69,7 +68,7 @@ const NuevoPedido = () => {
                         </div>
 
                         {/*Frappés (VA DIRECTAMENTE A SABORES PQ NO HAY SUBCATEGORIA DE PRODUCTOS AQUI)*/}
-                        <div onClick={() => irASabores("frappe", "frappé")} className="group flex flex-col items-center mt-40 transition-transform duration-300 hover:scale-105">
+                        <div onClick={() => irASabores("frappe", "frappé")} className="group flex flex-col items-center m-8 lg:mt-40 transition-transform duration-300 hover:scale-105">
                             <img 
                                 src={frappe}
                                 alt="frappes"
@@ -82,7 +81,7 @@ const NuevoPedido = () => {
                         </div>
 
                         {/*Postres*/}
-                        <div onClick={() => navigate("/postres")} className="group flex flex-col items-center mt-20 transition-transform duration-300 hover:scale-105">
+                        <div onClick={() => navigate("/postres")} className="group flex flex-col items-center m-8 lg:mt-20 transition-transform duration-300 hover:scale-105">
                             <button className="w-[300px] font-Montserrat font-bold bg-[#311808] text-[#ffffff] py-2 px-4 rounded-2xl shadow-md text-2xl 
                                 group-hover:bg-[#424141] group-hover:text-white mb-2">
                                 Postres

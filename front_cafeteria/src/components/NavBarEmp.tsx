@@ -11,7 +11,7 @@ import { usePedido } from '../contexts/PedidoContext';
 import { useNotificaciones } from "../contexts/NotificacionContext";
 import ModalConfirm from "../components/ModalConfirm";
 import ModalTerminoPed from "../components/ModalTerminoEmp";
-
+import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación    
 
 const NavBarEmpleado = () => {
     const navigate = useNavigate();
@@ -24,6 +24,7 @@ const NavBarEmpleado = () => {
     const [MostrarModalTerminoPed, setMostrarModalTerminoPed] = useState(false);
 
     const { contador, limpiarNotificaciones } = useNotificaciones();
+    const { clearTipoUsuario } = useAuth();
 
     {/* PARA EVITAR PEDIDOS INCOMPLETOS */}
     const handleIrAInicio = () => {
@@ -68,6 +69,7 @@ const NavBarEmpleado = () => {
         localStorage.removeItem("ultimo_codigo_conf");
         localStorage.removeItem("pedidos_confirmados");
         resetPedidos();
+        clearTipoUsuario(); // Limpiar el tipo de usuario
         navigate('/'); 
     };     
 

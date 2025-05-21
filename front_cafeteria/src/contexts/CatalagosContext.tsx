@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getLeches, getExtras, getTamanos } from '../services/productService';
-import { verificarTipoUsuario } from '../services/authService';
 
 type CatalagoItem = {
     id: number;
@@ -12,7 +11,6 @@ type Catalagos = {
     leches: CatalagoItem[];
     extras: CatalagoItem[];
     tamanos: CatalagoItem[];
-    tipoUsuario: string | null;
 };
 
 const CatalagosContext = createContext<Catalagos | undefined>(undefined);
@@ -22,17 +20,15 @@ export const CatalagosProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         leches: [],
         extras: [],
         tamanos: [],
-        tipoUsuario: null,
     });
 
     useEffect(() => {
         const fetchCatalagos = async () => {
             try {
-                const [lechesData, extrasData, tamanosData, tipoUser] = await Promise.all([
+                const [lechesData, extrasData, tamanosData] = await Promise.all([
                     getLeches(),
                     getExtras(),
                     getTamanos(),
-                    verificarTipoUsuario(),
                 ]);
 
                 const leches = lechesData.map((l: any) => ({
@@ -57,7 +53,6 @@ export const CatalagosProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                     leches,
                     extras,
                     tamanos,
-                    tipoUsuario: tipoUser.user.tipo_usuario,
                 });
             } catch (error) {
                 console.error('Error fetching catalagos:', error);

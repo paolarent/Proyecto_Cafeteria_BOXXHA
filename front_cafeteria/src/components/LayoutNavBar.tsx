@@ -2,16 +2,15 @@ import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import NavBarEmp from "../components/NavBarEmp";
 import { verificarTipoUsuario } from "../services/authService"; // Asegúrate de exportar esa función
-import { useCatalagos } from "../contexts/CatalagosContext"; // Usamos el hook para acceder a los catálogos
+import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación    
 
 type Props = {
     children?: React.ReactNode;
 };
 
-
 const LayoutConNavbar = ({ children }: Props) => {
     // const [tipoUsuario, setTipoUsuario] = useState<string | null>(null);
-    const { tipoUsuario } = useCatalagos(); // Obtenemos el tipo de usuario desde el contexto
+    const { tipoUsuario } = useAuth();
     console.log("Tipo de usuario desde el contexto:", tipoUsuario);
     // useEffect(() => {
     //     const obtenerTipo = async () => {
