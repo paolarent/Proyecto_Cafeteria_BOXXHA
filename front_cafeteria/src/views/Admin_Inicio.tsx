@@ -27,6 +27,7 @@ interface Pedido {
     }   
 }
 
+
 // Ruta /admin_inicio
 const Admin_Inicio = () => {
     const [TotalPedidos, setTotalPedidos] = useState<number>(0); 
@@ -45,8 +46,8 @@ const Admin_Inicio = () => {
     const [apellido, setApellido] = useState("");
     const [usuario, setUsuario] = useState("");
     const [contra, setContra] = useState("");
-    const [confirmContra, setConfirmContra] = useState("");
     const { clearTipoUsuario } = useAuth();
+    const [modo, setModo] = useState("consulta"); // valores: "normal", "editar", "consulta"
 
     const [errores, setErrores] = useState({
         nombre: "",
@@ -54,7 +55,6 @@ const Admin_Inicio = () => {
         usuario: "",
         correoTel: "",
         contra: "",
-        confirmContra: "",
     });
     // Cambiar el regex del telefono 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -62,7 +62,7 @@ const Admin_Inicio = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+        const tpo_usuario = "empleado"
         const nuevosErrores = {
             nombre: nombre.trim() === "" ? "Campo obligatorio" : "",
             apellido: apellido.trim() === "" ? "Campo obligatorio" : "",
@@ -73,12 +73,6 @@ const Admin_Inicio = () => {
                 ? "Formato de correo inválido"
                 : formaContacto === "telefono" && !telefonoRegex.test(correoTel)
                 ? "Formato de teléfono inválido"
-                : "",
-            confirmContra: 
-                correoTel.trim() === ""
-                ? "Campo obligatorio"
-                : contra !== confirmContra 
-                ? "Las contraseñas no coinciden" 
                 : "",
         };
 
@@ -96,8 +90,8 @@ const Admin_Inicio = () => {
             usuario,
             contra,
             ...(formaContacto === "email" && { email: correoTel }),
-            // Aqui se eliminan los espacios dentro del numero
-            ...(formaContacto === "telefono" && { numero_tel: correoTel.replace(/\s+/g, '')})
+            ...(formaContacto === "telefono" && { numero_tel: correoTel.replace(/\s+/g, '')}),
+            tpo_usuario,
         };
 
         try {
@@ -109,6 +103,9 @@ const Admin_Inicio = () => {
         }
     };
 
+    // Aqui va ir la función para obtener al primer empleado
+
+    // Función para verificar que el usuario si sea el admin
     useEffect(() => {
         const verificarUsuario = async () => {
             try {
@@ -124,10 +121,8 @@ const Admin_Inicio = () => {
 
         verificarUsuario();
     }, [navigate]);
-
-    // Datos estaticos para ver el diseño
-    const totalProductos = 234;
-
+    
+    // Función para obtener el total de productos vendidos del día de hoy
     useEffect(() => {
         const fetchTotal = async () => {
             try {
@@ -366,45 +361,85 @@ const Admin_Inicio = () => {
 
                 {Opcion === 'Empleados' && (
                     <div className="font-Montserrat flex flex-col w-full h-auto bg-[#dde5b6] shadow-xl">
-                        <div className="w-full h-10 bg-[#6c584c] p-2 font-bold text-white text-center ">
+                        <div className="w-full h-10 bg-[#6c584c] p-2 font-bold text-white text-center   ">
                             <p>PANEL ADMINISTRADOR EMPLEADOS</p>
                         </div>
                         {/*Tipo navbar */}
-                        <header className="flex flex-row w-full h-auto bg-gray-300">
+                        <header className="flex flex-row w-full h-auto bg-gray-600 justify-between gap-4">
+                            {/*Seccion inzquierda */}
                             <div className="w-1/2 h-auto text-left">
-                                <button className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
+                                <button 
+                                disabled={modo === "consulta"}
+                                className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
                                     Nuevo
                                 </button>
-                                <button className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
+                                <button 
+                                
+                                className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
                                     Editar
                                 </button>
                                 <button className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
                                     Eliminar
                                 </button>
-                                <button className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
+                                <button onClick={() => {
+                                    setModo("consulta");
+                                }}
+                                className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
                                     Consultar
                                 </button>
                             </div>
-                            <div className="w-1/2 h-auto text-right">
-                                <button className="w-1/4 h-10 bg-[#adc178] font-bold text-white hover:bg-[#94a764]">
+                            
+                            {/*Seccion central */}
+                            <div className="flex w-1/4 h-10 items-center">
+                                <button 
+                                disabled={modo !== "consulta"}
+                                className="flex-1 h-full bg-[#f0ead2]">
+                                    {`<==`}
+                                </button>
+                                <button 
+                                disabled={modo !== "consulta"}
+                                className="flex-1 h-full bg-[#f0ead2]">
+                                    {`<=`}
+                                </button>
+                                <button 
+                                disabled={modo !== "consulta"}
+                                className="flex-1 h-full bg-[#f0ead2]">
+                                    {`=>`}
+                                </button>
+                                <button 
+                                disabled={modo !== "consulta"}
+                                className="flex-1 h-full bg-[#f0ead2]">
+                                    {`==>`}
+                                </button>
+                            </div>
+
+                            {/*Seccion derecha */}
+                            <div className="w-1/4 h-auto text-right">
+                                
+                                <button 
+                                disabled={modo === "consulta"}
+                                type="submit"
+                                className="w-1/2 h-10 bg-[#adc178] font-bold text-white hover:bg-[#94a764]">
                                     Guardar
                                 </button>
-                                <button className="w-1/4 h-10 bg-[#972d07] font-bold text-white hover:bg-[#852908]">
+                                <button 
+                                disabled={modo === "consulta"}
+                                className="w-1/2 h-10 bg-[#972d07] font-bold text-white hover:bg-[#852908]">
                                     Cancelar
                                 </button>
                             </div>
                         </header>
-                        {/* Resto de la pantalla */}   
-                        <div className="flex flex-col font-semibold w-full h-full text-left items-center min-h-full min-w-full p-8">
-                            <div className="grid grid-cols-2 gap-x-8 gap-y-4">
 
-                                {/* No° Empleado (columna completa) */}
+                        {/* Resto de la pantalla */}   
+                        <div className="flex flex-col font-semibold w-full h-full text-left items-left min-h-full min-w-full p-8">
+                            <form  onSubmit={handleSubmit} className="grid grid-cols-2 gap-x-8 gap-y-4">
+                                {/* No. Empleado este elemento se escondera o no dependiendo de la opción seleccionada*/}
                                 <div className="col-span-2">
                                     <label className="block mb-1">No° Empleado</label>
                                     <input
                                         type="text"
                                         placeholder="123"
-                                        className="w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        className="w-1/3 px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                     />
                                 </div>
 
@@ -414,7 +449,9 @@ const Admin_Inicio = () => {
                                     <input
                                         type="text"
                                         placeholder="Nombre:"
-                                        className="w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        value={nombre}
+                                        onChange={(e) => setNombre(e.target.value)}
+                                        className={`w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.nombre ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                 </div>
 
@@ -424,7 +461,9 @@ const Admin_Inicio = () => {
                                     <input
                                         type="text"
                                         placeholder="Apellido:"
-                                        className="w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        value={apellido}
+                                        onChange={(e) => setApellido(e.target.value)}
+                                        className={`w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.apellido ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                 </div>
                                 
@@ -434,7 +473,9 @@ const Admin_Inicio = () => {
                                     <input
                                         type="text"
                                         placeholder="Usuario:"
-                                        className="w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        value={usuario}
+                                        onChange={(e) => setUsuario(e.target.value)}
+                                        className={`w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.usuario ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                 </div>
 
@@ -444,7 +485,9 @@ const Admin_Inicio = () => {
                                     <input
                                         type="password"
                                         placeholder="Contraseña"
-                                        className="w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        value={contra}
+                                        onChange={(e) => setContra(e.target.value)}
+                                        className={`w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.contra ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                 </div>
 
@@ -452,7 +495,10 @@ const Admin_Inicio = () => {
                                 <div className="col-span-2">
                                     <label className="block mb-1">Contacto</label>
                                     <div className="grid grid-cols-2 gap-4">
-                                        <select className="px-3 py-2 rounded-md w-full focus:outline-none focus:ring focus:ring-[#3B2B26]">
+                                        <select 
+                                        value={formaContacto}
+                                        onChange={(e) => setFormaContacto(e.target.value)}
+                                        className="px-3 py-2 rounded-md w-full focus:outline-none focus:ring focus:ring-[#3B2B26]">
                                         <option value="">Seleccione...</option>
                                         <option value="telefono">Teléfono</option>
                                         <option value="correo">Correo</option>
@@ -460,12 +506,14 @@ const Admin_Inicio = () => {
                                         <input
                                         type="text"
                                         placeholder="ejemplo@correo.com"
-                                        className="w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        value={correoTel}
+                                        onChange={(e) => setCorreoTel(e.target.value)}
+                                        className={`w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.correoTel ? 'border-red-500' : 'border-gray-300'}`}
                                         />
                                     </div>
                                 </div>
 
-                            </div>
+                            </form>
                         </div>
                     </div>
                 )}

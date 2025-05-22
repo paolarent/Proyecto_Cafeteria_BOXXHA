@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import NavBarEmp from "../components/NavBarEmp";
-import { verificarTipoUsuario } from "../services/authService"; // Asegúrate de exportar esa función
 import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación    
 
 type Props = {

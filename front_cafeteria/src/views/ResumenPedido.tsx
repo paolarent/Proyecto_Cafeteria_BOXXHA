@@ -12,6 +12,7 @@ import eliminar from "../assets/eliminar.png";
 import { enviarPedidos } from "../services/pedidoService";
 import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
 import { verificarTipoUsuario } from "../services/authService";
+import { Pedido } from "../contexts/PedidoContext";
 
 {/* Ruta /resumen */}
 const ResumenPedido = () => {
@@ -20,7 +21,7 @@ const ResumenPedido = () => {
     const [metodo, setMetodo] = useState("");
     const [mensaje, setMensaje] = useState("");
     const navigate = useNavigate();
-    const { pedidos, actualizarPedido, resetPedidos } = usePedido();
+    const { pedidos, actualizarPedido, resetPedidos, eliminarUnaCoincidencia } = usePedido();
     
     useEffect(() => {
         const fetchResumen = async () => {
@@ -125,6 +126,9 @@ const ResumenPedido = () => {
         );
     };
 
+    const handlerEliminarProd = (pedidoAEliminar: Partial<Pedido>) => {
+        eliminarUnaCoincidencia(pedidoAEliminar);
+    };
 
     return (
         <div className="min-h-screen w-full flex flex-col bg-[#F7F7F7]">
@@ -184,14 +188,33 @@ const ResumenPedido = () => {
                                     >
                                         
                                     {/* Boton extra */}
-                                    <div className="w-14 h-14 bg-[#e47873] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#B0CEAC] hover:scale-110 duration-300 shadow-md">
-                                        <img
-                                            src={eliminar}
-                                            alt="Eliminar producto"
-                                            title="Eliminar este Producto"
-                                            className="w-12 h-12 object-contain p-1"
-                                        />
+                                    <div
+                                    onClick={() => handlerEliminarProd({
+                                        nombre: pedido.nombre,
+                                        tipo: pedido.tipo,
+                                        sabor: pedido.sabor,
+                                        total: pedido.total,
+                                        id_bebida: pedido.id_bebida,
+                                        id_tamano: pedido.id_tamano,
+                                        id_leche: pedido.id_leche,
+                                        regular: regular === "Regular" ? true : regular === "Descafeinado" ? false : undefined,
+                                        extras: pedido.extras?.map(extra => ({
+                                        id: extra.id,
+                                        cantidad: extra.cantidad,
+                                        precio: extra.precio,
+                                        })),
+                                        completo: true
+                                    })}
+                                    className="w-14 h-14 bg-[#e47873] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#B0CEAC] hover:scale-110 duration-300 shadow-md"
+                                    >
+                                    <img
+                                        src={eliminar}
+                                        alt="Eliminar producto"
+                                        title="Eliminar este Producto"
+                                        className="w-12 h-12 object-contain p-1"
+                                    />
                                     </div>
+
                                     </ProductoContenedor>
                                 );
 

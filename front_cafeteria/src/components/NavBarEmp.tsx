@@ -60,6 +60,10 @@ const NavBarEmpleado = () => {
         setMostrarModalConfirm(false); // Solo cerrar el modal sin hacer nada
     };
 
+    const handleVerNotis = () => {
+        limpiarNotificaciones();
+        navigate("/ver_pedidos");
+    }
 
     const handleLogout= () => {
         localStorage.removeItem("token");
@@ -98,7 +102,7 @@ const NavBarEmpleado = () => {
                     <li><button onClick={handleIrAMenu} className="text-lg hover:[color:#A1C99C] transition">Menú</button></li>
                     {/* NOTIFICACIONES */}
                     <li>
-                    <button onClick={limpiarNotificaciones} className="relative">
+                    <button onClick={handleVerNotis} className="relative">
                         <img src={icon_notificacion} alt="Notificaciones" className="h-7 hover:scale-110 transition" />
                         {contador > 0 && (
                         <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">

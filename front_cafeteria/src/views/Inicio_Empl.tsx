@@ -3,7 +3,7 @@ import fondo_in2 from "../assets/fondo_inicio2.jpg";
 import ver_menu from "../assets/vermenu.png";
 import nuevo_pedido from "../assets/nuevoped.png";
 import ver_pedidos from "../assets/pedidos.png";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import socket from "../utils/socket";
 import { toast, Toaster } from 'react-hot-toast';
@@ -13,7 +13,6 @@ import ModalTerminoPed from "../components/ModalTerminoEmp";
 
 const InicioEmpleado = () => {
     const navigate = useNavigate();
-    const [notis, setNotis] = useState<string[]>([]);
     const { agregarNotificacion } = useNotificaciones();
     const [showModalTermino, setShowModalTermino] = useState(false);
 
@@ -48,7 +47,6 @@ const InicioEmpleado = () => {
 
         const handleNotificacion = (data: { mensaje: string }) => {
             toast.success('Nuevo pedido recibido');
-            setNotis((prev) => [data.mensaje, ...prev]);
             agregarNotificacion(data.mensaje);
         };
 
