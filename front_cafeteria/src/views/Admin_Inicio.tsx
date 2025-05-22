@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { obtenerPedidos, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy } from "../services/dashServices"
 import { verificarTipoUsuario } from "../services/authService";
 import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
-import { registrarUsuario } from "../services/authService";
+
+import { registrarUsuario } from "../services/authService"; //Función para realziar el registro
+import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación    
 
 /*
     To do list
@@ -44,6 +46,7 @@ const Admin_Inicio = () => {
     const [usuario, setUsuario] = useState("");
     const [contra, setContra] = useState("");
     const [confirmContra, setConfirmContra] = useState("");
+    const { clearTipoUsuario } = useAuth();
 
     const [errores, setErrores] = useState({
         nombre: "",
@@ -179,15 +182,16 @@ const Admin_Inicio = () => {
     const handleLogout= () => {
             localStorage.removeItem("token");
             localStorage.removeItem("usuario");
+            clearTipoUsuario();
             navigate('/'); // No hay pedido incompleto, va directo
     };      
     
     return(
     // Fondo Cafe
-    <div className="flex flex-col h-full w-full bg-[#9C6644] opacity-95">
-        <main className="flex flex-row gap-10 p-10">
+    <div className="flex flex-col h-screen w-full bg-[#9C6644] opacity-95 overflow-hidden">
+        <main className="flex flex-row h-full w-full gap-10 p-8">
             {/*Sección izquierda de las herramientas */}
-            <div className="flex flex-col gap-2 w-1/4 h-screen  items-left ">
+            <div className="flex flex-col gap-2 w-1/4 h-auto  items-left ">
                 <div className="flex flex-row p-6 gap-2 bg-white shadow-md items-center">
                     <img
                         src={icon_usuario}
@@ -198,8 +202,9 @@ const Admin_Inicio = () => {
                 
                 
                 {/*Contenedor de las Opciones aplicando interpolación de clases*/}
-                <div className="font-Montserrat flex flex-col p-4 w-full h-full items-left shadow-2xl bg-white justify-left text-left gap-4 ">
-                    {/*Boton Dashboard */}
+                <div className="font-Montserrat flex flex-col p-4 w-full h-full items-left justify-between shadow-2xl bg-white justify-left text-left gap-4 ">
+                    <div className="flex flex-col gap-4">
+                        {/*Boton Dashboard */}
                     { Opcion === 'Dashboard' ? (
                         // Elemento al ser seleccionado
                         <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#c49475] border-l-4 border-l-[#814721]">
@@ -263,19 +268,23 @@ const Admin_Inicio = () => {
                         </div>
                     )}
                     
-                    {/*Boton clientes para volver al inicio */} 
-                    <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
+                    </div>
+                    <div>
+                        {/*Boton cerrar sesión*/} 
+                        <div className="flex flex-row items-left gap-2 p-4 bottom-0 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
                         <div className="w-10 h-10 bg-gray-500"></div>
                         <button
                         onClick={handleLogout} 
                         className="w-full h-full text-left font-bold text-[#34251d]"> Cerrar sesión
                         </button>
+                        </div>
                     </div>
+                    
                 </div>
             </div>
             
             {/*Sección derecha, se encontrarán los form*/}
-            <div className="font-Montserrat flex flex-col w-3/4 h-screen items-center shadow-xl bg-white p-8 ">
+            <div className="font-Montserrat flex flex-col w-3/4 h-auto items-center shadow-xl bg-white p-10 ">
                 { Opcion === 'Dashboard' && (
                     <div className="flex flex-col w-full h-full">
                         <div className="flex flex-col w-full h-1/3 gap-6"> 
@@ -384,45 +393,80 @@ const Admin_Inicio = () => {
                                     Cancelar
                                 </button>
                             </div>
-                        </header>   
-                        <div className="flex flex-col font-semibold w-full h-full min-h-full min-w-full p-8 gap-2">
-                                <div>
-                                    <p>No° Empleado</p>
-                                    <input className="w-1/6 rounded-md "/>
+                        </header>
+                        {/* Resto de la pantalla */}   
+                        <div className="flex flex-col font-semibold w-full h-full text-left items-center min-h-full min-w-full p-8">
+                            <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+
+                                {/* No° Empleado (columna completa) */}
+                                <div className="col-span-2">
+                                    <label className="block mb-1">No° Empleado</label>
+                                    <input
+                                        type="text"
+                                        placeholder="123"
+                                        className="w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                    />
                                 </div>
-                                <div className="flex flex-row"> 
-                                    <div>
-                                        <p className="">Nombre</p>
-                                        <input className="w-1/6 rounded-md "/>
-                                    </div>
-                                    <div>
-                                        <p className="">Apellido</p>
-                                        <input className="w-1/6 rounded-md "/>
-                                    </div>
+
+                                {/* Nombre */}
+                                <div className="">
+                                    <label className="block mb-1">Nombre</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Nombre:"
+                                        className="w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                    />
                                 </div>
-                                <div className="flex flex-row"> 
-                                    <div>
-                                        <p className="">Usuario</p>
-                                        <input className="w-1/6 rounded-md "/>
-                                    </div>
-                                    <div>
-                                        <p className="">Contraseña</p>
-                                        <input className="w-1/6 rounded-md "/>
-                                    </div>
+
+                                {/* Apellido */}
+                                <div className="">
+                                    <label className="block mb-1">Apellido</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Apellido:"
+                                        className="w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                    />
                                 </div>
                                 
-                               <div className="flex flex-col">
-                                    <p className="">Contacto</p>
-                                    <div className="flex flex-row gap-4">
-                                    <select className="py-2 rounded-md w-1/6">
+                                {/* Usuario */}
+                                <div className="">
+                                    <label className="block mb-1">Usuario</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Usuario:"
+                                        className="w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                    />
+                                </div>
+
+                                {/* Contraseña */}
+                                <div className="">
+                                    <label className="block mb-1">Contraseña</label>
+                                    <input
+                                        type="password"
+                                        placeholder="Contraseña"
+                                        className="w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                    />
+                                </div>
+
+                                {/* Contacto correo - telefono */}
+                                <div className="col-span-2">
+                                    <label className="block mb-1">Contacto</label>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <select className="px-3 py-2 rounded-md w-full focus:outline-none focus:ring focus:ring-[#3B2B26]">
                                         <option value="">Seleccione...</option>
-                                        <option value="correo">Telefono</option>
-                                        <option value="telefono">Correo</option>
-                                    </select>
-                                    <input className="w-1/6 rounded-md "/>
+                                        <option value="telefono">Teléfono</option>
+                                        <option value="correo">Correo</option>
+                                        </select>
+                                        <input
+                                        type="text"
+                                        placeholder="ejemplo@correo.com"
+                                        className="w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        />
                                     </div>
                                 </div>
-                        </div> 
+
+                            </div>
+                        </div>
                     </div>
                 )}
 

@@ -9,6 +9,7 @@ import  imagenesSabores  from "../data/imagenesSabores"; //Importamos los datos 
 
 import { getSabor } from "../services/productService"; 
 import { usePedido } from '../contexts/PedidoContext';
+import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación    
 
 const SaboresProducto: React.FC = () => {
     const { tipo, nombre } = useParams(); //Usamos useParams para obtener los parámetros de la URL de la ruta
@@ -19,6 +20,7 @@ const SaboresProducto: React.FC = () => {
 
     //Verificamos si los valores de tipo y nombre existen en los datos
     const sabores = saboresPorTipoYNombreProducto[tipo as string]?.[nombre?.toLowerCase() || ""] || [];
+    const {tipoUsuario} = useAuth(); // Obtenemos el tipo de usuario desde el contexto
 
     const handleSaborClick = async (tipo: string, nombre: string, sabor?: string) => {
         let tipoLower = tipo.toLowerCase();
@@ -55,12 +57,18 @@ const SaboresProducto: React.FC = () => {
 
             // Guarda el ID en el contexto
             if (tipoLower === "postre") {
-                actualizarPedido(i,{ id_postre: idProducto , sabor: sabor, id_tamano: 3, total: precio}); //id_tamano = 3 pq es pza
+                if (tipoUsuario === "cliente" || tipoUsuario === "empleado") {
+                    actualizarPedido(i,{ id_postre: idProducto , sabor: sabor, id_tamano: 3, total: precio}); //id_tamano = 3 pq es pza
+                }
             } else if (nombreLower === "espresso") {
-                actualizarPedido(i,{ id_bebida: idProducto, sabor: sabor , id_tamano: 4, total: precio}); //id_tamano = 4 pq es espresso
+                if (tipoUsuario === "cliente" || tipoUsuario === "empleado") {
+                    actualizarPedido(i,{ id_bebida: idProducto, sabor: sabor , id_tamano: 4, total: precio}); //id_tamano = 4 pq es espresso
+                }
             }
             else {
-                actualizarPedido(i,{ id_bebida: idProducto, sabor: sabor, total: precio}); 
+                if (tipoUsuario === "cliente" || tipoUsuario === "empleado") {
+                    actualizarPedido(i,{ id_bebida: idProducto, sabor: sabor, total: precio}); 
+                }
             }
     
         } catch (error) {
@@ -72,11 +80,24 @@ const SaboresProducto: React.FC = () => {
         if (nombreLower === "espresso" && sabor === "Cortado") {
             navigate(`/tipo_leche/${i}`); // espresso cortado va a leche
         } else if (nombreLower === "espresso") {
-            localStorage.setItem("mostrar_carrito", "true");
-            navigate("/"); // Navega vista inicio
+            if (tipoUsuario === "cliente" || tipoUsuario === "empleado") {
+                localStorage.setItem("mostrar_carrito", "true");
+            }
+
+            if (tipoUsuario === "empleado"){
+                navigate("/empleado")
+            } else {
+                navigate("/"); // Navega vista inicio
+            }
         } else if (tipoLower === "postre") {
-            localStorage.setItem("mostrar_carrito", "true");
-            navigate("/"); // Navega vista inicio
+            if (tipoUsuario === "cliente" || tipoUsuario === "empleado") {
+                localStorage.setItem("mostrar_carrito", "true");
+            }
+            if (tipoUsuario === "empleado"){
+                navigate("/empleado")
+            } else {
+                navigate("/"); // Navega vista inicio
+            }
         } else {
             navigate(`/pedido_tamano/${i}`);
         }

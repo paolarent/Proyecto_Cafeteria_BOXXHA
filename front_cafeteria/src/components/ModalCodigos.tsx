@@ -23,28 +23,15 @@ const ModalQR: React.FC<ModalCodigo> = ({ isOpen, onClose }) => {
             <div className="relative bg-white rounded-xl shadow-lg flex flex-col md:flex-row w-[90vw] h-auto md:w-[450px] md:h-auto overflow-y-auto">
                 <button
                     onClick={onClose}
-                    className="absolute top-1 right-4 text-4xl font-bold text-black hover:text-gray-600"
+                    className="absolute top-1 right-4 text-4xl font-bold text-black hover:text-[#8e1919]"
                     aria-label="Cerrar"
                 >
                     &times;
                 </button>
                 <div className="flex flex-col items-center justify-center p-8 space-y-4">
                     
-                    <div className="bg-[#B0CEAC] text-black max-w-md m-2 p-6 rounded-xl text-center font-bold text-lg lg:text-2xl shadow-lg">
+                    <div className="bg-[#B0CEAC] text-[#311808] max-w-md m-2 p-6 rounded-xl text-center font-bold text-xl lg:text-3xl shadow-lg">
                         <p>Aún no se ha realizado ningún pedido.</p>
-
-                        <button
-                            type="button"
-                            onClick={() => {
-                                        navigate('/');
-                                        setTimeout(scrollToMenu, 300);
-                                        onClose();
-                                    }}  
-                            className="px-4 py-2 lg:px-6 lg:py-3 bg-[#311808] text-lg text-white rounded hover:bg-[#716865] font-bold
-                            transform transition-transform duration-300 hover:scale-105 mt-8 shadow-lg"
-                        >
-                            Comenzar a Pedir
-                        </button>
                     </div>
 
                 </div>

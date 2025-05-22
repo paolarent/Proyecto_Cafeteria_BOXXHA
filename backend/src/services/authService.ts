@@ -2,7 +2,7 @@
 import { prisma } from "../lib/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+import { usuario_tipo_usuario } from '@prisma/client';
 
 export const registerUser = async (data: {
   nombre: string,
@@ -63,6 +63,95 @@ export const registerUser = async (data: {
       tipo_usuario: newUser.tipo_usuario
     }
   };
+};
+
+// Copia para hacer pruebas para registrar el usuario
+export const registerUser_test = async (data: {
+  nombre: string,
+  apellido: string,
+  email?: string,
+  numero_tel?: string,
+  usuario: string,
+  contra: string,
+  tipo_usuario?: string,
+}) => {
+  const { nombre, apellido, email, numero_tel, usuario, contra, tipo_usuario } = data;
+
+  // Validación de campos requeridos
+  if (!nombre || !apellido || !usuario || !contra) {
+    throw new Error("Todos los campos obligatorios deben estar completos.");
+  }
+
+
+  // Validación exclusiva: solo uno entre email o numero_tel
+  if ((!email && !numero_tel) || (email && numero_tel)) {
+    throw new Error("Debes ingresar solo uno: email o número de teléfono, no ambos.");
+  }
+
+  // Validación de usuario único
+  const existingUser = await prisma.usuario.findFirst({
+    where: {
+      OR: [
+        { usuario },
+        { email },
+        { numero_tel }
+      ]
+    }
+  });
+
+  if (existingUser) {
+    throw new Error("El nombre de usuario, email o número ya está registrado.");
+  }
+
+  // Encriptar contraseña
+  const hashedPassword = await bcrypt.hash(contra, 10);
+  // Crear usuario
+  if(!tipo_usuario)
+  {
+    const newUser = await prisma.usuario.create({
+    data: {
+      nombre,
+      apellido,
+      usuario,
+      contra: hashedPassword,
+      email: email ?? null,
+      numero_tel: numero_tel ?? null,
+      // tipo_usuario: usuario_tipo_usuario.empleado ?? null, 
+      
+    }
+    
+    });
+    return {
+      message: "Usuario registrado exitosamente",
+      user: {
+        id: newUser.id_usuario,
+        usuario: newUser.usuario,
+        tipo_usuario: newUser.tipo_usuario
+      }
+    };
+  } else {
+    const newUser = await prisma.usuario.create({
+    data: {
+      nombre,
+      apellido,
+      usuario,
+      contra: hashedPassword,
+      email: email ?? null,
+      numero_tel: numero_tel ?? null,
+      tipo_usuario: usuario_tipo_usuario.empleado,  
+      }
+    });
+    return {
+      message: "Usuario registrado exitosamente",
+      user: {
+        id: newUser.id_usuario,
+        usuario: newUser.usuario,
+        tipo_usuario: newUser.tipo_usuario
+      }
+    };
+  }
+
+  
 };
 
 export const loginUser = async (identificador: string, contra: string) => {

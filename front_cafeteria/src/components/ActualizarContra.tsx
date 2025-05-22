@@ -27,6 +27,11 @@ export function CambiarContraModal ({ onClose }: CambiarContraProps) {
             toast.error("La nueva contraseña no coincide con la confirmación.");
             return;
         }
+
+        if (nueva.length < 8) {
+            toast.error("La nueva contraseña debe de tener mínimo 8 caracteres.");
+            return;
+        }
     
         try {    
             await updatePassword({

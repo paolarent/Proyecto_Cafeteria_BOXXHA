@@ -235,8 +235,8 @@ const Resumen_CompraView = () => {
         }),
         {
             loading: "Procesando pago...",
-            success: <b>Pago con tarjeta realizado correctamente</b>,
-            error: <b>No se pudo procesar el pago</b>,
+            success: "Pago con tarjeta realizado correctamente",
+            error: "No se pudo procesar el pago",
         }
     );
 };
@@ -264,12 +264,12 @@ const Resumen_CompraView = () => {
     };
 
     return (
-        <div className="h-full w-full flex flex-col overflow-x-hidden">
+        <div className="min-h-screen w-full flex flex-col bg-[#F7F7F7]">
             <header className="sticky top-0 z-50">
                 <NavBar />
             </header>
             
-            <main className="flex flex-col md:flex-row flex-1 h-full relative">
+            <main className="flex flex-col md:flex-row flex-1 h-full relative overflow-x-hidden">
                 {/*Sección izquierda para el resumen de compra */}
                 <section className="relative flex flex-col w-full lg:w-1/2 bg-[#F7F7F7] lg:py-12 lg:p-12 py-8 p-4"
                         style={{
@@ -284,8 +284,8 @@ const Resumen_CompraView = () => {
                         style={{ backgroundColor: "#f8e9df", opacity: 0.60 }}
                         />
 
-                    <div className="relative z-10 sticky font-Montserrat top-20 w-full lg:w-104 shadow-xl bg-[#d8d7d7] rounded-2xl gap-4 p-8">
-                        <h2 className=" font-bold text-2xl lg:text-4xl text-center text-[#34251d] pb-6">RESUMEN DEL PEDIDO</h2>
+                    <div className="relative z-10 sticky font-Montserrat top-10 w-full lg:w-104 shadow-xl bg-[#d8d7d7] rounded-2xl gap-4 p-8">
+                        <h2 className=" font-bold text-3xl lg:text-4xl text-center text-[#34251d] pb-6">RESUMEN DEL PEDIDO</h2>
                         <div className="flex flex-col gap-y-4">
                             {pedidos.map((pedido, index) => {
                                 const regular = pedido.regular === undefined
@@ -351,7 +351,7 @@ const Resumen_CompraView = () => {
                     
                     {/* Sección de formulario MÉTODO DE PAGO */}
                     <div className="flex flex-col bg-white sm:w-full lg:w-[520px] max-w-3xl shadow-xl h-auto rounded-2xl mx-auto p-6 sm:p-10">
-                        <h2 className="font-Montserrat font-bold text-2xl sm:text-3xl lg:text-4xl text-left text-[#34251d] pb-6">
+                        <h2 className="font-Montserrat font-bold text-2xl text-3xl lg:text-4xl text-left text-[#34251d] pb-6">
                             MÉTODO DE PAGO
                         </h2>
 
@@ -367,6 +367,7 @@ const Resumen_CompraView = () => {
                         {metodo === "efectivo" && (
                             <div className="flex flex-col sm:flex-row justify-between items-center w-full mt-4 gap-4">
                                 <button onClick = {handleEnviarPedido}
+                                disabled={pedidos.length === 0} // Deshabilitar si no hay productos
                                 className="w-full sm:w-auto px-4 py-3 lg:px-6 sm:py-3 bg-[#311808] text-white text-md sm:text-base lg:text-lg rounded hover:bg-[#716865] font-bold transform transition-transform duration-300 hover:scale-105 mt-4">
                                     Realizar pedido
                                 </button>
@@ -483,6 +484,7 @@ const Resumen_CompraView = () => {
 
                             <div className="flex flex-col sm:flex-row justify-between items-center w-full mt-4 gap-4">
                                 <button onClick={handleRealizarPagoTarjeta}
+                                    disabled={pedidos.length === 0} // Deshabilitar si no hay productos
                                     className="w-full sm:w-auto px-4 py-3 lg:px-6 sm:py-3 bg-[#311808] text-white text-md sm:text-base lg:text-lg rounded hover:bg-[#716865] font-bold transform transition-transform duration-300 hover:scale-105">
                                     Realizar pago
                                 </button>
@@ -501,7 +503,7 @@ const Resumen_CompraView = () => {
                     <div className="bg-white w-full h-auto shadow-xl rounded-2xl justify-left p-8">
                         {/*Contenedor de la dirección escrita o leyenda */}
                         <div className="relative flex flex-col justify-left w-full">
-                            <p className="font-Montserrat font-bold text-2xl lg:text-4xl text-left text-[#34251d] pb-2"> 
+                            <p className="font-Montserrat font-bold text-3xl lg:text-4xl text-left text-[#34251d] pb-2"> 
                                 ENTREGA
                             </p>
                             <p className="font-Montserrat font-semibold text-xl text-left text-[#34251d] pb-2"> 

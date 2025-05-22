@@ -90,7 +90,7 @@ export const crearNotificacion = async (idPedido: number) => {
     }).join(' | ');
 
         
-    const mensaje = `Pedido #${idPedido}, Cliente: ${pedido.usuario.nombre}: ${detalles} - TOTAL: $${pedido.total}`;
+    const mensaje = `Pedido #${idPedido}, TOKEN: ${pedido.codigo_conf}, Cliente: ${pedido.usuario.nombre}: ${detalles} - TOTAL: $${pedido.total}`;
 
     // Insertar la notificacion en la base de datos
     await prisma.notificacion.create({

@@ -35,11 +35,11 @@ const Tipo_LecheView = () => {
 
     const handleLecheSeleccionada = (id_leche: number, nuevoExtra: number) => {
         // Busca el precio anterior de la leche seleccionada (si existe)
-        const lecheAnterior = leches.find(l => l.id === pedidoActual.id_leche);
+        const lecheAnterior = leches.find(l => l.id === pedidoActual?.id_leche);
         const extraAnterior = lecheAnterior ? lecheAnterior.precio : 0;
 
         // Calcula el nuevo total: resta el anterior y suma el nuevo
-        const nuevoTotal = pedidoActual.total - extraAnterior + nuevoExtra;
+        const nuevoTotal = pedidoActual?.total - extraAnterior + nuevoExtra;
 
         actualizarPedido(i, {
             id_leche,
@@ -54,11 +54,11 @@ const Tipo_LecheView = () => {
     }
     
     const handleRegresar = () => {
-        const lecheAnterior = leches.find(l => l.id === pedidoActual.id_leche);
+        const lecheAnterior = leches.find(l => l.id === pedidoActual?.id_leche);
         const extraAnterior = lecheAnterior ? lecheAnterior.precio : 0;
 
         // Calcula el nuevo total: resta el anterior y suma el nuevo
-        const nuevoTotal = pedidoActual.total - extraAnterior ;
+        const nuevoTotal = pedidoActual?.total - extraAnterior ;
         actualizarPedido(i,{ id_leche: undefined, total: nuevoTotal });
         navigate(-1);
     }
@@ -140,7 +140,7 @@ const Tipo_LecheView = () => {
                             >
 
                             {/* Condicional para mostrar "+10" */}
-                            {pedidoActual.id_leche === leche.id && leche.id !== 1 && (
+                            {pedidoActual?.id_leche === leche.id && leche.id !== 1 && (
                                 <span className="absolute top-2 right-2 bg-green-600 text-white text-lg font-bold w-10 h-10 rounded-full shadow-lg flex 
                                                 items-center justify-center">
                                     +10

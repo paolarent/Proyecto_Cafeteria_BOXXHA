@@ -20,7 +20,7 @@ import matcha from "../assets/matcha.jpg"
 const MenuBoxxha = () => {
     return(
 
-        <div className="min-h-screen flex flex-col ">
+        <div className="min-h-screen flex flex-col">
             <LayoutConNavbar />
 
             <main className="relative flex flex-1 bg-[#B0CEAC] overflow-hidden">

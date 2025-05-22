@@ -3,17 +3,27 @@ import fondo_in2 from "../assets/fondo_inicio2.jpg";
 import ver_menu from "../assets/vermenu.png";
 import nuevo_pedido from "../assets/nuevoped.png";
 import ver_pedidos from "../assets/pedidos.png";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import socket from "../utils/socket";
 import { toast, Toaster } from 'react-hot-toast';
 import { verificarTipoUsuario } from "../services/authService";
 import { useNotificaciones } from "../contexts/NotificacionContext";
+import ModalTerminoPed from "../components/ModalTerminoEmp";
 
 const InicioEmpleado = () => {
     const navigate = useNavigate();
     const [notis, setNotis] = useState<string[]>([]);
     const { agregarNotificacion } = useNotificaciones();
+    const [showModalTermino, setShowModalTermino] = useState(false);
+
+    useEffect(() => {
+        const debeMostrar = localStorage.getItem("mostrar_carrito");
+        if (debeMostrar === "true") {
+            setShowModalTermino(true);
+            localStorage.removeItem("mostrar_carrito");
+        }
+    }, []);
 
     useEffect(() => {
         const verificarUsuario = async () => {
@@ -103,7 +113,7 @@ const InicioEmpleado = () => {
                 </div>
 
                 {/* Opción 3 */}
-                <div className="bg-white px-5 py-5 rounded-2xl border-4 border-black transition-transform duration-300 hover:scale-105">
+                <div onClick={ ()=> navigate("/ver_pedidos") } className="bg-white px-5 py-5 rounded-2xl border-4 border-black transition-transform duration-300 hover:scale-105">
                     <div className="group flex flex-col items-center w-[200px] h-[230px] lg:w-[250px] lg:h-[280px] mb-6">
                         <img
                         src={ver_pedidos}
@@ -131,6 +141,13 @@ const InicioEmpleado = () => {
             },
         }}
         />
+
+        {showModalTermino && (
+                <ModalTerminoPed
+                    isOpen={showModalTermino} 
+                    onClose={() => setShowModalTermino(false)} 
+                />
+        )}
     </div>
 );
 

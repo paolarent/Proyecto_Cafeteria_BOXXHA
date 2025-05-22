@@ -8,9 +8,10 @@ type ProductoContenedorProps = {
     leche?: string;
     extras?: { id: number; nombre: string; cantidad: number, precio: number }[];
     total: number;
+    children?: React.ReactNode; // <-- aquí se decide con props si se usa el boton de eliminar o no
 };
 
-const ProductoContenedor: React.FC<ProductoContenedorProps> = ({ nombre, tipo, sabor, regular, tamano, leche, extras, total }) => {
+const ProductoContenedor: React.FC<ProductoContenedorProps> = ({ nombre, tipo, sabor, regular, tamano, leche, extras, total, children }) => {
     return (
         <div className="w-full bg-white text-[#1f1f1f] border-y-4 border-dashed border-[#a3a3a3] px-4 py-2 font-medium text-sm">
 
@@ -84,8 +85,11 @@ const ProductoContenedor: React.FC<ProductoContenedorProps> = ({ nombre, tipo, s
                     </>
                 )}
 
+                {/* Renderizar children si hay */}
+                {children && <div className="mt-4">{children}</div>}
+
                 {/* Total del producto */} 
-                <div className="flex justify-end pr-4 pt-2">
+                <div className="flex justify-end pr-4">
                     <p className="font-Montserrat font-bold text-lg lg:text-xl text-[#34251d]">
                         Total: ${total.toFixed(2)}
                     </p>

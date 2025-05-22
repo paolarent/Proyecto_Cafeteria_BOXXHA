@@ -2,7 +2,6 @@ import { useState } from "react";
 import logom from "../assets/logo_menu.png";
 import icon_user from "../assets/icon_usuario.png";
 import icon_notificacion from "../assets/notificacion.png";
-import icon_carrito from "../assets/icon_carrito.png";
 import { useNavigate } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"; //Iconos para el menu responsive
 import ModalLogin from "../components/ModalLogin";
@@ -109,7 +108,7 @@ const NavBarEmpleado = () => {
                     </button>
                     </li>
                     <li>
-                        <div className="flex items-center space-x-2 cursor-pointer" onClick={() => { setMostrarModalTerminoPed(true) }}>
+                        <div className="flex items-center space-x-2 cursor-pointer" onClick={() => { setMostrarModalTerminoPed(true) }} > {/* onClick={() => { setMostrarModalTerminoPed(true) }} */}
                             <img src={icon_user} alt="Usuario" className="h-7 hover:scale-110 transition" />
                             <span className="hidden md:inline text-lg font-Montserrat font-medium text-black-700">{user}</span>
                         </div>

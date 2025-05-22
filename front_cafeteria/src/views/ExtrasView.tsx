@@ -6,6 +6,7 @@ import BotonContinuar from "../assets/continuar.png";
 import { getExtras } from "../services/productService"; // tu fetch
 import { usePedido } from "../contexts/PedidoContext";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación    
 
 const ExtrasView = () => {
     const [extras, setExtras] = useState<{ id_extra: number; nombre: string; precio_extra: number }[]>([]);
@@ -16,6 +17,7 @@ const ExtrasView = () => {
     const navigate = useNavigate();
     const i = Number(index);
     const pedidoActual = pedidos[i];
+    const {tipoUsuario} = useAuth(); // Obtenemos el tipo de usuario desde el contexto
 
     useEffect(() => {
         if (!pedidoActual) {
@@ -102,7 +104,11 @@ const ExtrasView = () => {
         const totalPedido = pedidoActual.total + totalExtras; // Suma el total de los extras al total del pedido
         actualizarPedido(i,{ extras: seleccionados, total: totalPedido }); // Actualiza el pedido en el contexto
         localStorage.setItem("mostrar_carrito", "true");
-        navigate("/"); // Navega vista inicio
+        if (tipoUsuario === "cliente") {
+            navigate("/"); // Navega vista inicio
+        } else if (tipoUsuario === "empleado") {
+            navigate("/empleado"); // Navega a la vista de pedidos
+        }
     };
 
     

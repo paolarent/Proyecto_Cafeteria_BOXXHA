@@ -62,7 +62,7 @@ const ModalTerminoPed: React.FC<FinPedido> = ({ isOpen, onClose }) => {
                     &times;
                 </button>
 
-                <div className="flex justify-center items-center bg-[#535251] bg-opacity-60 rounded-2xl p-4 w-fit mx-auto">
+                <div className="flex justify-center items-center bg-[#311808] bg-opacity-70 rounded-2xl p-4 w-fit mx-auto">
                     <button  
                         onClick={() => { navigate('/pedido'); }}                                      
                         className="flex flex-col justify-center pt-6 pb-4 w-[220px] h-[220px] rounded-2xl bg-white border-2 border-black hover:scale-105 transition-transform duration-300"
@@ -78,9 +78,9 @@ const ModalTerminoPed: React.FC<FinPedido> = ({ isOpen, onClose }) => {
                     </button>
                 </div>
 
-                <div className="flex justify-center items-center bg-[#535251] bg-opacity-60 rounded-2xl p-4 w-fit mx-auto">
+                <div className="flex justify-center items-center bg-[#311808] bg-opacity-70 rounded-2xl p-4 w-fit mx-auto">
                     <button  
-                        onClick={() => { navigate('/empleado'); }}                                      
+                        onClick={() => { navigate('/resumen_pedido'); }}                                      
                         className="flex flex-col justify-center pt-6 pb-4 w-[220px] h-[220px] rounded-2xl bg-white border-2 border-black hover:scale-105 transition-transform duration-300"
                     >
 

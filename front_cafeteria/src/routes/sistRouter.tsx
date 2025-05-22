@@ -22,6 +22,8 @@ import Prueba from "../views/Pruebas.tsx";
 import InicioEmpleado from "../views/Inicio_Empl.tsx";
 import Notis from "../views/Notis.tsx";
 import NuevoPedido from "../views/NuevoPedido.tsx";
+import VerPedidos from "../views/VerPedidos.tsx";
+import ResumenPedido from "../views/ResumenPedido.tsx";
 
 const RouterWithAnimation = () => {
   const location = useLocation();
@@ -50,6 +52,8 @@ const RouterWithAnimation = () => {
         <Route path="/empleado" element={<InicioEmpleado />}/>
         <Route path="/notis" element={<Notis />}/>
         <Route path="/pedido" element={<NuevoPedido />}/>
+        <Route path="/ver_pedidos" element={<VerPedidos />}/>
+        <Route path="/resumen_pedido" element={<ResumenPedido />}/>
       </Routes>
     </AnimatePresence>
   );

@@ -60,7 +60,6 @@ const imagenesProductos: ImagenCarrito = {
     }
 };
 
-
 //Función exportada para obtener la imagen
 export const getImagenCarrito = (tipo?: string, nombre?: string): string | undefined => {
     if (!tipo || !nombre) return undefined;
