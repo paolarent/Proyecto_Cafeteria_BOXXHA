@@ -1,10 +1,13 @@
 // src/routes/dashRoute.ts
 
 import {Router} from "express";
-import {obtenerPedidos, TotalPedidos, TotalVentas, TotalProductos} from "../controllers/dashController";
+import {obtenerPedidos, TotalPedidos, TotalVentas, TotalProductos, obtenerEmpleados} from "../controllers/dashController";
 
 const router = Router();
 //url base = https://h2x0xj0m-3000.usw3.devtunnels.ms/dashRoute
+
+// https://h2x0xj0m-3000.usw3.devtunnels.ms/dashRoute/obtenerEmpleados
+router.get("/obtenerEmpleados", obtenerEmpleados);
 
 // https://h2x0xj0m-3000.usw3.devtunnels.ms/dashRoute/pedidosrecientes
 router.get("/pedidosrecientes", obtenerPedidos);

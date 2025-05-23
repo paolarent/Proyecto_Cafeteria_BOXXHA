@@ -3,6 +3,15 @@ import axios from "axios";
 
 const API_BASE_URL = "https://h2x0xj0m-3000.usw3.devtunnels.ms/dashRoute";
 
+export const obtenerEmpleados = async () => {
+     try {
+        const response = await axios.get(`${API_BASE_URL}/obtenerEmpleados`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || "Error al obtener empleados");
+    }
+}
+
 export const obtenerPedidos = async () => {
     try {
         const response = await axios.get(`${API_BASE_URL}/pedidosrecientes`);

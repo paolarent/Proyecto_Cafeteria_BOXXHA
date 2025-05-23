@@ -1,18 +1,24 @@
 import icon_usuario from "../assets/Iconos/usuario.png";
 import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-import { obtenerPedidos, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy } from "../services/dashServices"
 import { verificarTipoUsuario } from "../services/authService";
 import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
 
+
+// Importación de los servicios
+import { obtenerPedidos, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy, obtenerEmpleados } from "../services/dashServices"
 import { registrarUsuario } from "../services/authService"; //Función para realziar el registro
 import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación 
 
 //Importacion de ICONS
 import dashboard from "../assets/Iconos/dashboard.png";
-import empleados from "../assets/Iconos/empleados.png";
+import empleadosicon from "../assets/Iconos/empleados.png";
 import estadisticas from "../assets/Iconos/estadisticas.png";
 import cerrar_sesion from "../assets/Iconos/cerrarsesion.png";
+import control1 from "../assets/Iconos/retroceso.png";
+import control2 from "../assets/Iconos/retroceso2.png";
+import control3 from "../assets/Iconos/avanzar_rapido.png";
+import control4 from "../assets/Iconos/avanzar_rapido2.png";
 
 /*
     To do list
@@ -33,6 +39,14 @@ interface Pedido {
     }   
 }
 
+interface Empleado {
+  id_usuario: number;
+  nombre: string;
+  apellido: string;
+  usuario: string;
+  numero_tel?: string;
+  email?: string;
+}
 
 // Ruta /admin_inicio
 const Admin_Inicio = () => {
@@ -54,6 +68,8 @@ const Admin_Inicio = () => {
     const [contra, setContra] = useState("");
     const { clearTipoUsuario } = useAuth();
     const [modo, setModo] = useState("consulta"); // valores: "agregar", "editar", "consulta", "eliminar" 
+    const [empleados, setEmpleados] = useState<Empleado[]>([]);
+    const [indiceActual, setIndiceActual] = useState(0);
 
     const [errores, setErrores] = useState({
         nombre: "",
@@ -118,8 +134,45 @@ const Admin_Inicio = () => {
         setUsuario("");
         setContra("");
     };
+    
+    // Función para rellenar los datos de los empleados al consultar
+    const RellenarDatosEmpleado = () => {
+        const empleado = empleados[indiceActual];
+        if (!empleado) return;
 
-    // Aqui va ir la función para obtener al primer empleado
+        setNombre(empleado.nombre || "");
+        setApellido(empleado.apellido || "");
+        setUsuario(empleado.usuario || "");
+
+        if (empleado.email) {
+            setFormaContacto("correo");
+            setCorreoTel(empleado.email);
+        } else if (empleado.numero_tel) {
+            setFormaContacto("telefono");
+            setCorreoTel(empleado.numero_tel);
+        } else {
+            setFormaContacto("");
+            setCorreoTel("");
+        }
+    };
+    
+    // Función para el 
+
+
+    // Función para obtener los empleados
+    useEffect(() => {
+        const obtenerDatos = async () => {
+            try{
+                const datos = await obtenerEmpleados();
+                setEmpleados(datos);
+            } catch (error){
+                console.error("Error al cargar los empleados", error);
+            }
+            
+        };
+
+        obtenerDatos();
+    }, []);
 
     // Función para verificar que el usuario si sea el admin
     useEffect(() => {
@@ -145,7 +198,7 @@ const Admin_Inicio = () => {
                 const result = await TotalProductosHoy();
                 setProductos(result);
             } catch (error) {
-                console.error("Error al cargar el total no. de ventas", error);
+                console.error("Error al cargar el total no. de productos", error);
             }
         };
         fetchTotal();
@@ -250,7 +303,7 @@ const Admin_Inicio = () => {
                         // Elemento al ser seleccionado     
                         <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#B0CEAC] border-l-8 border-l-[#311808] rounded-xl">
                             <img 
-                                src={empleados}
+                                src={empleadosicon}
                                 className="w-10 h-10 p-1" 
                             />
                             <button
@@ -263,7 +316,7 @@ const Admin_Inicio = () => {
                         <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#f4eae3] hover:bg-[#B0CEAC] group focus-within:bg-[#a3968c]
                         focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent rounded-xl">
                             <img 
-                                src={empleados}
+                                src={empleadosicon}
                                 className="w-10 h-10 p-1" 
                             />
                             <button
@@ -369,10 +422,10 @@ const Admin_Inicio = () => {
                             </div>{/*Fin de la fila de datos */}
                         </div>
                         
-                        <div className="flex flex-col min-w-full h-full pt-6 gap-2 mt-14">
+                        <div className="flex flex-col min-w-full h-full pt-6 gap-2 mt-14 mb-8">
                             <p className="font-bold text-lg text-black ml-2">Ultimas ordenes</p>
                             
-                            <div className="flex flex-col flex-grow overflow-y-auto min-w-full shadow-xl bg-white max-h-[calc(100%-2rem)] mb-8">
+                            <div className="flex flex-col flex-grow min-w-full shadow-xl bg-white max-h-[calc(100%-2rem)]">
                                 <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
                                     <thead className="bg-[#311808] text-white sticky top-0 z-10">
                                         <tr>
@@ -413,12 +466,12 @@ const Admin_Inicio = () => {
                 {/* SECCION DE EMPLEADOS ////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
 
                 {Opcion === 'Empleados' && (
-                    <div className="font-Montserrat flex flex-col w-full h-auto bg-[#dde5b6] shadow-xl">
-                        <div className="w-full h-10 bg-[#6c584c] p-2 font-bold text-white text-center   ">
+                    <div className="font-Montserrat flex flex-col w-full h-auto bg-[#B0CEAC] shadow-xl rounded-xl">
+                        <div className="w-full h-14 bg-[#311808] p-4 font-bold text-white text-xl text-center rounded-t-xl">
                             <p>PANEL ADMINISTRADOR EMPLEADOS</p>
                         </div>
                         {/*Tipo navbar */}
-                        <header className="flex flex-row w-full h-auto bg-gray-600 justify-between gap-4">
+                        <header className="flex flex-row w-full h-auto bg-[#f0ead2] justify-between gap-4">
                             {/*Seccion inzquierda */}
                             <div className="w-1/2 h-auto text-left">
                                 {/*AGREGAR*/}
@@ -427,7 +480,7 @@ const Admin_Inicio = () => {
                                     limpiarInputs();
                                     setModo("agregar");
                                 }}
-                                className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
+                                className="w-1/4 h-10 bg-[#927c6e] font-bold text-white text-lg hover:bg-[#8a5a44]">
                                     Nuevo
                                 </button>
 
@@ -437,7 +490,7 @@ const Admin_Inicio = () => {
                                     limpiarInputs();
                                     setModo("editar");
                                 }}
-                                className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
+                                className="w-1/4 h-10 bg-[#927c6e] font-bold text-white text-lg hover:bg-[#8a5a44]">
                                     Editar
                                 </button>
 
@@ -447,7 +500,7 @@ const Admin_Inicio = () => {
                                     limpiarInputs();
                                     setModo("eliminar");
                                 }}
-                                className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
+                                className="w-1/4 h-10 bg-[#927c6e] font-bold text-white text-lg hover:bg-[#8a5a44]">
                                     Eliminar
                                 </button>
 
@@ -456,7 +509,7 @@ const Admin_Inicio = () => {
                                     limpiarInputs();
                                     setModo("consulta");
                                 }}
-                                className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
+                                className="w-1/4 h-10 bg-[#927c6e] font-bold text-white text-lg hover:bg-[#8a5a44]">
                                     Consultar
                                 </button>
                             </div>
@@ -464,56 +517,52 @@ const Admin_Inicio = () => {
                             {/*Seccion central */}
                             {/*Los botones de navegación solo estan disponibles en modo consulta */}
                             <div className="flex w-1/4 h-10 items-center">
-                                <button 
-                                disabled={modo !== "consulta"}
-                                className="flex-1 h-full bg-[#f0ead2]">
-                                    {`<==`}
+                                
+                                <button disabled={modo !== "consulta"} className="flex-1 h-full bg-[#f0ead2]">
+                                    <img src={control4} alt="retroceso" className="h-full mx-auto" />
                                 </button>
-                                <button 
-                                disabled={modo !== "consulta"}
-                                className="flex-1 h-full bg-[#f0ead2]">
-                                    {`<=`}
+
+                                <button disabled={modo !== "consulta"} className="flex-1 h-full bg-[#f0ead2]">
+                                    <img src={control1} alt="retroceso" className="h-6 mx-auto" />
                                 </button>
-                                <button 
-                                disabled={modo !== "consulta"}
-                                className="flex-1 h-full bg-[#f0ead2]">
-                                    {`=>`}
+
+                                <button disabled={modo !== "consulta"} className="flex-1 h-full bg-[#f0ead2]">
+                                    <img src={control2} alt="retroceso" className="h-6 mx-auto" />
                                 </button>
-                                <button 
-                                disabled={modo !== "consulta"}
-                                className="flex-1 h-full bg-[#f0ead2]">
-                                    {`==>`}
+
+                                <button disabled={modo !== "consulta"} className="flex-1 h-full bg-[#f0ead2]">
+                                    <img src={control3} alt="retroceso" className="h-full mx-auto" />
                                 </button>
+
                             </div>
 
                             {/*Seccion derecha */}
                             <div className="w-1/4 h-auto text-right">
-                                
                                 <button 
                                 disabled={modo === "consulta"}
                                 type="submit"
-                                className="w-1/2 h-10 bg-[#adc178] font-bold text-white hover:bg-[#94a764]">
+                                className="w-1/2 h-10 bg-[#3f5a3b] font-bold text-white text-lg hover:bg-[#94a764]">
                                     Guardar
                                 </button>
                                 <button 
                                 disabled={modo === "consulta"}
-                                className="w-1/2 h-10 bg-[#972d07] font-bold text-white hover:bg-[#852908]">
+                                className="w-1/2 h-10 bg-[#671212] font-bold text-white text-lg hover:bg-[#c96a6a]">
                                     Cancelar
                                 </button>
                             </div>
                         </header>
 
-                        {/* Resto de la pantalla */}   
-                        <div className="flex flex-col font-semibold w-full h-full text-left items-left min-h-full min-w-full p-8">
+                        {/* PANTALLA CON EL FORMULARIO //////////////////////////////////////////////////////////////////*/}   
+                        <div className="flex flex-col font-semibold w-full text-left items-start p-8">
                             <form  onSubmit={handleSubmit} className="grid grid-cols-2 gap-x-8 gap-y-4">
                                 {/* No. Empleado este elemento se escondera o no dependiendo de la opción seleccionada*/}
                                 {modo !== 'agregar' && (
                                     <div className="col-span-2">
-                                    <label className="block mb-1">No° Empleado</label>
+                                    <label className="block mb-1 text-lg font-bold">No° Empleado</label>
                                     <input
-                                        type="text"
+                                        type="text" 
                                         placeholder="123"
-                                        className="w-1/3 px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
+                                        className="w-1/3 px-3 py-2 focus:outline-none focus:ring focus:ring-[#3B2B26] rounded-lg"
                                     />
                                 </div>
                                 )}
@@ -521,49 +570,49 @@ const Admin_Inicio = () => {
 
                                 {/* Nombre */}
                                 <div className="">
-                                    <label className="block mb-1">Nombre</label>
+                                    <label className="block mb-1 text-lg font-bold">Nombre</label>
                                     <input
                                         type="text"
                                         placeholder="Nombre:"
                                         value={nombre}
                                         onChange={(e) => setNombre(e.target.value)}
-                                        className={`w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.nombre ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.nombre ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                 </div>
 
                                 {/* Apellido */}
                                 <div className="">
-                                    <label className="block mb-1">Apellido</label>
+                                    <label className="block mb-1 text-lg font-bold">Apellido</label>
                                     <input
                                         type="text"
                                         placeholder="Apellido:"
                                         value={apellido}
                                         onChange={(e) => setApellido(e.target.value)}
-                                        className={`w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.apellido ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.apellido ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                 </div>
                                 
                                 {/* Usuario */}
                                 <div className="">
-                                    <label className="block mb-1">Usuario</label>
+                                    <label className="block mb-1 text-lg font-bold">Usuario</label>
                                     <input
                                         type="text"
                                         placeholder="Usuario:"
                                         value={usuario}
                                         onChange={(e) => setUsuario(e.target.value)}
-                                        className={`w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.usuario ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.usuario ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                 </div>
                                 {/* Contraseña */}
                                 {modo === 'agregar' && (
                                 <div >
-                                    <label className="block mb-1">Contraseña</label>
+                                    <label className="block mb-1 text-lg font-bold">Contraseña</label>
                                     <input
                                         type="password"
                                         placeholder="Contraseña"
                                         value={contra}
                                         onChange={(e) => setContra(e.target.value)}
-                                        className={`w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.contra ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.contra ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                 </div>
                                     
@@ -572,12 +621,12 @@ const Admin_Inicio = () => {
 
                                 {/* Contacto correo - telefono */}
                                 <div className="col-span-2">
-                                    <label className="block mb-1">Contacto</label>
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <label className="block mb-1 text-lg font-bold">Contacto</label>
+                                    <div className="grid grid-cols-2 gap-8">
                                         <select 
                                         value={formaContacto}
                                         onChange={(e) => setFormaContacto(e.target.value)}
-                                        className="px-3 py-2 rounded-md w-full focus:outline-none focus:ring focus:ring-[#3B2B26]">
+                                        className="px-3 py-2 rounded-md w-full focus:outline-none focus:ring focus:ring-[#3B2B26] rounded-lg">
                                         <option value="">Seleccione...</option>
                                         <option value="telefono">Teléfono</option>
                                         <option value="correo">Correo</option>
@@ -587,7 +636,7 @@ const Admin_Inicio = () => {
                                         placeholder="ejemplo@correo.com"
                                         value={correoTel}
                                         onChange={(e) => setCorreoTel(e.target.value)}
-                                        className={`w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.correoTel ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.correoTel ? 'border-red-500' : 'border-gray-300'}`}
                                         />
                                     </div>
                                 </div>
@@ -596,6 +645,8 @@ const Admin_Inicio = () => {
                         </div>
                     </div>
                 )}
+
+                {/* SELECCION DE ESTADISTICAS ////////////////////////////////////////////////////////////////////////// */}
 
                 {Opcion === 'Estadisticas' && (
                     <div className="flex flex-col w-full h-full bg-red-200">

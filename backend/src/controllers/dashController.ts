@@ -1,7 +1,16 @@
 // src/controllers/dashController.ts
 
 import { Request, Response } from 'express';
-import {pedidosRecientes, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy} from '../services/dashService';
+import {pedidosRecientes, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy, ObtenerEmpleados} from '../services/dashService';
+
+export const obtenerEmpleados = async (req: Request, res: Response) => {
+    try {
+        const result = await ObtenerEmpleados();
+        res.status(200).json(result);
+    } catch (error: any) {
+        res.status(500).json({error: error.message});
+    }
+}
 
 export const obtenerPedidos = async (req: Request, res: Response) => {
     try {
