@@ -6,7 +6,13 @@ import { verificarTipoUsuario } from "../services/authService";
 import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
 
 import { registrarUsuario } from "../services/authService"; //Función para realziar el registro
-import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación    
+import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación 
+
+//Importacion de ICONS
+import dashboard from "../assets/Iconos/dashboard.png";
+import empleados from "../assets/Iconos/empleados.png";
+import estadisticas from "../assets/Iconos/estadisticas.png";
+import cerrar_sesion from "../assets/Iconos/cerrarsesion.png";
 
 /*
     To do list
@@ -47,7 +53,7 @@ const Admin_Inicio = () => {
     const [usuario, setUsuario] = useState("");
     const [contra, setContra] = useState("");
     const { clearTipoUsuario } = useAuth();
-    const [modo, setModo] = useState("consulta"); // valores: "normal", "editar", "consulta"
+    const [modo, setModo] = useState("consulta"); // valores: "agregar", "editar", "consulta", "eliminar" 
 
     const [errores, setErrores] = useState({
         nombre: "",
@@ -101,6 +107,16 @@ const Admin_Inicio = () => {
         } catch (error: any) {
             toast.error(error.message);
         }
+    };
+
+    // Función para limpiar los inputs
+    const limpiarInputs = () => {
+        setFormaContacto("");
+        setCorreoTel("");
+        setNombre("");
+        setApellido("");
+        setUsuario("");
+        setContra("");
     };
 
     // Aqui va ir la función para obtener al primer empleado
@@ -183,181 +199,218 @@ const Admin_Inicio = () => {
     
     return(
     // Fondo Cafe
-    <div className="flex flex-col h-screen w-full bg-[#9C6644] opacity-95 overflow-hidden">
+    <div className="flex flex-col h-screen w-full bg-[#B0CEAC] opacity-95 overflow-hidden">
         <main className="flex flex-row h-full w-full gap-10 p-8">
             {/*Sección izquierda de las herramientas */}
-            <div className="flex flex-col gap-2 w-1/4 h-auto  items-left ">
-                <div className="flex flex-row p-6 gap-2 bg-white shadow-md items-center">
+            <div className="flex flex-col gap-2 w-1/4 h-auto  items-left">
+                <div className="flex flex-row p-6 gap-2 bg-white space-x-2 shadow-md items-center rounded-xl">
                     <img
                         src={icon_usuario}
-                        className="w-12 h-12 p-1 rounded-full border border-gray-200"
+                        className="w-12 h-12 p-1 rounded-full border-2 border-[#311808]"
                     />
-                    <p className="font-Montserrat font-bold text-xl text-[#34251d] "> {Usuario} </p>  
+                    <p className="font-Montserrat font-black text-3xl text-[#311808]">{Usuario}</p>  
                 </div>
                 
                 
                 {/*Contenedor de las Opciones aplicando interpolación de clases*/}
-                <div className="font-Montserrat flex flex-col p-4 w-full h-full items-left justify-between shadow-2xl bg-white justify-left text-left gap-4 ">
+                <div className="font-Montserrat flex flex-col p-4 w-full h-full items-left justify-between shadow-2xl bg-white justify-left text-left gap-4 rounded-xl">
                     <div className="flex flex-col gap-4">
                         {/*Boton Dashboard */}
                     { Opcion === 'Dashboard' ? (
                         // Elemento al ser seleccionado
-                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#c49475] border-l-4 border-l-[#814721]">
-                            <div className="w-10 h-10 bg-gray-500"></div>
+                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#B0CEAC] border-l-8 border-l-[#311808] rounded-xl">
+                            {/**Esto de aqui simulaba el futuro icono */}
+                            <img 
+                                src={dashboard}
+                                className="w-10 h-10 p-1" 
+                            />
                             <button
                             onClick={() => setOpcion('Dashboard')} 
-                            className="w-full h-full text-left font-bold text-[#34251d]"> Dashboard 
+                            className="w-full h-full text-left text-xl font-bold text-black">Dashboard 
                             </button>
                         </div>
                     ) : (
                         // Elemento al no ser seleccionado
-                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
-                            <div className="w-10 h-10 bg-gray-500"></div>
+                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#f4eae3] hover:bg-[#B0CEAC] group focus-within:bg-[#a3968c] 
+                        focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent rounded-xl">
+                            <img 
+                                src={dashboard}
+                                className="w-10 h-10 p-1" 
+                            />
                             <button
                             onClick={() => setOpcion('Dashboard')} 
-                            className="w-full h-full text-left font-bold text-[#34251d]"> Dashboard 
+                            className="w-full h-full text-left text-lg font-bold text-black">Dashboard 
                             </button>
                         </div>
                     )}
                     
 
-                    {/*Boton Productos */}
+                    {/*Boton Empleados */}
                     { Opcion === 'Empleados' ? (
                         // Elemento al ser seleccionado     
-                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#c49475] border-l-4 border-l-[#814721]">
-                            <div className="w-10 h-10 bg-gray-500"></div>
+                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#B0CEAC] border-l-8 border-l-[#311808] rounded-xl">
+                            <img 
+                                src={empleados}
+                                className="w-10 h-10 p-1" 
+                            />
                             <button
                             onClick={() => setOpcion('Empleados')} 
-                            className="w-full h-full text-left font-bold text-[#34251d]"> Empleados 
+                            className="w-full h-full text-left text-xl font-bold text-black">Empleados 
                             </button>
                         </div>
                     ) : (
                         // Elemento al no ser seleccionado
-                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
-                            <div className="w-10 h-10 bg-gray-500"></div>
+                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#f4eae3] hover:bg-[#B0CEAC] group focus-within:bg-[#a3968c]
+                        focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent rounded-xl">
+                            <img 
+                                src={empleados}
+                                className="w-10 h-10 p-1" 
+                            />
                             <button
                             onClick={() => setOpcion('Empleados')} 
-                            className="w-full h-full text-left font-bold text-[#34251d]"> Empleados 
+                            className="w-full h-full text-left text-lg font-bold text-black">Empleados 
                             </button>
                         </div>
                     )}
-                     
+                    
                     {/*Boton clientes para checar nuestro clientes */}
                     { Opcion === 'Estadisticas' ? (
                         // Elemento al ser seleccionado
-                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#c49475] border-l-[#814721] border-l-4 ">
-                            <div className="w-10 h-10 bg-gray-500"></div>
+                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#B0CEAC] border-l-8 border-l-[#311808] rounded-xl">
+                            <img 
+                                src={estadisticas}
+                                className="w-10 h-10 p-1" 
+                            />
                             <button
                             onClick={() => setOpcion('Estadisticas')} 
-                            className="w-full h-full text-left font-bold text-[#34251d]"> Estadisticas 
+                            className="w-full h-full text-left text-xl font-bold text-black">Estadisticas 
                             </button>
                         </div>
                     ) : (
                         // Elemento al no ser seleccionado      
-                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
-                            <div className="w-10 h-10 bg-gray-500"></div>
+                        <div className="flex flex-row items-left gap-2 p-4 shadow-md bg-[#f4eae3] hover:bg-[#B0CEAC] group focus-within:bg-[#a3968c] 
+                        focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent rounded-xl">
+                            <img 
+                                src={estadisticas}
+                                className="w-10 h-10 p-1" 
+                            />
                             <button
                             onClick={() => setOpcion('Estadisticas')} 
-                            className="w-full h-full text-left font-bold text-[#34251d]"> Estadisticas 
+                            className="w-full h-full text-left text-lg font-bold text-black">Estadisticas 
                             </button>
                         </div>
                     )}
                     
                     </div>
                     <div>
-                        {/*Boton cerrar sesión*/} 
-                        <div className="flex flex-row items-left gap-2 p-4 bottom-0 shadow-md bg-white hover:bg-[#c49475] group focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent">
-                        <div className="w-10 h-10 bg-gray-500"></div>
-                        <button
-                        onClick={handleLogout} 
-                        className="w-full h-full text-left font-bold text-[#34251d]"> Cerrar sesión
-                        </button>
+                        {/* Botón cerrar sesión */}
+                        <div className="flex items-center gap-2 p-4 bottom-0 shadow-md bg-[#f4eae3] hover:bg-[#B0CEAC] group 
+                            focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent rounded-xl">
+                            <img 
+                                src={cerrar_sesion}
+                                className="w-10 h-10 p-1" 
+                            />
+                            <button
+                                onClick={handleLogout} 
+                                className="text-xl font-bold text-black flex items-center">
+                                Cerrar sesión
+                            </button>
                         </div>
                     </div>
                     
                 </div>
             </div>
             
-            {/*Sección derecha, se encontrarán los form*/}
-            <div className="font-Montserrat flex flex-col w-3/4 h-auto items-center shadow-xl bg-white p-10 ">
+            {/* SECCION DE DASHBOARD ////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
+            
+            <div className="font-Montserrat flex flex-col w-3/4 max-h-[90vh] overflow-y-auto items-center shadow-xl bg-[#f4eae3] px-10 py-8 rounded-xl">
                 { Opcion === 'Dashboard' && (
                     <div className="flex flex-col w-full h-full">
                         <div className="flex flex-col w-full h-1/3 gap-6"> 
                             <div className="flex flex-col">
-                                <p className="font-bold text-3xl text-[#34251d]">Dashboard</p>
+                                <p className="font-bold text-4xl text-[#311808]">DASHBOARD</p>
                             </div>
+
                             <div className="flex flex-col gap-2">
-                                <p className="font-bold text-md text-[#34251d] opacity-90"> En las ultimas 24 horas </p>
+                                <p className="font-bold text-lg text-black ml-2">En las ultimas 24 horas</p>
                                 <div className="flex flex-row gap-2">
-                                    <div className="flex flex-row w-1/3 h-auto shadow-xl bg-[#7F5539] rounded-2xl text-left p-6">
+
+                                    <div className="flex flex-row w-1/3 h-auto shadow-xl bg-[#311808] rounded-2xl text-left p-6">
                                         <div className="flex flex-row min-w-full w-1/2 h-full gap-4 font-semibold">
                                             <div className="flex flex-col text-left gap-1">
-                                                <p className="text-md text-white"> Total ventas </p>
+                                                <p className="text-2xl font-bold text-white">Total de ventas</p>
                                                 <p className="text-2xl text-white font-bold"> {Ventas?.toLocaleString("es-MX", { style: "currency", currency: "MXN" })} </p>
                                             </div> 
                                         </div>                           
                                     </div>
 
 
-                                    <div className="flex flex-row w-1/3 h-auto shadow-xl bg-[#7F5539] rounded-2xl text-left p-6">
+                                    <div className="flex flex-row w-1/3 h-auto shadow-xl bg-[#311808] rounded-2xl text-left p-6">
                                         <div className="flex flex-row min-w-full w-1/2 h-full gap-4 font-semibold">
                                             <div className="flex flex-col text-left gap-1">
-                                                <p className="text-md text-white"> Total pedidos </p>
-                                                <p className="text-2xl text-white font-bold"> {TotalPedidos} </p>
+                                                <p className="text-2xl font-bold text-white">Total de pedidos</p>
+                                                <p className="text-2xl text-white font-bold">{TotalPedidos}</p>
                                             </div> 
 
                                         </div>                           
                                     </div>
 
-                                    <div className="flex flex-row w-1/3 h-auto shadow-xl bg-[#7F5539] rounded-2xl text-left p-6">
+                                    <div className="flex flex-row w-1/3 h-auto shadow-xl bg-[#311808] rounded-2xl text-left p-6">
                                         <div className="flex flex-row min-w-full w-1/2 h-full gap-4 font-semibold">
                                             <div className="flex flex-col text-left gap-1">
-                                                <p className="text-md text-white"> Productos vendidos </p>
-                                                <p className="text-2xl text-white font-bold"> {Productos} </p>
+                                                <p className="text-2xl font-bold text-white">Productos vendidos</p>
+                                                <p className="text-2xl text-white font-bold">{Productos}</p>
                                             </div> 
 
                                         </div>                           
                                     </div>
-                                </div>    
+                                </div>   
+                                
                             </div>{/*Fin de la fila de datos */}
                         </div>
-                        <div className="flex flex-col min-w-full h-full pt-6 gap-2">
-                            <p className="font-bold text-md text-[#34251d] opacity-90"> Ultimas ordenes </p>
-                            <div className="flex flex-col overflow-x-auto h-2/3 min-w-full shadow-xl bg-white">
+                        
+                        <div className="flex flex-col min-w-full h-full pt-6 gap-2 mt-14">
+                            <p className="font-bold text-lg text-black ml-2">Ultimas ordenes</p>
+                            
+                            <div className="flex flex-col flex-grow overflow-y-auto min-w-full shadow-xl bg-white max-h-[calc(100%-2rem)] mb-8">
                                 <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-                                <thead className="bg-[#7F5539] text-white sticky top-0">
-                                    <tr>
-                                    <th className="py-2 px-4 text-left">No. Pedido</th>
-                                    <th className="py-2 px-4 text-left">Cliente</th>
-                                    <th className="py-2 px-4 text-left">Total</th>
-                                    <th className="py-2 px-4 text-left">Fecha</th>
-                                    <th className="py-2 px-4 text-left">Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {pedidos.map((pedido) => (
-                                    <tr key={pedido.id_pedido} className="border-b hover:bg-gray-100">
-                                        <td className="py-2 px-4">{pedido.id_pedido}</td>
-                                        <td className="py-2 px-4">{pedido.usuario.nombre}</td>
-                                        <td className="py-2 px-4">{pedido.total?.toLocaleString("es-MX", { style: "currency", currency: "MXN" })}</td>
-                                        <td className="py-2 px-4">{pedido.fecha}</td>
-                                        <td className="py-2 px-4">
-                                        <span className={`
-                                            px-2 py-1 rounded-full text-xs font-semibold
-                                            ${pedido.status === "entregado" ? "bg-green-200 text-green-800" : ""}
-                                            ${pedido.status === "pendiente" ? "bg-yellow-200 text-yellow-800" : ""}
-                                        `}>
-                                            {pedido.status}
-                                        </span>
-                                        </td>
-                                    </tr>
-                                    ))}
-                                </tbody>
+                                    <thead className="bg-[#311808] text-white sticky top-0 z-10">
+                                        <tr>
+                                            <th className="py-2 px-4 text-left">No. Pedido</th>
+                                            <th className="py-2 px-4 text-left">Cliente</th>
+                                            <th className="py-2 px-4 text-left">Total</th>
+                                            <th className="py-2 px-4 text-left">Fecha</th>
+                                            <th className="py-2 px-4 text-left">Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {pedidos.map((pedido) => (
+                                            <tr key={pedido.id_pedido} className="border-b hover:bg-gray-100">
+                                                <td className="py-2 font-semibold px-4">{pedido.id_pedido}</td>
+                                                <td className="py-2 font-semibold px-4">{pedido.usuario.nombre}</td>
+                                                <td className="py-2 font-semibold px-4">{pedido.total?.toLocaleString("es-MX", { style: "currency", currency: "MXN" })}</td>
+                                                <td className="py-2 font-semibold px-4">{pedido.fecha}</td>
+                                                <td className="py-2 px-4">
+                                                    <span className={`
+                                                        px-2 py-1 rounded-full text-sm font-semibold
+                                                        ${pedido.status === "entregado" ? "bg-green-200 text-green-800" : ""}
+                                                        ${pedido.status === "pendiente" ? "bg-yellow-200 text-yellow-800" : ""}
+                                                    `}>
+                                                        {pedido.status}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
                                 </table>
                             </div>
+
+
                         </div>
                     </div>
                 )}
+
+                {/* SECCION DE EMPLEADOS ////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
 
                 {Opcion === 'Empleados' && (
                     <div className="font-Montserrat flex flex-col w-full h-auto bg-[#dde5b6] shadow-xl">
@@ -368,20 +421,39 @@ const Admin_Inicio = () => {
                         <header className="flex flex-row w-full h-auto bg-gray-600 justify-between gap-4">
                             {/*Seccion inzquierda */}
                             <div className="w-1/2 h-auto text-left">
+                                {/*AGREGAR*/}
                                 <button 
-                                disabled={modo === "consulta"}
+                                onClick={() => {
+                                    limpiarInputs();
+                                    setModo("agregar");
+                                }}
                                 className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
                                     Nuevo
                                 </button>
+
+                                {/*EDITAR*/}
                                 <button 
-                                
+                                onClick={() => {
+                                    limpiarInputs();
+                                    setModo("editar");
+                                }}
                                 className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
                                     Editar
                                 </button>
-                                <button className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
+
+                                {/*ELIMINAR*/}
+                                <button 
+                                onClick={() => {
+                                    limpiarInputs();
+                                    setModo("eliminar");
+                                }}
+                                className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
                                     Eliminar
                                 </button>
+
+                                {/*CONSULTARS*/}
                                 <button onClick={() => {
+                                    limpiarInputs();
                                     setModo("consulta");
                                 }}
                                 className="w-1/4 h-10 bg-[#a98467] font-bold text-white hover:bg-[#8a5a44]">
@@ -390,6 +462,7 @@ const Admin_Inicio = () => {
                             </div>
                             
                             {/*Seccion central */}
+                            {/*Los botones de navegación solo estan disponibles en modo consulta */}
                             <div className="flex w-1/4 h-10 items-center">
                                 <button 
                                 disabled={modo !== "consulta"}
@@ -434,7 +507,8 @@ const Admin_Inicio = () => {
                         <div className="flex flex-col font-semibold w-full h-full text-left items-left min-h-full min-w-full p-8">
                             <form  onSubmit={handleSubmit} className="grid grid-cols-2 gap-x-8 gap-y-4">
                                 {/* No. Empleado este elemento se escondera o no dependiendo de la opción seleccionada*/}
-                                <div className="col-span-2">
+                                {modo !== 'agregar' && (
+                                    <div className="col-span-2">
                                     <label className="block mb-1">No° Empleado</label>
                                     <input
                                         type="text"
@@ -442,6 +516,8 @@ const Admin_Inicio = () => {
                                         className="w-1/3 px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]"
                                     />
                                 </div>
+                                )}
+                                
 
                                 {/* Nombre */}
                                 <div className="">
@@ -478,9 +554,9 @@ const Admin_Inicio = () => {
                                         className={`w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.usuario ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                 </div>
-
                                 {/* Contraseña */}
-                                <div className="">
+                                {modo === 'agregar' && (
+                                <div >
                                     <label className="block mb-1">Contraseña</label>
                                     <input
                                         type="password"
@@ -490,6 +566,9 @@ const Admin_Inicio = () => {
                                         className={`w-full px-3 py-2 rounded-sm focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.contra ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                 </div>
+                                    
+                                )} 
+                                
 
                                 {/* Contacto correo - telefono */}
                                 <div className="col-span-2">

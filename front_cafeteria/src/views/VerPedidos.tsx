@@ -1,12 +1,10 @@
 import NavBarEmp from "../components/NavBarEmp";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useNotificaciones } from "../contexts/NotificacionContext";
 import { actualizarPedido } from "../services/pedidoService";
 import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 
 const VerPedidos = () => {
-    const navigate = useNavigate();
     const { notis, eliminarNotificacion } = useNotificaciones();
     const [completados, setCompletados] = useState(0);
     
