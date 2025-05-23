@@ -1,10 +1,16 @@
 import QRCode from "react-qr-code";
 import { useNavigate } from "react-router-dom";
 import { useMenuContext } from '../contexts/ScrollContexto';
+import { useEffect, useState } from "react";
+import { verificarEstadoPedidos } from '../services/pedidoService';
 
 interface ModalCodigo {
     isOpen: boolean;
     onClose: () => void;
+}
+
+interface Pedido {
+  id_pqr: number;
 }
 
 const ModalQR: React.FC<ModalCodigo> = ({ isOpen, onClose }) => {
@@ -16,7 +22,33 @@ const ModalQR: React.FC<ModalCodigo> = ({ isOpen, onClose }) => {
 
     //Obtener datos del localStorage
     const pedidosConfirmados = JSON.parse(localStorage.getItem("pedidos_confirmados") || "[]");
+    const [pedidosFiltrados, setPedidosFiltrados] = useState<any[]>([]);
+    
+    useEffect(() => {
+        if (!isOpen) return;
 
+        const pedidosLocal: Pedido[] = JSON.parse(localStorage.getItem("pedidos_confirmados") || "[]");
+
+        if (!pedidosLocal.length) return;
+
+        const verificarPedidos = async () => {
+        try {
+            const estados = await verificarEstadoPedidos(pedidosLocal.map(p => p.id_pqr));
+
+            const pendientes = pedidosLocal.filter(pedido => {
+            const estado = estados.find(e => e.id_pedido === pedido.id_pqr);
+            return estado?.status !== "entregado";
+            });
+
+            setPedidosFiltrados(pendientes);
+            localStorage.setItem("pedidos_confirmados", JSON.stringify(pendientes));
+        } catch (err) {
+            console.error("Error al consultar estados de pedidos:", err);
+        }
+        };
+
+        verificarPedidos();
+    }, [isOpen]);
     // Si no hay datos en el localStorage, mostrar un mensaje
     if (!pedidosConfirmados.length) return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-2">

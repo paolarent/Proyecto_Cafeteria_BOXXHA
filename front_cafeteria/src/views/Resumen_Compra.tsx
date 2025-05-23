@@ -442,7 +442,7 @@ const Resumen_CompraView = () => {
                                     </h2>
 
                                     <input
-                                        type="text"
+                                        type="password"
                                         value={cvv}
                                         onChange={(e) => setCvv(e.target.value)}
                                         maxLength={4}

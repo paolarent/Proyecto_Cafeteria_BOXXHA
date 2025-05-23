@@ -91,3 +91,34 @@ export const crearNoti = async (idPedido: number) => {
     return { success: false, error };
   }
 }
+
+export const actualizarPedido = async (idPedido: number) => {
+  try {
+    const response = await axios.put(`${API_BASE_URL}/actualizarPedido`, {
+      idPedido
+    });
+    return { success: true, data: response.data};
+  } catch (error) {
+    console.error("Error al actualizar pedido:", error);
+    return { success: false, error };
+  }
+}
+
+interface PedidoEstadoRequest {
+  ids: number[];
+}
+
+interface PedidoEstadoResponse {
+  id_pedido: number;
+  status: string;
+}
+
+export const verificarEstadoPedidos = async (ids: number[]): Promise<PedidoEstadoResponse[]> => {
+  try {
+    const response = await axios.post<PedidoEstadoResponse[]>(`${API_BASE_URL}/estadoPedido`, { ids });
+    return response.data;
+  } catch (error) {
+    console.error('Error en verificarEstadoPedidos:', error);
+    throw error;
+  }
+};

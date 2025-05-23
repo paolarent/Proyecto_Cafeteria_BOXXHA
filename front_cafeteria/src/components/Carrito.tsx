@@ -95,6 +95,7 @@ const ModalCarrito: React.FC<Carrito> = ({ isOpen, onClose }) => {
                                         tamano={tamanoNombre}
                                         leche={lecheNombre}
                                         id_bebida={pedido.id_bebida}
+                                        id_postre={pedido.id_postre}
                                         id_tamano={pedido.id_tamano}
                                         id_leche={pedido.id_leche}
                                         extras={extrasNombre?.map(extra => ({ ...extra, precio: extra.precio}))}

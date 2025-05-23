@@ -344,7 +344,7 @@ const Admin_Inicio = () => {
                                         <td className="py-2 px-4">
                                         <span className={`
                                             px-2 py-1 rounded-full text-xs font-semibold
-                                            ${pedido.status === "completado" ? "bg-green-200 text-green-800" : ""}
+                                            ${pedido.status === "entregado" ? "bg-green-200 text-green-800" : ""}
                                             ${pedido.status === "pendiente" ? "bg-yellow-200 text-yellow-800" : ""}
                                         `}>
                                             {pedido.status}

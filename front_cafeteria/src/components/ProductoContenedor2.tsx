@@ -10,35 +10,59 @@ type ProductoContenedor2Props = {
     tamano?: string;
     leche?: string;
     id_bebida?: number;
+    id_postre?:number;
     id_tamano?: number;
     id_leche?: number;
     extras?: { id: number; nombre: string; cantidad: number; precio: number }[];
     total: number;
 };
 
-const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo, sabor, regular, tamano, leche, id_bebida, id_tamano, id_leche, extras, total }) => {
+const ProductoContenedor2: React.FC<ProductoContenedor2Props> = ({ nombre, tipo, sabor, regular, tamano, leche, id_bebida, id_postre, id_tamano, id_leche, extras, total }) => {
     const tiposValidos = ['caliente', 'frio', 'frappe', 'postre'] as const;
 
     const tipoSeguro = tiposValidos.includes(tipo as any) ? tipo as Pedido['tipo'] : undefined;
     const { agregarPedido, eliminarUnaCoincidencia } = usePedido();
 
-    const handleIncrementar= () => {
-        const nuevoPedido: Pedido = {
-            nombre,
-            tipo: tipoSeguro,
-            sabor,
-            completo: true,
-            total,
-            id_bebida,
-            id_tamano,
-            id_leche,
-            regular: regular === "Regular" ? true : regular === "Descafeinado" ? false : undefined,
-            extras: extras?.map(extra => ({
-            id: extra.id,
-            cantidad: extra.cantidad,
-            precio: extra.precio
-            }))
-        };
+    const handleIncrementar = () => {
+        let nuevoPedido: Pedido;
+
+        if (tipoSeguro === "postre") {
+            nuevoPedido = {
+                nombre,
+                tipo: tipoSeguro,
+                sabor,
+                completo: true,
+                total,
+                id_postre: id_postre, // usas id_bebida como id_postre
+                id_tamano: id_tamano ?? undefined,
+                extras: extras?.map(extra => ({
+                    id: extra.id,
+                    cantidad: extra.cantidad,
+                    precio: extra.precio
+                }))
+            };
+        } else {
+            nuevoPedido = {
+                nombre,
+                tipo: tipoSeguro,
+                sabor,
+                completo: true,
+                total,
+                id_bebida: id_bebida ?? undefined,
+                id_tamano: id_tamano ?? undefined,
+                id_leche: id_leche ?? undefined,
+                regular: regular === "Regular"
+                    ? true
+                    : regular === "Descafeinado"
+                        ? false
+                        : undefined,
+                extras: extras?.map(extra => ({
+                    id: extra.id,
+                    cantidad: extra.cantidad,
+                    precio: extra.precio
+                }))
+            };
+        }
 
         agregarPedido(nuevoPedido);
     };

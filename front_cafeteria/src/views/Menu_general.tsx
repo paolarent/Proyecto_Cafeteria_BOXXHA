@@ -31,13 +31,13 @@ const MenuBoxxha = () => {
                         backgroundSize: "auto",              
                         backgroundPosition: "center",
                         backgroundRepeat: "repeat",
-                        opacity: 0.1
+                        opacity: 0.2
                     }}
                 />                
                 <section className="w-full flex flex-col items-center pt-10 space-y-10 pb-6 relative z-10">
                     {/* Título principal */}
-                    <div className="flex flex-col relative bg-white p-4 bg-opacity-80 rounded-[40px] md:rounded-[70px] mx-4">
-                        <h2 className="font-Montserrat font-semibold text-3xl md:text-5xl text-center text-[#311808]">
+                    <div className="flex flex-col relative bg-white p-4 rounded-[40px] md:rounded-[70px] mx-4">
+                        <h2 className="font-Montserrat font-bold text-3xl md:text-5xl text-center text-[#311808]">
                             ¡ Descubre nuestro variado Menú !
                         </h2>
                     </div>

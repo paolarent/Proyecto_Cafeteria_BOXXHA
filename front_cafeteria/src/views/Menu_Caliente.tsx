@@ -50,7 +50,7 @@ const MenuBebidasCalView = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col ">
+        <div className="min-h-screen flex flex-col">
             <LayoutConNavbar />
 
             <main className="flex flex-1 bg-[#B0CEAC]">

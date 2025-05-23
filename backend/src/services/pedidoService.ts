@@ -98,3 +98,23 @@ export const crearPedido = async (input: PedidoInput, id_usuario: number) => {
 
   return pedido;
 };
+
+export const actualizarPedido = async (id_pedido: number) => {
+  await prisma.pedido.update({
+    where: {id_pedido},
+    data: {
+      status: pedido_status.entregado,
+    },
+  });
+};
+
+export const obtenerEstadosPedidos = async (ids: number[]) => {
+  return await prisma.pedido.findMany({
+    where: {
+      id_pedido: { in: ids},
+    }, select: {
+      id_pedido: true,
+      status: true,
+    },
+  });
+};

@@ -3,7 +3,6 @@ import { io } from '../app';
 import { usuario_tipo_usuario } from '@prisma/client';
 
 export const crearNotificacion = async (idPedido: number) => {
-    // Obtener el pedido con los detalles
     const pedido = await prisma.pedido.findUnique({
         where: { id_pedido: idPedido },
         include: {
@@ -13,7 +12,7 @@ export const crearNotificacion = async (idPedido: number) => {
                     tipo_usuario: true,
                 } 
             },
-            detalle_pedido:{
+            detalle_pedido: {
                 include: {
                     bebcaliente: true,
                     bebfria: true,
@@ -31,20 +30,19 @@ export const crearNotificacion = async (idPedido: number) => {
         }
     });
 
-        
     if (!pedido) {
         console.error(`Pedido ${idPedido} no encontrado`);
         return;
     }
 
-    const cliente = usuario_tipo_usuario.cliente;
-
-    if (pedido.usuario.tipo_usuario !== cliente) {
+    if (pedido.usuario.tipo_usuario !== usuario_tipo_usuario.cliente) {
         throw new Error('Abortar notificación para tipo de usuario no cliente');
     }
 
-    const detalles = pedido.detalle_pedido.map((detalle) => {
-        const nombreProducto = 
+    let mensaje = `TOKEN: ${pedido.codigo_conf} - CLIENTE: ${pedido.usuario.nombre}\n\n`;
+
+    mensaje += pedido.detalle_pedido.map((detalle, index) => {
+        const nombreProducto =
             detalle.bebcaliente?.nombre ||
             detalle.bebfria?.nombre ||
             detalle.frappe?.nombre ||
@@ -66,43 +64,43 @@ export const crearNotificacion = async (idPedido: number) => {
             'Tipo desconocido';
 
         const tamano = detalle.tamano?.nombre || 'Tamaño desconocido';
-        const mostrarRegular = typeof detalle.regular === 'boolean';
-        const tipoGrano = mostrarRegular ? (detalle.regular ? 'Regular' : 'Descafeinado') : null;
-        const leche = detalle.leche?.nombre?.toLowerCase(); // por si viene en mayúsculas
+        const tipoGrano = typeof detalle.regular === 'boolean'
+            ? (detalle.regular ? 'Regular' : 'Descafeinado') : null;
+
+        const leche = detalle.leche?.nombre?.toLowerCase();
         const mostrarLeche = leche && leche !== 'sin leche' && leche !== 'ninguno';
 
         const extrasArray = Array.isArray(detalle.detalleextra)
             ? detalle.detalleextra
                 .filter(e => e.extra?.nombre?.toLowerCase() !== 'ninguno')
-                .map(e => `${e.cantidad || 1}x ${e.extra?.nombre ?? 'Extra desconocido'}`)
+                .map(e => `${e.cantidad || 1}x ${e.extra?.nombre}`)
             : [];
 
-        const mostrarExtras = extrasArray.length > 0 && !extrasArray.every(e => e === 'ninguno');
+        let mensajeProducto = `• ${nombreProducto} ${saborProducto} (${tipoProducto})\n`;
+        if (tipoGrano) mensajeProducto += `  - Tipo de grano: ${tipoGrano}\n`;
+        if (mostrarLeche) mensajeProducto += `  - Leche: ${detalle.leche?.nombre}\n`;
+        mensajeProducto += `  - Tamaño: ${tamano}\n`;
+        if (extrasArray.length > 0) {
+            mensajeProducto += `  - Extras: ${extrasArray.join(', ')}\n`;
+        }
+        mensajeProducto += `  - Total: $${detalle.total?.toFixed(2) || '0.00'}\n`;
 
-        // Construir mensaje
-        let mensaje = `Producto: ${nombreProducto} ${saborProducto} - Tipo: ${tipoProducto}`; 
-        if (tipoGrano) mensaje += ` - Tipo de grano: ${tipoGrano}`;
-        if (mostrarLeche) mensaje += ` - Leche: ${detalle.leche?.nombre}`;
-        mensaje += ` - Tamaño: ${tamano}`;
-        if (mostrarExtras) mensaje += ` - Extras: ${extrasArray.join(', ')}`;
+        return mensajeProducto;
+    }).join('\n');
 
-        return mensaje;
-    }).join(' | ');
+    mensaje += `\nTOTAL DE PEDIDO: $${pedido.total?.toFixed(2) || '0.00'}`;
 
-        
-    const mensaje = `Pedido #${idPedido}, TOKEN: ${pedido.codigo_conf}, Cliente: ${pedido.usuario.nombre}: ${detalles} - TOTAL: $${pedido.total}`;
-
-    // Insertar la notificacion en la base de datos
+    // Insertar en la base de datos
     await prisma.notificacion.create({
         data: {
             id_pedido: idPedido,
-            mensaje: mensaje
+            mensaje
         }
     });
 
-    // Emitir la notificación a través de Socket.IO
+    // Emitir por socket
     io.emit('notificacion', {
         id_pedido: idPedido,
-        mensaje: mensaje
+        mensaje
     });
-}
+};

@@ -97,3 +97,22 @@ export const TotalProductosHoy = async () => {
     return resul ?? 0;
 };
 
+export const ObtenerEmpleados = async () => {
+    const Empleados = await prisma.usuario.findMany({
+        orderBy: {id_usuario: 'desc'},
+        select: {
+            id_usuario: true,
+            nombre: true,
+            apellido: true,
+            usuario: true,
+            numero_tel: true,
+            email: true,
+        },
+    })
+
+    return Empleados ?? 0;
+};
+
+export const EliminarEmpleado = async () => {
+    
+}

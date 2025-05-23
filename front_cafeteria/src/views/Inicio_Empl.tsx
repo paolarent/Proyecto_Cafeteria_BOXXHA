@@ -40,24 +40,23 @@ const InicioEmpleado = () => {
         verificarUsuario();
     }, [navigate]);
 
-    useEffect(() => {
-        const handleConnect = () => {
-            console.log('Conectado al socket');
-        };
+    // useEffect(() => {
+    //     const handleConnect = () => {
+    //         console.log('Conectado al socket');
+    //     };
 
-        const handleNotificacion = (data: { mensaje: string }) => {
-            toast.success('Nuevo pedido recibido');
-            agregarNotificacion(data.mensaje);
-        };
+    //     const handleNotificacion = () => {
+    //         toast.success('Nuevo pedido recibido');
+    //     };
 
-        socket.on('connect', handleConnect);
-        socket.on('notificacion', handleNotificacion);
+    //     socket.on('connect', handleConnect);
+    //     socket.on('notificacion', handleNotificacion);
 
-        return () => {
-            socket.off('connect', handleConnect);
-            socket.off('notificacion', handleNotificacion);
-        };
-    }, [agregarNotificacion]);
+    //     return () => {
+    //         socket.off('connect', handleConnect);
+    //         socket.off('notificacion', handleNotificacion);
+    //     };
+    // }, [agregarNotificacion]);
 
     return (
     <div className="relative min-h-screen overflow-hidden">

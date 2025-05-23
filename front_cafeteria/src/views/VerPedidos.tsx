@@ -1,10 +1,26 @@
 import NavBarEmp from "../components/NavBarEmp";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useNotificaciones } from "../contexts/NotificacionContext";
+import { actualizarPedido } from "../services/pedidoService";
+import fondoCafe from "../assets/fondo_cafe_mejorada.jpg";
 
 const VerPedidos = () => {
     const navigate = useNavigate();
-    const {notis} = useNotificaciones();
+    const { notis, eliminarNotificacion } = useNotificaciones();
+    const [completados, setCompletados] = useState(0);
+    
+    const handleEntregado = async (id_pedido: number) => {
+        console.log("Entregar pedido:", id_pedido);
+        try {
+            const response = await actualizarPedido(id_pedido);
+            console.log("Success: " ,response.data.message);
+            eliminarNotificacion(id_pedido);
+            setCompletados(completados+1);
+        } catch (error) {
+            console.log("Error al actualizar el pedido: ",error)
+        }
+    };
 
     return (
         <div className="min-h-screen flex flex-col bg-[#F7F7F7]">
@@ -13,63 +29,74 @@ const VerPedidos = () => {
                 <NavBarEmp />
             </header>
 
-            <main className="flex flex-1 bg-[#B0CEAC]">
-                {/* Sección izquierda - 2/3 */}
-                <section className="w-2/3 p-4 overflow-y-auto">
-                    {/* Pedido y su detalle */}
-                    <h2 className="text-4xl text-center font-bold m-4">PEDIDOS</h2>
-                    
-                    <div className="flex flex-col items-center gap-6 my-6">
-                        <div className="p-6 w-[75%] h-auto bg-white rounded-xl font-Montserrat font-bold text-black text-center text-xl shadow-sm">
+            <main className="flex flex-1">
+                {/* Sección principal */}
+                <section
+                    className="w-full p-4 overflow-y-auto relative"
+                    style={{
+                        backgroundImage: `url(${fondoCafe})`,
+                        backgroundPosition: "top",
+                        backgroundRepeat: "repeat",
+                    }}
+                >
+                    {/* Capa de color con opacidad */}
+                    <div
+                        className="absolute inset-0 z-0"
+                        style={{ backgroundColor: "#B0CEAC", opacity: 0.70 }}
+                    />
+
+                    <div className="relative z-10">
+                        {/* Encabezado superior */}
+                        <div className="flex flex-col sm:flex-row items-center justify-between px-6 mt-4 mb-8 space-y-4 sm:space-y-0">
+                            {/* PENDIENTES */}
+                            <div className="text-3xl flex items-center space-x-4 p-4 bg-white rounded-xl shadow-md min-w-[150px] justify-center">
+                                <span className="font-bold">Pendientes</span>
+                                <span className="text-[#671212] font-black">{notis.length}</span>
+                            </div>
+
+                            {/* TITULO CENTRADO */}
+                            <h2 className="text-3xl sm:text-4xl text-white font-bold text-center py-4 px-6 sm:px-14 bg-[#311808]
+                            rounded-xl shadow-md max-w-full sm:max-w-lg mx-auto">
+                                PEDIDOS
+                            </h2>
+
+                            {/* COMPLETADOS */}
+                            <div className="text-3xl flex items-center space-x-4 p-4 bg-white rounded-xl shadow-md min-w-[150px] justify-center">
+                                <span className="font-bold">Entregados</span>
+                                <span className="text-[#3f5a3b] font-black">{completados}</span>
+                            </div>
+                        </div>
+
+                        {/* Lista de pedidos */}
+                        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6 px-6 items-start">
                             {notis.length > 0 ? (
-                                <>
-                                    {notis.map((noti, index) => (
-                                        <div key={index}>
-                                            {noti}
+                                notis.map((noti) => (
+                                    <div
+                                        key={noti.id_pedido}
+                                        className="max-w-md w-full p-6 bg-white rounded-xl font-Montserrat font-semibold text-black text-center text-xl shadow-sm"
+                                    >
+                                        <p className="font-bold text-xl">ID Pedido: {noti.id_pedido}</p>
+                                        <p className="whitespace-pre-wrap">{noti.mensaje}</p>
+
+                                        <div className="flex justify-center mt-4">
+                                            <button
+                                                onClick={() => handleEntregado(noti.id_pedido)}
+                                                className="w-full sm:w-auto px-4 py-3 bg-[#3f5a3b] text-white text-lg lg:text-xl rounded-2xl hover:bg-[#716865] font-bold transition-transform duration-300 hover:scale-105"
+                                            >
+                                                Entregado
+                                            </button>
                                         </div>
-                                    ))}
-
-                                    <div className="flex justify-between mt-4 gap-4">
-                                        <button className="mt-4 w-full sm:w-auto px-4 py-3 lg:px-6 sm:py-3 bg-[#671212] text-white text-md sm:text-base lg:text-lg rounded-2xl hover:bg-[#716865] font-bold transform transition-transform duration-300 hover:scale-105">
-                                            Cancelar
-                                        </button>
-
-                                        <button className="mt-4 w-full sm:w-auto px-4 py-3 lg:px-6 sm:py-3 bg-[#3f5a3b] text-white text-md sm:text-base lg:text-lg rounded-2xl hover:bg-[#716865] font-bold transform transition-transform duration-300 hover:scale-105">
-                                            Entregado
-                                        </button>
                                     </div>
-                                </>
+                                ))
                             ) : (
-                                <p className="text-gray-600 text-lg">No hay pedidos pendientes</p>
+                                <div className="p-6 w-full font-bold rounded-xl text-black bg-white text-xl text-center shadow-sm">
+                                    No hay pedidos pendientes
+                                </div>
                             )}
                         </div>
                     </div>
-
-
                 </section>
-
-                {/* Sección derecha - 1/3 */}
-                <aside className="w-1/3 p-4 bg-[#7a5c49]">
-                    {/* Contenido de la derecha */}
-                    <div className="flex flex-col bg-white sm:w-full lg:w-[350px] max-w-3xl shadow-xl h-50 rounded-2xl mx-auto p-4 sm:p-10 gap-2 mt-4">
-                        <h2 className="flex justify-center text-black font-bold text-4xl mb-4">CANTIDAD</h2>
-
-                        <div className="flex justify-between mt-1 text-black font-bold text-2xl">
-                            <span>Pendientes</span>
-                            <span className="text-[#671212] font-black">10</span>
-                        </div>
-
-                        <div className="flex justify-between mt-1 text-black font-bold text-2xl">
-                            <span>Completados</span>
-                            <span className="text-[#3f5a3b] font-black">20</span>
-                        </div>
-                    </div>
-
-
-                    
-                </aside>
             </main>
-
         </div>
     );
 };
