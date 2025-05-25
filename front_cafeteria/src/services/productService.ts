@@ -31,13 +31,13 @@ export const getProductos = async (tabla: string) => {
 
 export const getLeches = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/leche`);
-      return response.data; 
+        const response = await axios.get(`${API_BASE_URL}/leche`);
+        return response.data; 
     } catch (error) {
-      console.error("Error al obtener las leches:", error);
-      return []; // En caso de error, devuelve un array vacío
+        console.error("Error al obtener las leches:", error);
+        return []; // En caso de error, devuelve un array vacío
     }
-  };
+};
 
 export const getExtras = async () => {
     try {

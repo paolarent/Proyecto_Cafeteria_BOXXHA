@@ -7,7 +7,7 @@ import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast par
 
 // Importación de los servicios
 import { obtenerPedidos, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy, obtenerEmpleados } from "../services/dashServices"
-import { registrarUsuario } from "../services/authService"; //Función para realziar el registro
+import { registrarUsuario, registrarUsuario_test } from "../services/authService"; //Función para realziar el registro
 import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación 
 
 //Importacion de ICONS
@@ -50,6 +50,12 @@ interface Empleado {
 
 // Ruta /admin_inicio
 const Admin_Inicio = () => {
+    const data2 = [
+    { categoria: "Bebidas calientes", cantidad: 10 },
+    { categoria: "Bebidas frías", cantidad: 7 },
+    { categoria: "Frappés", cantidad: 4 },
+    { categoria: "Postres", cantidad: 9 },
+    ];
     const [TotalPedidos, setTotalPedidos] = useState<number>(0); 
     const [Ventas, setVentas] = useState<number>(0);
     const [Productos, setProductos] = useState<number>(0);
@@ -61,6 +67,7 @@ const Admin_Inicio = () => {
 
     // Estado para manejar los datos del formulario
     const [formaContacto, setFormaContacto] = useState("");
+    const [id_usuario, setId_Usuario] = useState(0);
     const [correoTel, setCorreoTel] = useState("");
     const [nombre, setNombre] = useState("");
     const [apellido, setApellido] = useState("");
@@ -105,7 +112,6 @@ const Admin_Inicio = () => {
             setErrores(nuevosErrores);
             return;
         }
-
         const payload = {
             nombre,
             apellido,
@@ -116,17 +122,30 @@ const Admin_Inicio = () => {
             tpo_usuario,
         };
 
-        try {
-            await registrarUsuario(payload);
-            toast.success("Registro exitoso");
-            navigate("/login");
-        } catch (error: any) {
-            toast.error(error.message);
+        if (modo === "agregar") {
+            try {
+                await registrarUsuario_test(payload);
+                toast.success("Registro exitoso");
+                limpiarInputs();
+            } catch (error: any) {
+                toast.error(error.message);
+                limpiarInputs();
+            }        
+        } else if (modo === "editar") {
+            // lógica para editar usuario
+        } else if (modo === "eliminar") {
+            // lógica para eliminar usuario
+        } else if (modo === "consulta") {
+            buscarEmpleadoPorId(id_usuario);
         }
+        
+        
     };
 
-    // Función para limpiar los inputs
+
+    // Funciónes de navegación
     const limpiarInputs = () => {
+        setId_Usuario(0);
         setFormaContacto("");
         setCorreoTel("");
         setNombre("");
@@ -134,12 +153,26 @@ const Admin_Inicio = () => {
         setUsuario("");
         setContra("");
     };
-    
+    const irAlPrimero = () => {
+        setIndiceActual(0);
+    };
+
+    const irAlAnterior = () => {
+        setIndiceActual((prev) => (prev > 0 ? prev - 1 : empleados.length - 1));
+    };
+
+    const irAlSiguiente = () => {
+        setIndiceActual((prev) => (prev < empleados.length - 1 ? prev + 1 : 0));
+    };
+
+    const irAlUltimo = () => {
+        setIndiceActual(empleados.length -1);
+    };
     // Función para rellenar los datos de los empleados al consultar
     const RellenarDatosEmpleado = () => {
         const empleado = empleados[indiceActual];
         if (!empleado) return;
-
+        setId_Usuario(empleado.id_usuario || 1);
         setNombre(empleado.nombre || "");
         setApellido(empleado.apellido || "");
         setUsuario(empleado.usuario || "");
@@ -156,9 +189,38 @@ const Admin_Inicio = () => {
         }
     };
     
-    // Función para el 
+    // Función para el rellenado automatico del form
+    useEffect(() => {
+        if (empleados.length > 0) {
+            RellenarDatosEmpleado();
+        }
+    }, [indiceActual, empleados]);
 
+    const buscarEmpleadoPorId = (id: number) => {
 
+        const indice = empleados.findIndex(emp => emp.id_usuario === id);
+        console.log("Buscando ID:", id, "Índice encontrado:", indice);
+
+        if (indice !== -1) {
+            setIndiceActual(indice);
+            const empleado = empleados[indice];
+
+            setNombre(empleado.nombre);
+            setApellido(empleado.apellido);
+            setUsuario(empleado.usuario);
+            if (empleado.email) {
+                setCorreoTel(empleado.email);
+            } else if (empleado.numero_tel) {
+                setCorreoTel(empleado.numero_tel);
+            } else {
+                setCorreoTel("");
+            }
+
+            toast.success("Empleado encontrado");
+        } else {
+            toast.error("Empleado no encontrado");
+        }
+    };
     // Función para obtener los empleados
     useEffect(() => {
         const obtenerDatos = async () => {
@@ -477,39 +539,53 @@ const Admin_Inicio = () => {
                                 {/*AGREGAR*/}
                                 <button 
                                 onClick={() => {
-                                    limpiarInputs();
+                                    if(modo !== "agregar"){
+                                        limpiarInputs();
+                                    }
                                     setModo("agregar");
                                 }}
-                                className="w-1/4 h-10 bg-[#927c6e] font-bold text-white text-lg hover:bg-[#8a5a44]">
+                                className={`w-1/4 h-10 font-bold text-white text-lg 
+                                ${modo === "agregar" ? "bg-[#8a5a44]" : "bg-[#927c6e] hover:bg-[#8a5a44]"}`}>
                                     Nuevo
                                 </button>
 
                                 {/*EDITAR*/}
                                 <button 
                                 onClick={() => {
-                                    limpiarInputs();
+                                    if(modo !== "editar"){
+                                        limpiarInputs();
+                                    }
                                     setModo("editar");
                                 }}
-                                className="w-1/4 h-10 bg-[#927c6e] font-bold text-white text-lg hover:bg-[#8a5a44]">
+                                className={`w-1/4 h-10 font-bold text-white text-lg 
+                                ${modo === "editar" ? "bg-[#8a5a44]" : "bg-[#927c6e] hover:bg-[#8a5a44]"}`}>
                                     Editar
                                 </button>
 
                                 {/*ELIMINAR*/}
                                 <button 
                                 onClick={() => {
-                                    limpiarInputs();
+                                    if(modo !== "eliminar"){
+                                        limpiarInputs();
+                                    }
                                     setModo("eliminar");
                                 }}
-                                className="w-1/4 h-10 bg-[#927c6e] font-bold text-white text-lg hover:bg-[#8a5a44]">
+                                className={`w-1/4 h-10 font-bold text-white text-lg 
+                                ${modo === "eliminar" ? "bg-[#8a5a44]" :"bg-[#927c6e] hover:bg-[#8a5a44]"}`}>
                                     Eliminar
                                 </button>
-
+                                
                                 {/*CONSULTARS*/}
                                 <button onClick={() => {
-                                    limpiarInputs();
+                                    if(modo !== "consulta"){
+                                        limpiarInputs();
+                                        setIndiceActual(0);
+                                        RellenarDatosEmpleado();
+                                    }
                                     setModo("consulta");
                                 }}
-                                className="w-1/4 h-10 bg-[#927c6e] font-bold text-white text-lg hover:bg-[#8a5a44]">
+                                className={`w-1/4 h-10 font-bold text-white text-lg 
+                                ${modo === "consulta" ? "bg-[#8a5a44]" : "bg-[#927c6e] hover:bg-[#8a5a44]"}`}>
                                     Consultar
                                 </button>
                             </div>
@@ -518,31 +594,51 @@ const Admin_Inicio = () => {
                             {/*Los botones de navegación solo estan disponibles en modo consulta */}
                             <div className="flex w-1/4 h-10 items-center">
                                 
-                                <button disabled={modo !== "consulta"} className="flex-1 h-full bg-[#f0ead2]">
-                                    <img src={control4} alt="retroceso" className="h-full mx-auto" />
+                                <button disabled={modo !== "consulta"} 
+                                    onClick={() => {
+                                        irAlPrimero();
+                                    }}
+                                    className="flex-1 h-full bg-[#f0ead2] transform transition-transform duration-300 hover:scale-105">
+
+                                    <img src={control4} alt="ir a primero" className="h-full mx-auto" />
                                 </button>
 
-                                <button disabled={modo !== "consulta"} className="flex-1 h-full bg-[#f0ead2]">
-                                    <img src={control1} alt="retroceso" className="h-6 mx-auto" />
+                                <button disabled={modo !== "consulta"} 
+                                    onClick={() => {
+                                        irAlAnterior();
+                                    }}
+                                    className="flex-1 h-full bg-[#f0ead2] transform transition-transform duration-300 hover:scale-105">
+
+                                    <img src={control1} alt="ir a anterior" className="h-6 mx-auto" />
                                 </button>
 
-                                <button disabled={modo !== "consulta"} className="flex-1 h-full bg-[#f0ead2]">
-                                    <img src={control2} alt="retroceso" className="h-6 mx-auto" />
+                                <button disabled={modo !== "consulta"} 
+                                    onClick={() => {
+                                        irAlSiguiente();
+                                    }}
+                                    className="flex-1 h-full bg-[#f0ead2] transform transition-transform duration-300 hover:scale-105">
+
+                                    <img src={control2} alt="ir a siguiente" className="h-6 mx-auto" />
                                 </button>
 
-                                <button disabled={modo !== "consulta"} className="flex-1 h-full bg-[#f0ead2]">
-                                    <img src={control3} alt="retroceso" className="h-full mx-auto" />
-                                </button>
+                                <button disabled={modo !== "consulta"} 
+                                    onClick={() => {
+                                        irAlUltimo();
+                                    }}
+                                    className="flex-1 h-full bg-[#f0ead2] transform transition-transform duration-300 hover:scale-105">
 
+                                    <img src={control3} alt="ir al ultimo" className="h-full mx-auto" />
+                                </button>
+                                    
                             </div>
 
                             {/*Seccion derecha */}
                             <div className="w-1/4 h-auto text-right">
                                 <button 
-                                disabled={modo === "consulta"}
+                                form="formulario"
                                 type="submit"
                                 className="w-1/2 h-10 bg-[#3f5a3b] font-bold text-white text-lg hover:bg-[#94a764]">
-                                    Guardar
+                                    Realizar
                                 </button>
                                 <button 
                                 disabled={modo === "consulta"}
@@ -554,18 +650,36 @@ const Admin_Inicio = () => {
 
                         {/* PANTALLA CON EL FORMULARIO //////////////////////////////////////////////////////////////////*/}   
                         <div className="flex flex-col font-semibold w-full text-left items-start p-8">
-                            <form  onSubmit={handleSubmit} className="grid grid-cols-2 gap-x-8 gap-y-4">
+                            <form  id="formulario" onSubmit={modo === "agregar" ? handleSubmit : (e) => e.preventDefault()} className="grid grid-cols-2 gap-x-8 gap-y-4">
                                 {/* No. Empleado este elemento se escondera o no dependiendo de la opción seleccionada*/}
                                 {modo !== 'agregar' && (
-                                    <div className="col-span-2">
+                                <div className="col-span-2">
                                     <label className="block mb-1 text-lg font-bold">No° Empleado</label>
                                     <input
                                         type="text" 
                                         placeholder="123"
+                                        value={id_usuario === 0 ? "" : id_usuario}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            if (value === "") {
+                                            setId_Usuario(0);
+                                            } else {
+                                            const parsed = parseInt(value, 10);
+                                            if (!isNaN(parsed)) {
+                                                setId_Usuario(parsed);
+                                            }
+                                            }
+                                        }}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                            e.preventDefault(); 
+                                            buscarEmpleadoPorId(id_usuario);
+                                            }
+                                        }}
                                         className="w-1/3 px-3 py-2 focus:outline-none focus:ring focus:ring-[#3B2B26] rounded-lg"
                                     />
                                 </div>
-                                )}
+                                )}  
                                 
 
                                 {/* Nombre */}
@@ -575,8 +689,11 @@ const Admin_Inicio = () => {
                                         type="text"
                                         placeholder="Nombre:"
                                         value={nombre}
+                                        disabled={modo === "consulta"}
                                         onChange={(e) => setNombre(e.target.value)}
-                                        className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.nombre ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                            ${modo === 'consulta' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}
+                                            ${errores.nombre ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                 </div>
 
@@ -587,8 +704,11 @@ const Admin_Inicio = () => {
                                         type="text"
                                         placeholder="Apellido:"
                                         value={apellido}
+                                        disabled={modo === "consulta"}
                                         onChange={(e) => setApellido(e.target.value)}
-                                        className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.apellido ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                            ${modo === 'consulta' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}
+                                            ${errores.nombre ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                 </div>
                                 
@@ -599,8 +719,11 @@ const Admin_Inicio = () => {
                                         type="text"
                                         placeholder="Usuario:"
                                         value={usuario}
+                                        disabled={modo === "consulta"}
                                         onChange={(e) => setUsuario(e.target.value)}
-                                        className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.usuario ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                            ${modo === 'consulta' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}
+                                            ${errores.nombre ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                 </div>
                                 {/* Contraseña */}
@@ -623,21 +746,27 @@ const Admin_Inicio = () => {
                                 <div className="col-span-2">
                                     <label className="block mb-1 text-lg font-bold">Contacto</label>
                                     <div className="grid grid-cols-2 gap-8">
-                                        <select 
+                                    {modo !== 'consulta' && (
+                                    <select 
                                         value={formaContacto}
+                                        disabled={modo === "consulta"}
                                         onChange={(e) => setFormaContacto(e.target.value)}
                                         className="px-3 py-2 rounded-md w-full focus:outline-none focus:ring focus:ring-[#3B2B26] rounded-lg">
                                         <option value="">Seleccione...</option>
                                         <option value="telefono">Teléfono</option>
-                                        <option value="correo">Correo</option>
-                                        </select>
-                                        <input
-                                        type="text"
-                                        placeholder="ejemplo@correo.com"
-                                        value={correoTel}
-                                        onChange={(e) => setCorreoTel(e.target.value)}
-                                        className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.correoTel ? 'border-red-500' : 'border-gray-300'}`}
-                                        />
+                                        <option value="email">Correo</option>
+                                    </select> )}
+                                    <input
+                                    type="text"
+                                    placeholder={formaContacto === "email" ? "nombre@correo.com" 
+                                                : formaContacto === "telefono" ? "### ### ####" : "Email o Teléfono" }                                    
+                                    value={correoTel}
+                                    disabled={modo === "consulta"}
+                                    onChange={(e) => setCorreoTel(e.target.value)}
+                                            className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                            ${modo === 'consulta' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}
+                                            ${errores.nombre ? 'border-red-500' : 'border-gray-300'}`}
+                                    />
                                     </div>
                                 </div>
 
@@ -649,13 +778,25 @@ const Admin_Inicio = () => {
                 {/* SELECCION DE ESTADISTICAS ////////////////////////////////////////////////////////////////////////// */}
 
                 {Opcion === 'Estadisticas' && (
-                    <div className="flex flex-col w-full h-full bg-red-200">
-                        
+                    <div className="flex flex-col w-full h-full bg-white rounded-xl">
                     </div>
                 )}
             </div>
 
         </main>
+        <Toaster    //ESTILOS DE LAS NOTIFICACIONES
+                position="top-center"
+                reverseOrder={false}
+                toastOptions={{
+                duration: 3000,  //Duración de la notificación
+                style: {
+                    background: '#3B2B26',
+                    color: '#fff',
+                    fontFamily: 'Montserrat',
+                    fontWeight: 600
+                },
+                }}
+            />
     </div>
     );
 };

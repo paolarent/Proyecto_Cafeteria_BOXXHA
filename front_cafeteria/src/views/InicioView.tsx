@@ -82,7 +82,7 @@ const InicioView = () => {
                     ease: "linear",
                     repeat: Infinity,
                     }}
-                    className="whitespace-nowrap font-semibold text-lg flex gap-16"
+                    className="whitespace-nowrap font-semibold text-xl flex gap-16"
                 >
                     <span>☕ ¡Ordena y recoge! Tu café favorito te espera — Lunes a Sábado de 8am a 10pm y Domingo de 3pm a 9pm ☕</span>
                     <span>☕ ¡Ordena y recoge! Tu café favorito te espera — Lunes a Sábado de 8am a 10pm y Domingo de 3pm a 9pm ☕</span>

@@ -6,6 +6,7 @@ import {obtenerPedidos, TotalPedidos, TotalVentas, TotalProductos, obtenerEmplea
 const router = Router();
 //url base = https://h2x0xj0m-3000.usw3.devtunnels.ms/dashRoute
 
+
 // https://h2x0xj0m-3000.usw3.devtunnels.ms/dashRoute/obtenerEmpleados
 router.get("/obtenerEmpleados", obtenerEmpleados);
 

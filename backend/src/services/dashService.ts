@@ -1,8 +1,5 @@
 import {prisma} from '../lib/prisma';
 
-// Función que retorna las 25 ultimas ordenes para ser consultadas en el 
-// Dasborad
-
 
 export const pedidosRecientes = async () => {
     const pedidos =  await prisma.pedido.findMany({
@@ -99,7 +96,7 @@ export const TotalProductosHoy = async () => {
 
 export const ObtenerEmpleados = async () => {
     const Empleados = await prisma.usuario.findMany({
-        orderBy: {id_usuario: 'desc'},
+        orderBy: {id_usuario: 'asc'},
         where: {
             tipo_usuario: 'empleado',
         },

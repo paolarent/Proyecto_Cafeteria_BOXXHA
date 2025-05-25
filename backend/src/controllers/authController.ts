@@ -1,7 +1,7 @@
 // src/controllers/authController.ts
 import { Request, Response } from 'express';
 import { handleHttp } from '../utils/error.handle';
-import { registerUser, loginUser, verificarTipoUsuario } from '../services/authService';
+import { registerUser, loginUser, verificarTipoUsuario, registerEmpleado } from '../services/authService';
 
 const register = async (req: Request, res: Response) => {
     try {
@@ -10,6 +10,16 @@ const register = async (req: Request, res: Response) => {
     } catch (error: any) {
         res.status(401).json({ error: error.message });
         //handleHttp(res, "Error en el registro");
+    }
+}
+
+// Cambio de jorgon
+const registerEmp = async (req: Request, res: Response) => {
+    try {
+        const result = await registerEmpleado(req.body);
+        res.status(201).json(result);
+    } catch (error: any) {
+        res.status(500).json({error: error.message});
     }
 }
 
@@ -35,4 +45,4 @@ const verificarTipo = async (req: any, res: Response) => {
     }
 };
 
-export {register, login, verificarTipo};
+export {register, login, verificarTipo, registerEmp};

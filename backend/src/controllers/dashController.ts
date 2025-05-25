@@ -3,6 +3,8 @@
 import { Request, Response } from 'express';
 import {pedidosRecientes, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy, ObtenerEmpleados} from '../services/dashService';
 
+
+
 export const obtenerEmpleados = async (req: Request, res: Response) => {
     try {
         const result = await ObtenerEmpleados();

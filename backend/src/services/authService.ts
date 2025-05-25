@@ -65,8 +65,8 @@ export const registerUser = async (data: {
   };
 };
 
-// Copia para hacer pruebas para registrar el usuario
-export const registerUser_test = async (data: {
+
+export const registerEmpleado= async (data: {
   nombre: string,
   apellido: string,
   email?: string,
@@ -106,52 +106,39 @@ export const registerUser_test = async (data: {
   // Encriptar contraseña
   const hashedPassword = await bcrypt.hash(contra, 10);
   // Crear usuario
-  if(!tipo_usuario)
-  {
-    const newUser = await prisma.usuario.create({
-    data: {
-      nombre,
-      apellido,
-      usuario,
-      contra: hashedPassword,
-      email: email ?? null,
-      numero_tel: numero_tel ?? null,
-      // tipo_usuario: usuario_tipo_usuario.empleado ?? null, 
-      
+  const newUser = await prisma.usuario.create({
+  data: {
+    nombre,
+    apellido,
+    usuario,
+    contra: hashedPassword,
+    email: email ?? null,
+    numero_tel: numero_tel ?? null,
+    tipo_usuario: usuario_tipo_usuario.empleado,  
     }
-    
-    });
-    return {
-      message: "Usuario registrado exitosamente",
-      user: {
-        id: newUser.id_usuario,
-        usuario: newUser.usuario,
-        tipo_usuario: newUser.tipo_usuario
-      }
-    };
-  } else {
-    const newUser = await prisma.usuario.create({
-    data: {
-      nombre,
-      apellido,
-      usuario,
-      contra: hashedPassword,
-      email: email ?? null,
-      numero_tel: numero_tel ?? null,
-      tipo_usuario: usuario_tipo_usuario.empleado,  
-      }
-    });
-    return {
-      message: "Usuario registrado exitosamente",
-      user: {
-        id: newUser.id_usuario,
-        usuario: newUser.usuario,
-        tipo_usuario: newUser.tipo_usuario
-      }
-    };
-  }
-
+  });
+  return {
+    message: "Usuario registrado exitosamente",
+    user: {
+      id: newUser.id_usuario,
+      usuario: newUser.usuario,
+      tipo_usuario: newUser.tipo_usuario
+    }
+  };
   
+};
+
+export const updateEmpleado = async (data: {
+  nombre: string,
+  apellido: string,
+  email?: string,
+  numero_tel?: string,
+  usuario: string,
+  contra: string,
+  tipo_usuario?: string,
+}) => {
+  const { nombre, apellido, email, numero_tel, usuario, contra, tipo_usuario } = data;
+
 };
 
 export const loginUser = async (identificador: string, contra: string) => {

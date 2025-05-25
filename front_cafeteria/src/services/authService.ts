@@ -30,6 +30,32 @@ export const registrarUsuario = async (datos: any) => {
   
 };
 
+export const registrarUsuario_test = async (datos: any) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/testregister`, datos, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return response.data;
+  } catch (error: any) {
+    console.error("Error al registrar:", error);
+  
+    if (error.response) {
+      console.error("Detalle del error:", error.response.data);
+      throw new Error(error.response.data.message || "Error en el registro");
+    } else if (error.request) {
+      console.error("No se recibió respuesta del servidor", error.request);
+      throw new Error("No se recibió respuesta del servidor");
+    } else {
+      console.error("Error desconocido", error.message);
+      throw new Error("Error desconocido al registrar");
+    }
+  }
+  
+};
+
 export const loginUser = async (identificador: string, contra: string) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/login`, {
