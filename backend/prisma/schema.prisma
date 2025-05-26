@@ -90,7 +90,7 @@ model leche {
 model notificacion {
   id_notificacion Int    @id @default(autoincrement())
   id_pedido       Int
-  mensaje         String @db.VarChar(150)
+  mensaje         String @db.VarChar(1000)
   pedido          pedido @relation(fields: [id_pedido], references: [id_pedido], onDelete: NoAction, onUpdate: NoAction, map: "fk_pedido_notif")
 
   @@index([id_pedido], map: "fk_pedido_notif_idx")
@@ -148,6 +148,7 @@ model usuario {
   contra         String               @db.VarChar(70)
   tipo_usuario   usuario_tipo_usuario @default(cliente)
   fecha_registro DateTime             @default(now()) @db.Timestamp(0)
+  status         usuario_status       @default(A)
   pedido         pedido[]
 
   @@index([email], map: "email_idx")
@@ -175,4 +176,9 @@ enum usuario_tipo_usuario {
   cliente
   empleado
   admin
+}
+
+enum usuario_status {
+  A
+  B
 }

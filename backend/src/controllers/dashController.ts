@@ -1,10 +1,31 @@
 // src/controllers/dashController.ts
 
 import { Request, Response } from 'express';
-import {pedidosRecientes, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy, ObtenerEmpleados} from '../services/dashService';
+import {actualizarStatusEmpleado, editarEmpleado, pedidosRecientes, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy, ObtenerEmpleados} from '../services/dashService';
 
+export const actualizarEstado = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const {status} = req.body;
+        const empleadoId = Number(id);
+        const result = await actualizarStatusEmpleado(empleadoId, status);
+        res.status(200).json(result);
+    } catch (error: any) {
+        res.status(500).json({error: error.message});
+    }
+}
 
-
+export const actualizarEmpleado = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const empleadoData = req.body;
+        const empleadoId = Number(id);
+        const result = await editarEmpleado(empleadoId, empleadoData);
+        res.status(200).json(result);
+    } catch (error: any) {
+        res.status(500).json({error: error.message});
+    }
+}
 export const obtenerEmpleados = async (req: Request, res: Response) => {
     try {
         const result = await ObtenerEmpleados();

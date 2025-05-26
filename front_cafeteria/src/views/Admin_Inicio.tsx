@@ -6,8 +6,8 @@ import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast par
 
 
 // Importación de los servicios
-import { obtenerPedidos, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy, obtenerEmpleados } from "../services/dashServices"
-import { registrarUsuario, registrarUsuario_test } from "../services/authService"; //Función para realziar el registro
+import { actualizarStatus, actualizarEmpleado, obtenerPedidos, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy, obtenerEmpleados } from "../services/dashServices"
+import { registrarUsuario_test } from "../services/authService"; //Función para realziar el registro
 import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación 
 
 //Importacion de ICONS
@@ -22,12 +22,12 @@ import control4 from "../assets/Iconos/avanzar_rapido2.png";
 
 /*
     To do list
-    - Logica del registro (llamada correcta a la función, editar o crear una función que ingrese el tipo de usuario 'Empleado')
-    - Instalar Recharts (Meter Gráficos)
-    - Escoger graficos
-        1.Grafico de pastel tipo de productos vendidos (bebFria 24%, bebCal 30%, Frappes 27%, Postres restante%)
-        2.Producto más vendido
-        
+    - Adaptar el modal de la andrea para confirmar si se desea editar, agregar, eliminar dicho usuario
+    - Buscar y meter las estadisticas
+        - Bedida / postre más vendido *traerme la img
+        - Ventas por categoria pastel
+        - Clientes mas frecuentes tabla
+        - 
 */
 interface Pedido {
     id_pedido: number;
@@ -50,12 +50,6 @@ interface Empleado {
 
 // Ruta /admin_inicio
 const Admin_Inicio = () => {
-    const data2 = [
-    { categoria: "Bebidas calientes", cantidad: 10 },
-    { categoria: "Bebidas frías", cantidad: 7 },
-    { categoria: "Frappés", cantidad: 4 },
-    { categoria: "Postres", cantidad: 9 },
-    ];
     const [TotalPedidos, setTotalPedidos] = useState<number>(0); 
     const [Ventas, setVentas] = useState<number>(0);
     const [Productos, setProductos] = useState<number>(0);
@@ -96,45 +90,84 @@ const Admin_Inicio = () => {
             nombre: nombre.trim() === "" ? "Campo obligatorio" : "",
             apellido: apellido.trim() === "" ? "Campo obligatorio" : "",
             usuario: usuario.trim() === "" ? "Campo obligatorio" : "",
-            contra: contra.trim() === "" ? "Campo obligatorio" : "",
-            correoTel:
-                formaContacto === "email" && !emailRegex.test(correoTel)
+            contra:
+            modo === "agregar" && contra.trim() === ""
+                ? "Campo obligatorio"
+                : "",
+            correoTel: correoTel.trim() === ""
+                ? "Campo obligatorio"
+                : formaContacto === "email" && !emailRegex.test(correoTel)
                 ? "Formato de correo inválido"
                 : formaContacto === "telefono" && !telefonoRegex.test(correoTel)
                 ? "Formato de teléfono inválido"
                 : "",
         };
 
+        console.log(errores);
+        console.log("1:", nombre, " 2:", apellido, " 3:", usuario, " 4:", contra, " 5:", correoTel )
         setErrores(nuevosErrores);
-
         if (Object.values(nuevosErrores).some((msg) => msg !== "")) {
             toast.error("Por favor corrige los errores.");
             setErrores(nuevosErrores);
             return;
         }
-        const payload = {
-            nombre,
-            apellido,
-            usuario,
-            contra,
-            ...(formaContacto === "email" && { email: correoTel }),
-            ...(formaContacto === "telefono" && { numero_tel: correoTel.replace(/\s+/g, '')}),
-            tpo_usuario,
-        };
-
+        
         if (modo === "agregar") {
+            console.log("Agregando....")
+            const payload = {
+                nombre,
+                apellido,
+                usuario,
+                ...(contra && { contra }), // Solo incluir contra si tiene valor
+                ...(formaContacto === "email" && { email: correoTel }),
+                ...(formaContacto === "telefono" && { numero_tel: correoTel.replace(/\s+/g, '')}),
+                ...(modo === "agregar" && { tpo_usuario }),
+            };
             try {
                 await registrarUsuario_test(payload);
+                const datosActualizados = await obtenerEmpleados();
+                setEmpleados(datosActualizados);
                 toast.success("Registro exitoso");
                 limpiarInputs();
+                
             } catch (error: any) {
                 toast.error(error.message);
                 limpiarInputs();
             }        
         } else if (modo === "editar") {
             // lógica para editar usuario
+            const payload = {
+                nombre,
+                apellido,
+                usuario,
+                correoTel,
+            };
+            const id = id_usuario;
+            console.log("Editando....", "id", id, "payload", payload)
+            
+            try {
+                await actualizarEmpleado(id, payload);
+                const datosActualizados = await obtenerEmpleados();
+                setEmpleados(datosActualizados);
+                toast.success("Actualización exitosa");
+                limpiarInputs();
+                
+            } catch (error: any) {
+                toast.error(error.message);
+                limpiarInputs();
+            }   
         } else if (modo === "eliminar") {
-            // lógica para eliminar usuario
+            try{
+                await actualizarStatus(id_usuario, 'B');
+                const datosActualizados = await obtenerEmpleados();
+                setEmpleados(datosActualizados);
+                toast.success("Se elimino correctamente");
+                limpiarInputs();
+            } catch (error: any){
+                toast.error(error.message);
+                limpiarInputs();
+            }
+            
         } else if (modo === "consulta") {
             buscarEmpleadoPorId(id_usuario);
         }
@@ -176,9 +209,8 @@ const Admin_Inicio = () => {
         setNombre(empleado.nombre || "");
         setApellido(empleado.apellido || "");
         setUsuario(empleado.usuario || "");
-
         if (empleado.email) {
-            setFormaContacto("correo");
+            setFormaContacto("email");
             setCorreoTel(empleado.email);
         } else if (empleado.numero_tel) {
             setFormaContacto("telefono");
@@ -199,7 +231,6 @@ const Admin_Inicio = () => {
     const buscarEmpleadoPorId = (id: number) => {
 
         const indice = empleados.findIndex(emp => emp.id_usuario === id);
-        console.log("Buscando ID:", id, "Índice encontrado:", indice);
 
         if (indice !== -1) {
             setIndiceActual(indice);
@@ -209,8 +240,10 @@ const Admin_Inicio = () => {
             setApellido(empleado.apellido);
             setUsuario(empleado.usuario);
             if (empleado.email) {
+                setFormaContacto("email");
                 setCorreoTel(empleado.email);
             } else if (empleado.numero_tel) {
+                setFormaContacto("telefono");
                 setCorreoTel(empleado.numero_tel);
             } else {
                 setCorreoTel("");
@@ -650,7 +683,7 @@ const Admin_Inicio = () => {
 
                         {/* PANTALLA CON EL FORMULARIO //////////////////////////////////////////////////////////////////*/}   
                         <div className="flex flex-col font-semibold w-full text-left items-start p-8">
-                            <form  id="formulario" onSubmit={modo === "agregar" ? handleSubmit : (e) => e.preventDefault()} className="grid grid-cols-2 gap-x-8 gap-y-4">
+                            <form  id="formulario" onSubmit={handleSubmit} className="grid grid-cols-2 gap-x-8 gap-y-4">
                                 {/* No. Empleado este elemento se escondera o no dependiendo de la opción seleccionada*/}
                                 {modo !== 'agregar' && (
                                 <div className="col-span-2">
@@ -689,12 +722,14 @@ const Admin_Inicio = () => {
                                         type="text"
                                         placeholder="Nombre:"
                                         value={nombre}
-                                        disabled={modo === "consulta"}
+                                        disabled={modo === "consulta" || modo === "eliminar"}
                                         onChange={(e) => setNombre(e.target.value)}
                                         className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]
                                             ${modo === 'consulta' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}
+                                            ${modo === 'eliminar' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}
                                             ${errores.nombre ? 'border-red-500' : 'border-gray-300'}`}
                                     />
+                                    {errores.nombre && <p className="text-red-500 text-xs">{errores.nombre}</p>}
                                 </div>
 
                                 {/* Apellido */}
@@ -704,12 +739,14 @@ const Admin_Inicio = () => {
                                         type="text"
                                         placeholder="Apellido:"
                                         value={apellido}
-                                        disabled={modo === "consulta"}
+                                        disabled={modo === "consulta" || modo === "eliminar"}
                                         onChange={(e) => setApellido(e.target.value)}
                                         className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]
                                             ${modo === 'consulta' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}
+                                            ${modo === 'eliminar' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}
                                             ${errores.nombre ? 'border-red-500' : 'border-gray-300'}`}
                                     />
+                                    {errores.apellido && <p className="text-red-500 text-xs">{errores.apellido}</p>}
                                 </div>
                                 
                                 {/* Usuario */}
@@ -719,12 +756,14 @@ const Admin_Inicio = () => {
                                         type="text"
                                         placeholder="Usuario:"
                                         value={usuario}
-                                        disabled={modo === "consulta"}
+                                        disabled={modo === "consulta " || modo === "eliminar"}
                                         onChange={(e) => setUsuario(e.target.value)}
                                         className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]
                                             ${modo === 'consulta' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}
+                                            ${modo === 'eliminar' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}
                                             ${errores.nombre ? 'border-red-500' : 'border-gray-300'}`}
                                     />
+                                    {errores.usuario && <p className="text-red-500 text-xs">{errores.usuario}</p>}
                                 </div>
                                 {/* Contraseña */}
                                 {modo === 'agregar' && (
@@ -735,7 +774,8 @@ const Admin_Inicio = () => {
                                         placeholder="Contraseña"
                                         value={contra}
                                         onChange={(e) => setContra(e.target.value)}
-                                        className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]${errores.contra ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                        ${errores.contra ? 'border-red-500' : 'border-gray-300'}`}
                                     />
                                 </div>
                                     
@@ -746,27 +786,29 @@ const Admin_Inicio = () => {
                                 <div className="col-span-2">
                                     <label className="block mb-1 text-lg font-bold">Contacto</label>
                                     <div className="grid grid-cols-2 gap-8">
-                                    {modo !== 'consulta' && (
+                                    {modo !== 'consulta'  && (
                                     <select 
                                         value={formaContacto}
-                                        disabled={modo === "consulta"}
+                                        disabled={modo === "consulta" || modo === "eliminar"}
                                         onChange={(e) => setFormaContacto(e.target.value)}
-                                        className="px-3 py-2 rounded-md w-full focus:outline-none focus:ring focus:ring-[#3B2B26] rounded-lg">
+                                        className={`px-3 py-2 rounded-md w-full focus:outline-none focus:ring focus:ring-[#3B2B26] rounded-lg
+                                        ${modo === 'eliminar' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}`}>
                                         <option value="">Seleccione...</option>
                                         <option value="telefono">Teléfono</option>
                                         <option value="email">Correo</option>
                                     </select> )}
-                                    <input
-                                    type="text"
-                                    placeholder={formaContacto === "email" ? "nombre@correo.com" 
-                                                : formaContacto === "telefono" ? "### ### ####" : "Email o Teléfono" }                                    
-                                    value={correoTel}
-                                    disabled={modo === "consulta"}
-                                    onChange={(e) => setCorreoTel(e.target.value)}
-                                            className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]
-                                            ${modo === 'consulta' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}
-                                            ${errores.nombre ? 'border-red-500' : 'border-gray-300'}`}
-                                    />
+                                        <input
+                                        type="text"
+                                        placeholder={formaContacto === "email" ? "nombre@correo.com" 
+                                                    : formaContacto === "telefono" ? "### ### ####" : "Email o Teléfono" }                                    
+                                        value={correoTel}
+                                        disabled={modo === "consulta" || modo === "eliminar"}
+                                        onChange={(e) => setCorreoTel(e.target.value)}
+                                                className={`w-full px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-[#3B2B26]
+                                                ${modo === 'consulta' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}
+                                                ${modo === 'eliminar' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}
+                                                ${errores.correoTel ? 'border-red-500' : 'border-gray-300'}`}
+                                        />
                                     </div>
                                 </div>
 
