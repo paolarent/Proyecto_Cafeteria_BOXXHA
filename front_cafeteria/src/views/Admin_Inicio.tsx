@@ -3,10 +3,16 @@ import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { verificarTipoUsuario } from "../services/authService";
 import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
+import { getImagenCarrito } from "../data/imagenesCarrito.ts"; 
+
+// Importación de graficos
+import GraficoVentas  from '../components/Graficos';
 
 
 // Importación de los servicios
 import { actualizarStatus, actualizarEmpleado, obtenerPedidos, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy, obtenerEmpleados } from "../services/dashServices"
+import { ProductoEstrella, Ventas_Categoria } from "../services/statsService.ts"
+ 
 import { registrarUsuario_test } from "../services/authService"; //Función para realziar el registro
 import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación 
 
@@ -39,6 +45,18 @@ interface Pedido {
     }   
 }
 
+interface ProductoEstrella {
+  tipo: string;
+  nombre: string;
+  sabor: string;
+  imagen?: string;
+}
+
+interface VentasCategorias {
+    categoria: string,
+    cant: number,
+}
+
 interface Empleado {
   id_usuario: number;
   nombre: string;
@@ -68,10 +86,15 @@ const Admin_Inicio = () => {
     const [usuario, setUsuario] = useState("");
     const [contra, setContra] = useState("");
     const { clearTipoUsuario } = useAuth();
+
+    // Estados exclusivos del dashboard
     const [modo, setModo] = useState("consulta"); // valores: "agregar", "editar", "consulta", "eliminar" 
     const [empleados, setEmpleados] = useState<Empleado[]>([]);
     const [indiceActual, setIndiceActual] = useState(0);
 
+    // Estados de estadisitcas
+    const [productoEstrella, setProductoEstrella] = useState<ProductoEstrella | null>(null);
+    const [VentasCategoria, setVentasCategorias] = useState<VentasCategorias[]>([]);
     const [errores, setErrores] = useState({
         nombre: "",
         apellido: "",
@@ -82,6 +105,8 @@ const Admin_Inicio = () => {
     // Cambiar el regex del telefono 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const telefonoRegex = /^([0-9]{3})+( )+([0-9]{3})+( )+([0-9]{4})$/;
+
+    
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -223,10 +248,42 @@ const Admin_Inicio = () => {
     
     // Función para el rellenado automatico del form
     useEffect(() => {
-        if (empleados.length > 0) {
+        if (empleados.length > 0 && modo === 'consulta') {
             RellenarDatosEmpleado();
         }
     }, [indiceActual, empleados]);
+
+    //función para obtener el producto estrella
+    const obtenerProductoEstrellaConImagen = async (): Promise<ProductoEstrella | null> => {
+        console.log("Entrando a obtener producto estrella")
+        try {
+            const producto = await ProductoEstrella(); // backend
+            if (!producto.tipo || !producto.nombre) return null;
+            const imagen = getImagenCarrito(producto.tipo, producto.nombre);
+            console.log(producto)
+            return { ...producto, imagen };
+        } catch (error) {
+            console.error("Error al obtener producto estrella:", error);
+            return null;
+        }
+    };
+
+    // Función para obtener los datos de las vetnas por categoria
+    useEffect(() => {
+        const VentasCategoria= async () => {
+            const resultado = await Ventas_Categoria();
+            if (resultado) setVentasCategorias(resultado);
+        };
+        VentasCategoria();
+    }, []);
+
+    useEffect(() => {
+        const obtenerProducto = async () => {
+            const resultado = await obtenerProductoEstrellaConImagen();
+            if (resultado) setProductoEstrella(resultado);
+        };
+        obtenerProducto();
+    }, []);
 
     const buscarEmpleadoPorId = (id: number) => {
 
@@ -820,7 +877,27 @@ const Admin_Inicio = () => {
                 {/* SELECCION DE ESTADISTICAS ////////////////////////////////////////////////////////////////////////// */}
 
                 {Opcion === 'Estadisticas' && (
-                    <div className="flex flex-col w-full h-full bg-white rounded-xl">
+                    <div className="flex flex-col w-full h-full rounded-xl">
+                        <div className="flex flex-row w-full h-auto p-4 gap-4 text-center">
+                            {/*Editar esto como tipo card, importar la img desde el diccionario*/}
+                            <div className="w-1/2 h-full bg-white rounded-xl shadow-lg p-6 font-semibold">
+                                <h2 className="text-2xl mb-6 border-b-2 border-gray-200 pb-2">Producto más vendido</h2>
+                                <div className="flex flex-col items-center gap-6">
+                                    <img 
+                                    className="w-48 h-48 object-cover rounded-lg shadow-md" 
+                                    src={productoEstrella?.imagen} 
+                                    alt={productoEstrella?.nombre} 
+                                    />
+                                    <div className="flex flex-col justify-center">
+                                    <p className="text-xl text-gray-800">{productoEstrella?.nombre}</p>
+                                    <p className="text-gray-500 mt-2 italic">{productoEstrella?.sabor}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <GraficoVentas data={VentasCategoria}/>
+
+                        </div>
+                        
                     </div>
                 )}
             </div>
