@@ -5,13 +5,14 @@ import { verificarTipoUsuario } from "../services/authService";
 import { toast, Toaster } from 'react-hot-toast'; //Importar react-hot-toast para las notificaciones
 import { getImagenCarrito } from "../data/imagenesCarrito.ts"; 
 
-// Importación de graficos
+// Importación de graficos/modales
 import GraficoVentas  from '../components/Graficos';
-
+import ModalConfirmCRUD from '../components/ModalConfirmCRUD.tsx';
+import GraficoBarras_CategoriaVentas  from '../components/GraficoBarrasInv.tsx';
 
 // Importación de los servicios
-import { actualizarStatus, actualizarEmpleado, obtenerPedidos, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy, obtenerEmpleados } from "../services/dashServices"
-import { ProductoEstrella, Ventas_Categoria } from "../services/statsService.ts"
+import { actualizarStatus, actualizarEmpleado, obtenerPedidos, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy, obtenerEmpleados } from "../services/dashServices";
+import { ProductoEstrella, Ventas_Categoria } from "../services/statsService.ts";
  
 import { registrarUsuario_test } from "../services/authService"; //Función para realziar el registro
 import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación 
@@ -35,6 +36,16 @@ import control4 from "../assets/Iconos/avanzar_rapido2.png";
         - Clientes mas frecuentes tabla
         - 
 */
+const data_barras_ejemplo: VentasCategorias[] = [
+  { categoria: "Frappes", cant: 5000 },
+  { categoria: "Bebidas Calientes", cant: 3500 },
+  { categoria: "Bebidas Frías", cant: 4200 },
+  { categoria: "Postres", cant: 6000 },
+];
+interface VentasCategorias {
+    categoria: string,
+    cant: number,
+}
 interface Pedido {
     id_pedido: number;
     fecha: string;
@@ -44,19 +55,12 @@ interface Pedido {
         nombre: string;
     }   
 }
-
 interface ProductoEstrella {
   tipo: string;
   nombre: string;
   sabor: string;
   imagen?: string;
 }
-
-interface VentasCategorias {
-    categoria: string,
-    cant: number,
-}
-
 interface Empleado {
   id_usuario: number;
   nombre: string;
@@ -76,6 +80,9 @@ const Admin_Inicio = () => {
     const rawUser = localStorage.getItem("usuario"); 
     const Usuario = rawUser?.replace(/^"(.*)"$/, '$1'); // Retirar la comillas del usuario
     const navigate = useNavigate();
+
+    // Estados para manejar el modal
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     // Estado para manejar los datos del formulario
     const [formaContacto, setFormaContacto] = useState("");
@@ -108,9 +115,8 @@ const Admin_Inicio = () => {
 
     
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        const tpo_usuario = "empleado"
+    const handleSubmit = async (e?: React.FormEvent) => {
+        if (e) e.preventDefault();
         const nuevosErrores = {
             nombre: nombre.trim() === "" ? "Campo obligatorio" : "",
             apellido: apellido.trim() === "" ? "Campo obligatorio" : "",
@@ -129,6 +135,7 @@ const Admin_Inicio = () => {
         };
 
         console.log(errores);
+        console.log("modo:", modo);
         console.log("1:", nombre, " 2:", apellido, " 3:", usuario, " 4:", contra, " 5:", correoTel )
         setErrores(nuevosErrores);
         if (Object.values(nuevosErrores).some((msg) => msg !== "")) {
@@ -136,9 +143,16 @@ const Admin_Inicio = () => {
             setErrores(nuevosErrores);
             return;
         }
-        
+        setShowConfirmModal(true);
+
+    };
+
+    // Función para que se cierre solo el modal cuando se realiza el submit
+    const accionPendiente = async () => {
+        setShowConfirmModal(false);
+            
         if (modo === "agregar") {
-            console.log("Agregando....")
+            const tpo_usuario = "empleado"
             const payload = {
                 nombre,
                 apellido,
@@ -159,47 +173,60 @@ const Admin_Inicio = () => {
                 toast.error(error.message);
                 limpiarInputs();
             }        
+            return;
+        
+        // EDITAR
         } else if (modo === "editar") {
-            // lógica para editar usuario
-            const payload = {
-                nombre,
-                apellido,
-                usuario,
-                correoTel,
-            };
-            const id = id_usuario;
-            console.log("Editando....", "id", id, "payload", payload)
-            
-            try {
-                await actualizarEmpleado(id, payload);
-                const datosActualizados = await obtenerEmpleados();
-                setEmpleados(datosActualizados);
-                toast.success("Actualización exitosa");
-                limpiarInputs();
+                const payload = {
+                    nombre,
+                    apellido,
+                    usuario,
+                    correoTel,
+                };
+                const id = id_usuario;
+                console.log("Editando....", "id", id, "payload", payload)
                 
-            } catch (error: any) {
-                toast.error(error.message);
-                limpiarInputs();
-            }   
+                try {
+                    await actualizarEmpleado(id, payload);
+                    const datosActualizados = await obtenerEmpleados();
+                    setEmpleados(datosActualizados);
+                    toast.success("Actualización exitosa");
+                    limpiarInputs();
+                    
+                } catch (error: any) {
+                    toast.error(error.message);
+                    limpiarInputs();
+                }   
+                return;
+        // ELMINAR
         } else if (modo === "eliminar") {
             try{
-                await actualizarStatus(id_usuario, 'B');
-                const datosActualizados = await obtenerEmpleados();
-                setEmpleados(datosActualizados);
-                toast.success("Se elimino correctamente");
-                limpiarInputs();
-            } catch (error: any){
-                toast.error(error.message);
-                limpiarInputs();
-            }
-            
+                    await actualizarStatus(id_usuario, 'B');
+                    const datosActualizados = await obtenerEmpleados();
+                    setEmpleados(datosActualizados);
+                    toast.success("Se elimino correctamente");
+                    limpiarInputs();
+                } catch (error: any){
+                    toast.error(error.message);
+                    limpiarInputs();
+                }
+                return;
+                
+            } else if (modo === "consulta") {
+                buscarEmpleadoPorId(id_usuario);
+                return;
+        // CONSULTA
         } else if (modo === "consulta") {
-            buscarEmpleadoPorId(id_usuario);
+            RellenarDatosEmpleado();
+            return;
         }
-        
-        
     };
 
+    // Esta función regresa el telefono con el formato ### ### ####
+    const formatearTelefono = (numero: string) => {
+        const limpio = numero.replace(/\D/g, "");
+        return limpio.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
+    };
 
     // Funciónes de navegación
     const limpiarInputs = () => {
@@ -239,7 +266,7 @@ const Admin_Inicio = () => {
             setCorreoTel(empleado.email);
         } else if (empleado.numero_tel) {
             setFormaContacto("telefono");
-            setCorreoTel(empleado.numero_tel);
+            setCorreoTel(formatearTelefono(empleado.numero_tel));
         } else {
             setFormaContacto("");
             setCorreoTel("");
@@ -301,7 +328,7 @@ const Admin_Inicio = () => {
                 setCorreoTel(empleado.email);
             } else if (empleado.numero_tel) {
                 setFormaContacto("telefono");
-                setCorreoTel(empleado.numero_tel);
+                setCorreoTel(formatearTelefono(empleado.numero_tel));
             } else {
                 setCorreoTel("");
             }
@@ -732,6 +759,9 @@ const Admin_Inicio = () => {
                                 </button>
                                 <button 
                                 disabled={modo === "consulta"}
+                                onClick={() => {
+                                    limpiarInputs();
+                                }}
                                 className="w-1/2 h-10 bg-[#671212] font-bold text-white text-lg hover:bg-[#c96a6a]">
                                     Cancelar
                                 </button>
@@ -877,27 +907,35 @@ const Admin_Inicio = () => {
                 {/* SELECCION DE ESTADISTICAS ////////////////////////////////////////////////////////////////////////// */}
 
                 {Opcion === 'Estadisticas' && (
-                    <div className="flex flex-col w-full h-full rounded-xl">
-                        <div className="flex flex-row w-full h-auto p-4 gap-4 text-center">
-                            {/*Editar esto como tipo card, importar la img desde el diccionario*/}
-                            <div className="w-1/2 h-full bg-white rounded-xl shadow-lg p-6 font-semibold">
+                    <div className="flex flex-col w-full h-full rounded-xl gap-4">
+                        <div className="flex flex-row w-full h-1/2 gap-4 text-center">
+                            <div className="w-auto h-full bg-white rounded-xl shadow-lg p-6 font-semibold">
                                 <h2 className="text-2xl mb-6 border-b-2 border-gray-200 pb-2">Producto más vendido</h2>
-                                <div className="flex flex-col items-center gap-6">
+                                <div className="flex flex-row items-center gap-6">
                                     <img 
-                                    className="w-48 h-48 object-cover rounded-lg shadow-md" 
+                                    className="w-32 h-32 object-cover rounded-lg shadow-md" 
                                     src={productoEstrella?.imagen} 
                                     alt={productoEstrella?.nombre} 
                                     />
                                     <div className="flex flex-col justify-center">
                                     <p className="text-xl text-gray-800">{productoEstrella?.nombre}</p>
                                     <p className="text-gray-500 mt-2 italic">{productoEstrella?.sabor}</p>
-                                    </div>
+                                    
+                                </div>
                                 </div>
                             </div>
-                            <GraficoVentas data={VentasCategoria}/>
-
+                            
+                            <div className="w-auto h-full bg-white rounded-xl shadow-lg p-6 font-semibold overflow-hidden">
+                                <h2 className="text-2xl mb-6 border-b-2 border-gray-200 pb-2 font-semibold">Distribución de Ventas</h2>
+                                <GraficoVentas data={VentasCategoria}/>
+                            </div>
+                            
+                            <div className="w-auto h-full bg-white rounded-xl shadow-lg p-6 font-semibold overflow-hidden">
+                            </div>
                         </div>
-                        
+                        <div className="flex flex-row w-full h-auto bg-white rounded-xl shadow-lg p-6 font-semibold">
+                            <GraficoBarras_CategoriaVentas data={data_barras_ejemplo}/>
+                        </div>
                     </div>
                 )}
             </div>
@@ -916,6 +954,12 @@ const Admin_Inicio = () => {
                 },
                 }}
             />
+        <ModalConfirmCRUD
+            isOpen={showConfirmModal}
+            onClose={() => setShowConfirmModal(false)}
+            onConfirm={accionPendiente}
+            accion={modo}
+        />
     </div>
     );
 };
