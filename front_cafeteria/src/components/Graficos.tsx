@@ -10,11 +10,11 @@ interface Data {
 interface Props {
   data: Data [];
 }
-const colores = ["#FF6384", "#36A2EB", "#311808", "#8AFFC1"];
+const colores = ["#dde5b6", "#adc178", "#a98467", "#6c584c"];
 
 const GraficoVentas = ({ data }: Props) => {
   return(
-    <div className="flex flex-row w-full max-w-xs mx-auto aspect-square gap-2 pb-44">
+    <div className="flex flex-row w-full max-w-xs mx-auto aspect-square gap-2 pb-40">
       <VictoryPie 
         data={data} 
         x="categoria"
@@ -23,11 +23,11 @@ const GraficoVentas = ({ data }: Props) => {
         padding={{ top: 5, bottom: 5, left: 5, right: 5 }}
         width={250}
         height={250}
-        innerRadius={40} 
+        innerRadius={3} 
         padAngle={3}
         labels={() => ""} //ocultar las etiquetas
       />
-      <div className="mt-4 space-y-1 text-sm">
+      <div className="w-full space-y-4 text-sm p-4">
         {data.map((item, index) => (
           <div key={index} className="flex items-center space-x-2">
             <span

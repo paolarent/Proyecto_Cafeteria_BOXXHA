@@ -34,11 +34,12 @@ export const VentasPorCategoria = async () => {
     const venta_bebfria = idsBebFria.length;
     const venta_postre = idsPostre.length;
 
-
+    // ////////////////////////////////////////////////////////
+    // Aqui se le asigna el nombre a la categoria a mandar
     const ventas: (Data | null)[] = [
-        venta_frappe ? { categoria: "Frappe", cant: venta_frappe } : null,
-        venta_bebcaliente ? { categoria: "Bebida Caliente", cant: venta_bebcaliente } : null,
-        venta_bebfria ? { categoria: "Bebida Fria", cant: venta_bebfria } : null,
+        venta_frappe ? { categoria: "Frappe", cant: venta_frappe } : null, // <== cambia la cadena de la categoria
+        venta_bebcaliente ? { categoria: "Beb. Caliente", cant: venta_bebcaliente } : null,
+        venta_bebfria ? { categoria: "Beb. Fria", cant: venta_bebfria } : null,
         venta_postre ? { categoria: "Postres", cant: venta_postre } : null,
     ];
 

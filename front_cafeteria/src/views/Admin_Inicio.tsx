@@ -9,11 +9,12 @@ import { getImagenCarrito } from "../data/imagenesCarrito.ts";
 import GraficoVentas  from '../components/Graficos';
 import ModalConfirmCRUD from '../components/ModalConfirmCRUD.tsx';
 import GraficoBarras_CategoriaVentas  from '../components/GraficoBarrasInv.tsx';
+import TablaRendimiento from "../components/TablaRendimiento.tsx";
 
 // Importación de los servicios
 import { actualizarStatus, actualizarEmpleado, obtenerPedidos, TotalPedidosHoy, TotalVentasHoy, TotalProductosHoy, obtenerEmpleados } from "../services/dashServices";
 import { ProductoEstrella, Ventas_Categoria } from "../services/statsService.ts";
- 
+
 import { registrarUsuario_test } from "../services/authService"; //Función para realziar el registro
 import { useAuth } from "../contexts/AuthContext"; // Usamos el hook para acceder a la autenticación 
 
@@ -36,12 +37,31 @@ import control4 from "../assets/Iconos/avanzar_rapido2.png";
         - Clientes mas frecuentes tabla
         - 
 */
+const data_tabla_ejemplo: TablaRend[] =[
+    { nombre: "Jorge", apellido: "Aguilar", ventas: 55},
+    { nombre: "María", apellido: "López", ventas: 45 },
+    { nombre: "Juan", apellido: "Pérez", ventas: 30 },
+    { nombre: "Lucía", apellido: "Martínez", ventas: 27 },
+    { nombre: "Lucía", apellido: "Martínez", ventas: 27 },
+]
+
 const data_barras_ejemplo: VentasCategorias[] = [
   { categoria: "Frappes", cant: 5000 },
-  { categoria: "Bebidas Calientes", cant: 3500 },
-  { categoria: "Bebidas Frías", cant: 4200 },
+  { categoria: "Beb. Calientes", cant: 3500 },
+  { categoria: "Beb. Frías", cant: 4200 },
   { categoria: "Postres", cant: 6000 },
 ];
+interface TablaRend {
+    nombre: string,
+    apellido: string,
+    ventas: number,
+};
+const meses = [
+  "Ene", "Feb", "Mar", "Abr",
+  "May", "Jun", "Jul", "Ago",
+  "Sep", "Oct", "Nov", "Dic"
+];
+
 interface VentasCategorias {
     categoria: string,
     cant: number,
@@ -102,6 +122,10 @@ const Admin_Inicio = () => {
     // Estados de estadisitcas
     const [productoEstrella, setProductoEstrella] = useState<ProductoEstrella | null>(null);
     const [VentasCategoria, setVentasCategorias] = useState<VentasCategorias[]>([]);
+    const [anio, setAnio] = useState(2025);
+    const [trimestre, setTrimestre] = useState(0);
+    const [mes, setMes] = useState(0);
+
     const [errores, setErrores] = useState({
         nombre: "",
         apellido: "",
@@ -536,14 +560,13 @@ const Admin_Inicio = () => {
                     </div>
                     <div>
                         {/* Botón cerrar sesión */}
-                        <div className="flex items-center gap-2 p-4 bottom-0 shadow-md bg-[#f4eae3] hover:bg-[#B0CEAC] group 
+                        <div onClick={handleLogout} className="flex items-center gap-2 p-4 bottom-0 shadow-md bg-[#f4eae3] hover:bg-[#B0CEAC] group 
                             focus-within:bg-[#a3968c] focus-within:border-l-4 focus-within:border-l-[#814721] border-l-4 border-l-transparent rounded-xl">
                             <img 
                                 src={cerrar_sesion}
                                 className="w-10 h-10 p-1" 
                             />
-                            <button
-                                onClick={handleLogout} 
+                            <button 
                                 className="text-xl font-bold text-black flex items-center">
                                 Cerrar sesión
                             </button>
@@ -555,7 +578,7 @@ const Admin_Inicio = () => {
             
             {/* SECCION DE DASHBOARD ////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
             
-            <div className="font-Montserrat flex flex-col w-3/4 max-h-[90vh] overflow-y-auto items-center shadow-xl bg-[#f4eae3] px-10 py-8 rounded-xl">
+            <div className="font-Montserrat flex flex-col w-3/4 h-full overflow-y-auto items-center shadow-xl bg-[#f4eae3] p-10 py-8 pb-8 rounded-xl">
                 { Opcion === 'Dashboard' && (
                     <div className="flex flex-col w-full h-full">
                         <div className="flex flex-col w-full h-1/3 gap-6"> 
@@ -907,36 +930,140 @@ const Admin_Inicio = () => {
                 {/* SELECCION DE ESTADISTICAS ////////////////////////////////////////////////////////////////////////// */}
 
                 {Opcion === 'Estadisticas' && (
-                    <div className="flex flex-col w-full h-full rounded-xl gap-4">
-                        <div className="flex flex-row w-full h-1/2 gap-4 text-center">
-                            <div className="w-auto h-full bg-white rounded-xl shadow-lg p-6 font-semibold">
-                                <h2 className="text-2xl mb-6 border-b-2 border-gray-200 pb-2">Producto más vendido</h2>
-                                <div className="flex flex-row items-center gap-6">
-                                    <img 
-                                    className="w-32 h-32 object-cover rounded-lg shadow-md" 
-                                    src={productoEstrella?.imagen} 
-                                    alt={productoEstrella?.nombre} 
-                                    />
-                                    <div className="flex flex-col justify-center">
-                                    <p className="text-xl text-gray-800">{productoEstrella?.nombre}</p>
-                                    <p className="text-gray-500 mt-2 italic">{productoEstrella?.sabor}</p>
-                                    
-                                </div>
+                    <div className="flex flex-row w-full h-full min-h-screen rounded-xl gap-4">
+                        {/*Sección izquierda  Filtros*/}
+                        <div className="flex flex-col w-auto h-screen min-w-1/4 gap-4 bg-white rounded-xl p-6 shadow-md">
+                            <p className="text-2xl mb-2 font-bold">FILTRAR CONTENIDO</p>
+                            <div>
+                                <p className="text-lg mb-2 border-b-2 border-gray-200 font-bold">Año</p>
+                                <div className="grid grid-cols-2 gap-2 font-bold"> 
+                                    <button 
+                                    onClick={() => {
+                                        setAnio(2024);
+                                    }}
+                                    className={`rounded-md border-black border-2
+                                    ${anio === 2024 ? "bg-[#9ab796]" : "hover:bg-[#9ab796]"}`}>
+                                        
+                                        2024
+                                    </button>
+                                    <button 
+                                    onClick={() => {
+                                        setAnio(2025);
+                                    }}
+                                    className={`rounded-md border-black border-2
+                                    ${anio === 2025 ? "bg-[#9ab796]" : "hover:bg-[#9ab796]"}`}>                                    
+                                    2025
+                                    </button>
                                 </div>
                             </div>
                             
-                            <div className="w-auto h-full bg-white rounded-xl shadow-lg p-6 font-semibold overflow-hidden">
-                                <h2 className="text-2xl mb-6 border-b-2 border-gray-200 pb-2 font-semibold">Distribución de Ventas</h2>
-                                <GraficoVentas data={VentasCategoria}/>
+                            <div>
+                                <p className="text-lg mb-2 border-b-2 border-gray-200 font-bold">Trimestre</p>
+                                <div className="grid grid-cols-2 gap-2 font-bold"> 
+                                    <button 
+                                    onClick={() => {
+                                        setTrimestre(1)
+                                        setMes(0);
+                                    }}
+                                    className={`rounded-md border-black border-2
+                                    ${trimestre === 1 ? "bg-[#9ab796]" : "hover:bg-[#9ab796]"}`}>
+                                        
+                                        TR1
+                                    </button>
+                                    <button 
+                                    onClick={() => {
+                                        setTrimestre(2)
+                                        setMes(0);
+                                    }}
+                                    className={`rounded-md border-black border-2
+                                    ${trimestre === 2 ? "bg-[#9ab796]" : "hover:bg-[#9ab796]"}`}>
+                                        
+                                        TR2
+                                    </button>
+                                    <button 
+                                    onClick={() => {
+                                        setTrimestre(3)
+                                        setMes(0);
+                                    }}
+                                    className={`rounded-md border-black border-2
+                                    ${trimestre === 3 ? "bg-[#9ab796]" : "hover:bg-[#9ab796]"}`}>
+                                        
+                                        TR3
+                                    </button>
+                                    <button 
+                                    onClick={() => {
+                                        setTrimestre(4)
+                                        setMes(0);
+                                    }}
+                                    className={`rounded-md border-black border-2
+                                    ${trimestre === 4 ? "bg-[#9ab796]" : "hover:bg-[#9ab796]"}`}>
+                                        
+                                        TR4
+                                    </button>
+                                </div>
                             </div>
-                            
-                            <div className="w-auto h-full bg-white rounded-xl shadow-lg p-6 font-semibold overflow-hidden">
+                        
+                            <div>
+                                <p className="text-lg mb-2 border-b-2 border-gray-200 font-bold"> Mes </p>
+                                <div className="grid grid-cols-2 gap-2 font-bold">
+                                    {meses.map((nombre, index) => (
+                                        <button
+                                        key={index}
+                                        onClick={() => {
+                                            setMes(index + 1)
+                                            setTrimestre(0) 
+                                            }
+                                        }
+                                        className={`rounded-md border-black border-2
+                                            ${mes === index + 1 ? "bg-[#9ab796]" : "hover:bg-[#9ab796]"}`}
+                                        >
+                                        {nombre}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                        </div>
+                        {/*Sección derecha Graficos y tablas*/}
+                        <div className="flex flex-col w-auto h-auto gap-4">       
+                            {/*Graficos primera fila */}
+                            <div className="flex flex-row w-full h-[316px] gap-4 text-center">
+                                <div className="w-full h-full bg-white rounded-xl shadow-lg p-6 font-semibold">
+                                    <h2 className="text-2xl mb-6 border-b-2 border-gray-200 pb-2 font-bold">Producto más vendido</h2>
+                                    <div className="flex flex-row items-center gap-6">
+                                        <img 
+                                        className="w-38 h-36 object-cover rounded-lg shadow-md" 
+                                        src={productoEstrella?.imagen} 
+                                        alt={productoEstrella?.nombre} 
+                                        />
+                                        <div className="flex flex-col justify-center">
+                                            <p className="text-xl text-gray-800">{productoEstrella?.nombre}</p>
+                                            <p className="text-gray-500 mt-2 italic">{productoEstrella?.sabor}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="w-full h-full bg-white rounded-xl shadow-lg p-6">
+                                    <h2 className="text-2xl mb-6 border-b-2 border-gray-200 pb-2 font-bold">Distribución de Ventas</h2>
+                                    <GraficoVentas data={VentasCategoria}/>
+                                </div>
+                                
+                            </div>
+                            {/*Graficos segunda fila */}
+                            <div className="flex flex-row w-full h-auto text-center items-center gap-4">
+                                <div className="bg-white h-full w-auto rounded-xl shadow-lg px-4 pb-20 pt-6">
+                                    <h2 className="text-2xl mb-6 border-b-2 border-gray-200 font-bold">Distribución de Ventas</h2>
+                                    <GraficoBarras_CategoriaVentas data={data_barras_ejemplo}/>
+                                </div>
+                                
+                                <div className="bg-white h-full w-1/2 rounded-xl shadow-lg p-6">
+                                    <h2 className="text-2xl mb-6 border-b-2 border-gray-200 font-bold">Rendimiento</h2>
+                                    <TablaRendimiento data={data_tabla_ejemplo}/>
+                                </div>
                             </div>
                         </div>
-                        <div className="flex flex-row w-full h-auto bg-white rounded-xl shadow-lg p-6 font-semibold">
-                            <GraficoBarras_CategoriaVentas data={data_barras_ejemplo}/>
-                        </div>
-                    </div>
+                    {/*Div padre */}
+                    </div> 
                 )}
             </div>
 
